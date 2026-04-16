@@ -12,8 +12,8 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { workspace = true }
-thailang-ast = { path = "../thailang-ast" }
-thailang-emit-js = { path = "../thailang-emit-js" }
-thailang-lexer = { path = "../thailang-lexer" }
-thailang-parser = { path = "../thailang-parser" }
-thailang-types = { path = "../thailang-types" }
+thailang-ast = { path = "../ast" }
+thailang-emit-js = { path = "../emit-js" }
+thailang-lexer = { path = "../lexer" }
+thailang-parser = { path = "../parser" }
+thailang-types = { path = "../types" }

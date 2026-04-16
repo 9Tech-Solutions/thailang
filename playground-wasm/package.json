@@ -8,8 +8,8 @@
   "types": "./pkg/thailang_wasm.d.ts",
   "files": ["pkg/"],
   "scripts": {
-    "build": "wasm-pack build ../compiler/crates/thailang-wasm --target nodejs --out-dir ../../../playground-wasm/pkg --release",
-    "build:web": "wasm-pack build ../compiler/crates/thailang-wasm --target web --out-dir ../../../playground-wasm/pkg --release"
+    "build": "wasm-pack build ../compiler/crates/wasm --target nodejs --out-dir ../../../playground-wasm/pkg --release",
+    "build:web": "wasm-pack build ../compiler/crates/wasm --target web --out-dir ../../../playground-wasm/pkg --release"
   },
   "license": "MIT"
 }

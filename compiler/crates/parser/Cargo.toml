@@ -10,5 +10,5 @@ description = "Thailang parser — handwritten recursive descent + Pratt"
 path = "src/lib.rs"
 
 [dependencies]
-thailang-ast = { path = "../thailang-ast" }
-thailang-lexer = { path = "../thailang-lexer" }
+thailang-ast = { path = "../ast" }
+thailang-lexer = { path = "../lexer" }

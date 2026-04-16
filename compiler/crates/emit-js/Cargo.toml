@@ -10,7 +10,7 @@ description = "Thailang JavaScript emitter — AST to JS source"
 path = "src/lib.rs"
 
 [dependencies]
-thailang-ast = { path = "../thailang-ast" }
+thailang-ast = { path = "../ast" }
 
 [dev-dependencies]
-thailang-parser = { path = "../thailang-parser" }
+thailang-parser = { path = "../parser" }

@@ -1,13 +1,13 @@
 [workspace]
 resolver = "2"
 members = [
-  "compiler/crates/thailang-ast",
-  "compiler/crates/thailang-cli",
-  "compiler/crates/thailang-emit-js",
-  "compiler/crates/thailang-lexer",
-  "compiler/crates/thailang-parser",
-  "compiler/crates/thailang-types",
-  "compiler/crates/thailang-wasm",
+  "compiler/crates/ast",
+  "compiler/crates/cli",
+  "compiler/crates/emit-js",
+  "compiler/crates/lexer",
+  "compiler/crates/parser",
+  "compiler/crates/types",
+  "compiler/crates/wasm",
 ]
 
 # Optimize WASM crate for size (per-package profile only allows opt-level + codegen-units;
