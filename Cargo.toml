@@ -26,8 +26,6 @@ authors = ["Thailang Contributors"]
 [workspace.dependencies]
 # Pinned in Phase 1
 logos = "0.14"
-chumsky = "0.10"
-ariadne = "0.4"
 clap = { version = "4.5", features = ["derive"] }
 insta = { version = "1.39", features = ["yaml"] }
 proptest = "1.5"

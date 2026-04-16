@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 use std::fs;
 use std::process::{Command, ExitCode};
+use thailang_ast::Span;
 
 #[derive(Parser)]
 #[command(name = "thai", version, about = "Thailang compiler — ภาษาโปรแกรมมิงไทย")]
@@ -49,27 +50,21 @@ fn run_tokens(path: &str) -> ExitCode {
 }
 
 fn run_parse(path: &str) -> ExitCode {
-    let source = match read_source(path) {
-        Ok(s) => s,
-        Err(e) => return die(&e),
-    };
-    match thailang_parser::parse(&source) {
-        Ok(program) => {
+    match read_and_parse(path) {
+        Outcome::Ok(_, program) => {
             println!("{program:#?}");
             ExitCode::SUCCESS
         }
-        Err(errors) => report_parse_errors(&errors),
+        Outcome::ParseFailed(s, errors) => report_parse_errors(path, &s, &errors),
+        Outcome::ReadFailed(e) => die(&e),
     }
 }
 
 fn run_check(path: &str) -> ExitCode {
-    let source = match read_source(path) {
-        Ok(s) => s,
-        Err(e) => return die(&e),
-    };
-    let program = match thailang_parser::parse(&source) {
-        Ok(p) => p,
-        Err(errors) => return report_parse_errors(&errors),
+    let (source, program) = match read_and_parse(path) {
+        Outcome::Ok(s, p) => (s, p),
+        Outcome::ParseFailed(s, errors) => return report_parse_errors(path, &s, &errors),
+        Outcome::ReadFailed(e) => return die(&e),
     };
     let type_errors = thailang_types::check(&program);
     if type_errors.is_empty() {
@@ -77,36 +72,27 @@ fn run_check(path: &str) -> ExitCode {
         return ExitCode::SUCCESS;
     }
     for error in &type_errors {
-        eprintln!(
-            "type error @{}-{}: {}",
-            error.span.start, error.span.end, error.message,
-        );
+        emit_diagnostic(path, &source, error.span, &error.message, DiagKind::Type);
     }
     ExitCode::FAILURE
 }
 
 fn run_emit_js(path: &str) -> ExitCode {
-    let source = match read_source(path) {
-        Ok(s) => s,
-        Err(e) => return die(&e),
-    };
-    match thailang_parser::parse(&source) {
-        Ok(program) => {
+    match read_and_parse(path) {
+        Outcome::Ok(_, program) => {
             print!("{}", thailang_emit_js::emit(&program));
             ExitCode::SUCCESS
         }
-        Err(errors) => report_parse_errors(&errors),
+        Outcome::ParseFailed(s, errors) => report_parse_errors(path, &s, &errors),
+        Outcome::ReadFailed(e) => die(&e),
     }
 }
 
 fn run_program(path: &str) -> ExitCode {
-    let source = match read_source(path) {
-        Ok(s) => s,
-        Err(e) => return die(&e),
-    };
-    let program = match thailang_parser::parse(&source) {
-        Ok(p) => p,
-        Err(errors) => return report_parse_errors(&errors),
+    let program = match read_and_parse(path) {
+        Outcome::Ok(_, p) => p,
+        Outcome::ParseFailed(s, errors) => return report_parse_errors(path, &s, &errors),
+        Outcome::ReadFailed(e) => return die(&e),
     };
     let js = thailang_emit_js::emit(&program);
     match Command::new("node").arg("-e").arg(&js).status() {
@@ -116,18 +102,126 @@ fn run_program(path: &str) -> ExitCode {
     }
 }
 
+// ── Pipeline helpers ────────────────────────────────────────────────────
+
+enum Outcome {
+    Ok(String, thailang_ast::Program),
+    ParseFailed(String, Vec<thailang_parser::ParseError>),
+    ReadFailed(String),
+}
+
+fn read_and_parse(path: &str) -> Outcome {
+    match read_source(path) {
+        Ok(source) => match thailang_parser::parse(&source) {
+            Ok(program) => Outcome::Ok(source, program),
+            Err(errors) => Outcome::ParseFailed(source, errors),
+        },
+        Err(e) => Outcome::ReadFailed(e),
+    }
+}
+
 fn read_source(path: &str) -> Result<String, String> {
     fs::read_to_string(path).map_err(|e| format!("could not read {path}: {e}"))
 }
 
-fn report_parse_errors(errors: &[thailang_parser::ParseError]) -> ExitCode {
-    for error in errors {
-        match error.span() {
-            Some(s) => eprintln!("error @{}-{}: {}", s.start, s.end, error.message()),
-            None => eprintln!("error: {}", error.message()),
+// ── Diagnostic rendering (UTF-8 aware, no external deps) ────────────────
+
+#[derive(Clone, Copy)]
+enum DiagKind {
+    Parse,
+    Type,
+}
+
+impl DiagKind {
+    fn label(self) -> &'static str {
+        match self {
+            DiagKind::Parse => "parse error",
+            DiagKind::Type => "type error",
         }
     }
+}
+
+fn report_parse_errors(
+    path: &str,
+    source: &str,
+    errors: &[thailang_parser::ParseError],
+) -> ExitCode {
+    for error in errors {
+        let span = error
+            .span()
+            .unwrap_or_else(|| Span::new(source.len().saturating_sub(1), source.len()));
+        emit_diagnostic(path, source, span, &error.message(), DiagKind::Parse);
+    }
     ExitCode::FAILURE
+}
+
+fn emit_diagnostic(path: &str, source: &str, span: Span, message: &str, kind: DiagKind) {
+    let location = locate(source, span);
+    eprintln!(
+        "{red}error[{kind}]{reset}: {message}",
+        red = "\x1b[31;1m",
+        reset = "\x1b[0m",
+        kind = kind.label(),
+    );
+    eprintln!(
+        "  {dim}-->{reset} {path}:{line}:{col}",
+        dim = "\x1b[2m",
+        reset = "\x1b[0m",
+        line = location.line_number,
+        col = location.column,
+    );
+    eprintln!("   {dim}|{reset}", dim = "\x1b[2m", reset = "\x1b[0m");
+    eprintln!(
+        " {line:>2} {dim}|{reset} {content}",
+        line = location.line_number,
+        dim = "\x1b[2m",
+        reset = "\x1b[0m",
+        content = location.line_content,
+    );
+    let caret_pad = " ".repeat(location.column.saturating_sub(1));
+    let caret_len = location.caret_width.max(1);
+    let carets = "^".repeat(caret_len);
+    eprintln!(
+        "   {dim}|{reset} {pad}{red}{carets}{reset}",
+        dim = "\x1b[2m",
+        red = "\x1b[31;1m",
+        reset = "\x1b[0m",
+        pad = caret_pad,
+        carets = carets,
+    );
+}
+
+struct Location<'a> {
+    line_number: usize,
+    column: usize,
+    line_content: &'a str,
+    caret_width: usize,
+}
+
+/// Convert a byte-offset span into a (line, column, line-content, caret-width)
+/// where column and caret-width are measured in Unicode scalar values (chars),
+/// not bytes — so Thai multi-byte chars align correctly in the terminal.
+fn locate<'a>(source: &'a str, span: Span) -> Location<'a> {
+    let clamped_start = span.start.min(source.len());
+    let clamped_end = span.end.min(source.len()).max(clamped_start);
+    let line_start = source[..clamped_start]
+        .rfind('\n')
+        .map(|i| i + 1)
+        .unwrap_or(0);
+    let line_end = source[clamped_start..]
+        .find('\n')
+        .map(|i| clamped_start + i)
+        .unwrap_or(source.len());
+    let line_content = &source[line_start..line_end];
+    let line_number = source[..line_start].bytes().filter(|b| *b == b'\n').count() + 1;
+    let column = source[line_start..clamped_start].chars().count() + 1;
+    let caret_width = source[clamped_start..clamped_end.min(line_end)].chars().count();
+    Location {
+        line_number,
+        column,
+        line_content,
+        caret_width,
+    }
 }
 
 fn die(msg: &str) -> ExitCode {

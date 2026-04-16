@@ -13,12 +13,13 @@ pub fn check(program: &Program) -> Vec<TypeError> {
 fn check_item(item: &Item, errors: &mut Vec<TypeError>) {
     match &item.kind {
         ItemKind::Let { type_ann: Some(declared), value, .. } => {
-            check_assignment(declared, value, item.span, errors);
+            check_assignment(declared, value, errors);
         }
         ItemKind::Fn(f) => check_fn(f, errors),
         ItemKind::Stmt(s) => check_stmt(s, errors),
         ItemKind::Let { type_ann: None, .. } => {}
     }
+    let _ = item.span;
 }
 
 fn check_fn(f: &FnDecl, errors: &mut Vec<TypeError>) {
@@ -30,7 +31,7 @@ fn check_fn(f: &FnDecl, errors: &mut Vec<TypeError>) {
 fn check_stmt(stmt: &Stmt, errors: &mut Vec<TypeError>) {
     match &stmt.kind {
         StmtKind::Let { type_ann: Some(declared), value, .. } => {
-            check_assignment(declared, value, stmt.span, errors);
+            check_assignment(declared, value, errors);
         }
         StmtKind::Block(stmts)
         | StmtKind::While { body: stmts, .. } => {
@@ -68,7 +69,7 @@ fn check_stmt(stmt: &Stmt, errors: &mut Vec<TypeError>) {
     }
 }
 
-fn check_assignment(declared: &TypeAnn, value: &Expr, span: Span, errors: &mut Vec<TypeError>) {
+fn check_assignment(declared: &TypeAnn, value: &Expr, errors: &mut Vec<TypeError>) {
     let inferred = infer_literal_type(value);
     let Some(actual) = inferred else { return };
     if !is_assignable(&actual, declared) {
@@ -78,7 +79,7 @@ fn check_assignment(declared: &TypeAnn, value: &Expr, span: Span, errors: &mut V
                 describe(declared),
                 describe(&actual),
             ),
-            span,
+            value.span,
         ));
     }
 }
