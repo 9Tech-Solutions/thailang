@@ -1,0 +1,10 @@
+[package]
+name = "thailang-ast"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Thailang AST — pure data shared kernel (DDD)"
+
+[lib]
+path = "src/lib.rs"
