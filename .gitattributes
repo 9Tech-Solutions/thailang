@@ -1,0 +1,11 @@
+* text=auto eol=lf
+*.th text=auto eol=lf
+*.rs text=auto eol=lf
+*.toml text=auto eol=lf
+*.md text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wasm binary

@@ -1,0 +1,6 @@
+packages:
+  # Populated as packages are scaffolded in later phases:
+  # - web              (Phase 5)
+  # - playground-wasm  (Phase 2)
+  # - vscode-ext       (Phase 4)
+  # - tooling/*

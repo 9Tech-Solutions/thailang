@@ -1,0 +1,39 @@
+# Rust
+target/
+*.rs.bk
+
+# Node
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+.pnpm-store/
+
+# wasm-pack outputs
+playground-wasm/pkg/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Coverage
+coverage/
+lcov.info
+*.profraw
