@@ -3,6 +3,7 @@ resolver = "2"
 members = [
   "compiler/crates/thailang-ast",
   "compiler/crates/thailang-cli",
+  "compiler/crates/thailang-emit-js",
   "compiler/crates/thailang-lexer",
   "compiler/crates/thailang-parser",
 ]
