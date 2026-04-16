@@ -136,6 +136,14 @@ impl Emitter {
                 self.write(") ");
                 self.emit_block(body);
             }
+            StmtKind::ForEach { var, iterable, body } => {
+                self.write("for (const ");
+                self.write(var);
+                self.write(" of ");
+                self.emit_expr(iterable);
+                self.write(") ");
+                self.emit_block(body);
+            }
             StmtKind::Break => self.write("break;"),
             StmtKind::Continue => self.write("continue;"),
             StmtKind::Block(stmts) => self.emit_block(stmts),

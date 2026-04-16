@@ -59,6 +59,11 @@ fn check_stmt(stmt: &Stmt, errors: &mut Vec<TypeError>) {
                 check_stmt(s, errors);
             }
         }
+        StmtKind::ForEach { body, .. } => {
+            for s in body {
+                check_stmt(s, errors);
+            }
+        }
         _ => {}
     }
 }

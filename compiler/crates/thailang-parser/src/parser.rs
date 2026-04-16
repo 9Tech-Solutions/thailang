@@ -49,8 +49,9 @@ impl Parser {
         match self.peek().map(|t| &t.kind) {
             Some(TokenKind::Function) => self.parse_fn_item(),
             Some(TokenKind::Let) | Some(TokenKind::Const) | Some(TokenKind::If)
-            | Some(TokenKind::While) | Some(TokenKind::For) | Some(TokenKind::Return)
-            | Some(TokenKind::Break) | Some(TokenKind::Continue) | Some(TokenKind::LBrace) => {
+            | Some(TokenKind::While) | Some(TokenKind::For) | Some(TokenKind::ForEach)
+            | Some(TokenKind::Return) | Some(TokenKind::Break) | Some(TokenKind::Continue)
+            | Some(TokenKind::LBrace) => {
                 let stmt = self.parse_stmt()?;
                 Ok(stmt_into_item(stmt))
             }
@@ -122,6 +123,7 @@ impl Parser {
             Some(TokenKind::If) => self.parse_if(),
             Some(TokenKind::While) => self.parse_while(),
             Some(TokenKind::For) => self.parse_for(),
+            Some(TokenKind::ForEach) => self.parse_foreach(),
             Some(TokenKind::Break) => self.parse_break_or_continue(true),
             Some(TokenKind::Continue) => self.parse_break_or_continue(false),
             Some(TokenKind::LBrace) => self.parse_block_as_stmt(),
@@ -196,6 +198,20 @@ impl Parser {
         let body = self.parse_block_stmts()?;
         Ok(Stmt {
             kind: StmtKind::While { cond, body },
+            span: Span::new(start, self.last_end),
+        })
+    }
+
+    fn parse_foreach(&mut self) -> Result<Stmt, ParseError> {
+        let start = self.advance().unwrap().span.start;
+        self.expect(TokenKind::LParen)?;
+        let var = self.expect_identifier_name()?;
+        self.expect(TokenKind::In)?;
+        let iterable = self.parse_expr()?;
+        self.expect(TokenKind::RParen)?;
+        let body = self.parse_block_stmts()?;
+        Ok(Stmt {
+            kind: StmtKind::ForEach { var, iterable, body },
             span: Span::new(start, self.last_end),
         })
     }

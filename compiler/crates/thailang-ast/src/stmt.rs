@@ -34,6 +34,11 @@ pub enum StmtKind {
         update: Box<Stmt>,
         body: Vec<Stmt>,
     },
+    ForEach {
+        var: String,
+        iterable: Expr,
+        body: Vec<Stmt>,
+    },
     Break,
     Continue,
     Block(Vec<Stmt>),
