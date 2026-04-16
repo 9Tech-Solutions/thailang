@@ -10,7 +10,7 @@ dist/
 build/
 .pnpm-store/
 
-# wasm-pack outputs
+# wasm-pack outputs (regenerated via pnpm --filter playground-wasm build)
 playground-wasm/pkg/
 
 # Editor

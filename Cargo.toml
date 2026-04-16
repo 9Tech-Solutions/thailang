@@ -6,7 +6,14 @@ members = [
   "compiler/crates/thailang-emit-js",
   "compiler/crates/thailang-lexer",
   "compiler/crates/thailang-parser",
+  "compiler/crates/thailang-wasm",
 ]
+
+# Optimize WASM crate for size (per-package profile only allows opt-level + codegen-units;
+# wasm-pack handles lto/strip via its own optimization pipeline)
+[profile.release.package.thailang-wasm]
+opt-level = "z"
+codegen-units = 1
 
 [workspace.package]
 version = "0.1.0"
@@ -23,6 +30,10 @@ ariadne = "0.4"
 clap = { version = "4.5", features = ["derive"] }
 insta = { version = "1.39", features = ["yaml"] }
 proptest = "1.5"
+# Pinned in Phase 2
+wasm-bindgen = "0.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 [profile.release]
 lto = "thin"
