@@ -4,6 +4,7 @@ members = [
   "compiler/crates/thailang-ast",
   "compiler/crates/thailang-cli",
   "compiler/crates/thailang-lexer",
+  "compiler/crates/thailang-parser",
 ]
 
 [workspace.package]

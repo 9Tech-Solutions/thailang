@@ -467,6 +467,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "thailang-parser"
+version = "0.1.0"
+dependencies = [
+ "thailang-ast",
+ "thailang-lexer",
+]
+
+[[package]]
 name = "unarray"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
