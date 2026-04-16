@@ -2,6 +2,7 @@
 resolver = "2"
 members = [
   "compiler/crates/thailang-cli",
+  "compiler/crates/thailang-lexer",
 ]
 
 [workspace.package]
