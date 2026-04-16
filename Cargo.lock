@@ -590,6 +590,7 @@ dependencies = [
  "thailang-emit-js",
  "thailang-lexer",
  "thailang-parser",
+ "thailang-types",
 ]
 
 [[package]]
@@ -614,6 +615,14 @@ version = "0.1.0"
 dependencies = [
  "thailang-ast",
  "thailang-lexer",
+]
+
+[[package]]
+name = "thailang-types"
+version = "0.1.0"
+dependencies = [
+ "thailang-ast",
+ "thailang-parser",
 ]
 
 [[package]]

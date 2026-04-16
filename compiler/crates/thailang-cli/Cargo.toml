@@ -16,3 +16,4 @@ thailang-ast = { path = "../thailang-ast" }
 thailang-emit-js = { path = "../thailang-emit-js" }
 thailang-lexer = { path = "../thailang-lexer" }
 thailang-parser = { path = "../thailang-parser" }
+thailang-types = { path = "../thailang-types" }

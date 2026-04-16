@@ -6,6 +6,7 @@ members = [
   "compiler/crates/thailang-emit-js",
   "compiler/crates/thailang-lexer",
   "compiler/crates/thailang-parser",
+  "compiler/crates/thailang-types",
   "compiler/crates/thailang-wasm",
 ]
 

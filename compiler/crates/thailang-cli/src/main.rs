@@ -15,6 +15,8 @@ enum Cmd {
     Tokens { file: String },
     /// Parse and print the AST (debug format)
     Parse { file: String },
+    /// Type-check the program (no codegen)
+    Check { file: String },
     /// Emit JavaScript to stdout
     EmitJs { file: String },
     /// Compile to JS and execute via Node.js
@@ -26,6 +28,7 @@ fn main() -> ExitCode {
     match cli.cmd {
         Cmd::Tokens { file } => run_tokens(&file),
         Cmd::Parse { file } => run_parse(&file),
+        Cmd::Check { file } => run_check(&file),
         Cmd::EmitJs { file } => run_emit_js(&file),
         Cmd::Run { file } => run_program(&file),
     }
@@ -57,6 +60,29 @@ fn run_parse(path: &str) -> ExitCode {
         }
         Err(errors) => report_parse_errors(&errors),
     }
+}
+
+fn run_check(path: &str) -> ExitCode {
+    let source = match read_source(path) {
+        Ok(s) => s,
+        Err(e) => return die(&e),
+    };
+    let program = match thailang_parser::parse(&source) {
+        Ok(p) => p,
+        Err(errors) => return report_parse_errors(&errors),
+    };
+    let type_errors = thailang_types::check(&program);
+    if type_errors.is_empty() {
+        println!("ok ({} items checked)", program.items.len());
+        return ExitCode::SUCCESS;
+    }
+    for error in &type_errors {
+        eprintln!(
+            "type error @{}-{}: {}",
+            error.span.start, error.span.end, error.message,
+        );
+    }
+    ExitCode::FAILURE
 }
 
 fn run_emit_js(path: &str) -> ExitCode {

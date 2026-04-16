@@ -1,0 +1,16 @@
+[package]
+name = "thailang-types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Thailang type checker — literal type validation"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+thailang-ast = { path = "../thailang-ast" }
+
+[dev-dependencies]
+thailang-parser = { path = "../thailang-parser" }

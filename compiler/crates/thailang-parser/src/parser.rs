@@ -284,6 +284,21 @@ impl Parser {
     // ── Type annotations ───────────────────────────────────────────────
 
     fn parse_type_ann(&mut self) -> Result<TypeAnn, ParseError> {
+        let mut ty = self.parse_single_type_ann()?;
+        while self.eat(&TokenKind::Pipe).is_some() {
+            let next = self.parse_single_type_ann()?;
+            ty = match ty {
+                TypeAnn::Union(mut variants) => {
+                    variants.push(next);
+                    TypeAnn::Union(variants)
+                }
+                other => TypeAnn::Union(vec![other, next]),
+            };
+        }
+        Ok(ty)
+    }
+
+    fn parse_single_type_ann(&mut self) -> Result<TypeAnn, ParseError> {
         let tok = self.advance().ok_or(ParseError::Eof)?;
         match tok.kind {
             TokenKind::NumberType => Ok(TypeAnn::Number),
@@ -356,15 +371,51 @@ impl Parser {
 
     fn parse_postfix(&mut self) -> Result<Expr, ParseError> {
         let mut e = self.parse_primary()?;
-        while matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LParen)) {
-            self.advance();
-            let args = self.parse_call_args()?;
-            let end = self.expect(TokenKind::RParen)?.span.end;
-            let span = Span::new(e.span.start, end);
-            e = Expr {
-                kind: ExprKind::Call { callee: Box::new(e), args },
-                span,
-            };
+        loop {
+            match self.peek().map(|t| &t.kind) {
+                Some(TokenKind::LParen) => {
+                    self.advance();
+                    let args = self.parse_call_args()?;
+                    let end = self.expect(TokenKind::RParen)?.span.end;
+                    let span = Span::new(e.span.start, end);
+                    e = Expr {
+                        kind: ExprKind::Call { callee: Box::new(e), args },
+                        span,
+                    };
+                }
+                Some(TokenKind::Dot) => {
+                    self.advance();
+                    let member_tok = self.advance().ok_or(ParseError::Eof)?;
+                    let end = member_tok.span.end;
+                    let member = match member_tok.kind {
+                        TokenKind::Ident(n) => n,
+                        other => return Err(ParseError::Expected {
+                            expected: "member name".to_string(),
+                            found: format!("{other:?}"),
+                            span: Span::new(member_tok.span.start, end),
+                        }),
+                    };
+                    let span = Span::new(e.span.start, end);
+                    e = Expr {
+                        kind: ExprKind::Member { object: Box::new(e), member },
+                        span,
+                    };
+                }
+                Some(TokenKind::LBracket) => {
+                    self.advance();
+                    let index = self.parse_expr()?;
+                    let end = self.expect(TokenKind::RBracket)?.span.end;
+                    let span = Span::new(e.span.start, end);
+                    e = Expr {
+                        kind: ExprKind::Index {
+                            object: Box::new(e),
+                            index: Box::new(index),
+                        },
+                        span,
+                    };
+                }
+                _ => break,
+            }
         }
         Ok(e)
     }
@@ -400,12 +451,34 @@ impl Parser {
                 self.expect(TokenKind::RParen)?;
                 return Ok(inner);
             }
+            TokenKind::LBracket => {
+                let elements = self.parse_array_elements()?;
+                let end = self.expect(TokenKind::RBracket)?.span.end;
+                return Ok(Expr {
+                    kind: ExprKind::Array(elements),
+                    span: Span::new(span.start, end),
+                });
+            }
             other => return Err(ParseError::UnexpectedToken {
                 found: format!("{other:?}"),
                 span,
             }),
         };
         Ok(Expr { kind, span })
+    }
+
+    fn parse_array_elements(&mut self) -> Result<Vec<Expr>, ParseError> {
+        let mut elements = Vec::new();
+        if self.check(&TokenKind::RBracket) {
+            return Ok(elements);
+        }
+        loop {
+            elements.push(self.parse_expr()?);
+            if self.eat(&TokenKind::Comma).is_none() {
+                break;
+            }
+        }
+        Ok(elements)
     }
 
     // ── Token helpers ──────────────────────────────────────────────────
