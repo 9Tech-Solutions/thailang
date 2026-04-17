@@ -3,13 +3,20 @@
   "displayName": "Thailang",
   "description": "Thai-language programming — syntax highlighting for .th files",
   "version": "0.1.0",
-  "publisher": "thailang-dev",
+  "publisher": "9Tech",
   "license": "MIT",
   "engines": {
     "vscode": "^1.80.0"
   },
-  "categories": ["Programming Languages"],
-  "keywords": ["thai", "thailang", "ภาษาไทย", "programming language"],
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "thai",
+    "thailang",
+    "ภาษาไทย",
+    "programming language"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/9Tech-Solutions/thailang.git",
@@ -23,8 +30,13 @@
     "languages": [
       {
         "id": "thailang",
-        "aliases": ["Thailang", "ภาษาไทย"],
-        "extensions": [".th"],
+        "aliases": [
+          "Thailang",
+          "ภาษาไทย"
+        ],
+        "extensions": [
+          ".th"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
