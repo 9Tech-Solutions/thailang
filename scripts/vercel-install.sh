@@ -25,7 +25,7 @@ rustup target add wasm32-unknown-unknown
 # wasm-pack isn't pre-installed. Grab the upstream prebuilt binary —
 # much faster than `cargo install wasm-pack` from source.
 if ! command -v wasm-pack >/dev/null 2>&1; then
-  WASM_PACK_VERSION="v0.13.1"
+  WASM_PACK_VERSION="v0.14.0"
   WASM_PACK_TRIPLE="x86_64-unknown-linux-musl"
   WASM_PACK_ARCHIVE="wasm-pack-${WASM_PACK_VERSION}-${WASM_PACK_TRIPLE}"
   WASM_PACK_URL="https://github.com/rustwasm/wasm-pack/releases/download/${WASM_PACK_VERSION}/${WASM_PACK_ARCHIVE}.tar.gz"
