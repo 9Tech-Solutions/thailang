@@ -1,0 +1,46 @@
+{
+  "name": "thailang",
+  "displayName": "Thailang",
+  "description": "Thai-language programming — syntax highlighting for .th files",
+  "version": "0.1.0",
+  "publisher": "thailang-dev",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Programming Languages"],
+  "keywords": ["thai", "thailang", "ภาษาไทย", "programming language"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/9Tech-Solutions/thailang.git",
+    "directory": "vscode-ext"
+  },
+  "bugs": {
+    "url": "https://github.com/9Tech-Solutions/thailang/issues"
+  },
+  "homepage": "https://github.com/9Tech-Solutions/thailang#readme",
+  "contributes": {
+    "languages": [
+      {
+        "id": "thailang",
+        "aliases": ["Thailang", "ภาษาไทย"],
+        "extensions": [".th"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "thailang",
+        "scopeName": "source.thailang",
+        "path": "./syntaxes/thailang.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package --out thailang-${npm_package_version}.vsix",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.6.0"
+  }
+}
