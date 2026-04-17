@@ -6,10 +6,26 @@
   "type": "module",
   "main": "./pkg/thailang_wasm.js",
   "types": "./pkg/thailang_wasm.d.ts",
-  "files": ["pkg/"],
+  "exports": {
+    ".": {
+      "types": "./pkg/thailang_wasm.d.ts",
+      "node": "./pkg/thailang_wasm.js",
+      "default": "./pkg/thailang_wasm.js"
+    },
+    "./web": {
+      "types": "./pkg-web/thailang_wasm.d.ts",
+      "default": "./pkg-web/thailang_wasm.js"
+    },
+    "./web/wasm": "./pkg-web/thailang_wasm_bg.wasm"
+  },
+  "files": [
+    "pkg/",
+    "pkg-web/"
+  ],
   "scripts": {
     "build": "wasm-pack build ../compiler/crates/wasm --target nodejs --out-dir ../../../playground-wasm/pkg --release",
-    "build:web": "wasm-pack build ../compiler/crates/wasm --target web --out-dir ../../../playground-wasm/pkg --release"
+    "build:web": "wasm-pack build ../compiler/crates/wasm --target web --out-dir ../../../playground-wasm/pkg-web --release",
+    "build:all": "bun run build && bun run build:web"
   },
   "license": "MIT"
 }

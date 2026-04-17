@@ -1,0 +1,176 @@
+/**
+ * Client-side Thai-aware tokenizer for live editing in the hero playground.
+ * Produces tokens the overlay <pre> can style with CSS variables — matching
+ * the Shiki palette used by the static code blocks elsewhere on the page.
+ *
+ * Kept intentionally small: mirrors the Rust lexer's keyword sets (see
+ * compiler/crates/lexer/src/token.rs) without pulling Shiki to the client.
+ */
+
+const KEYWORD_DECLARATION = new Set([
+  "ให้",
+  "คงที่",
+  "ฟังก์ชัน",
+  "โครงสร้าง",
+  "รายการ",
+  "แผนที่",
+]);
+
+const KEYWORD_CONTROL = new Set([
+  "ถ้า",
+  "ไม่ก็",
+  "ไม่งั้น",
+  "ตราบ",
+  "วน",
+  "แต่ละ",
+  "คืน",
+  "หยุด",
+  "ข้าม",
+  "เลือก",
+  "กรณี",
+  "เริ่มต้น",
+  "ลอง",
+  "จับ",
+  "สุดท้าย",
+  "โยน",
+]);
+
+const KEYWORD_OTHER = new Set([
+  "ใน",
+  "เป็น",
+  "จาก",
+  "รอ",
+  "ไม่พร้อม",
+  "นำเข้า",
+  "ส่งออก",
+]);
+
+const KEYWORD_LOGICAL = new Set(["และ", "หรือ", "ไม่"]);
+const BUILTIN = new Set(["พิมพ์"]);
+const TYPE_KEYWORDS = new Set([
+  "ตัวเลข",
+  "จำนวนเต็ม",
+  "ข้อความ",
+  "จริงเท็จ",
+  "อะไรก็ได้",
+  "ไม่คืน",
+]);
+const BOOLEAN_LITERALS = new Set(["จริง", "เท็จ"]);
+const NULL_LITERALS = new Set(["ว่าง"]);
+
+export type TokenKind =
+  | "keyword"
+  | "type"
+  | "literal"
+  | "builtin"
+  | "string"
+  | "number"
+  | "comment"
+  | "op"
+  | "text";
+
+export interface Token {
+  kind: TokenKind;
+  text: string;
+}
+
+const IDENT_RE = /^[\u0E00-\u0E7Fa-zA-Z_][\u0E00-\u0E7Fa-zA-Z0-9_]*/;
+const NUMBER_RE = /^[0-9]+(?:\.[0-9]+)?/;
+const OP_RE =
+  /^(?:==|!=|<=|>=|\+=|-=|\*=|\/=|%=|->|=>|&&|\|\||[=+\-*/%<>!(){}[\];:,.])/;
+const WHITESPACE_RE = /^\s+/;
+
+export function tokenize(source: string): Token[] {
+  const out: Token[] = [];
+  let i = 0;
+
+  while (i < source.length) {
+    const rest = source.slice(i);
+
+    const ws = WHITESPACE_RE.exec(rest);
+    if (ws) {
+      out.push({ kind: "text", text: ws[0] });
+      i += ws[0].length;
+      continue;
+    }
+
+    if (rest.startsWith("//")) {
+      const nl = rest.indexOf("\n");
+      const text = nl === -1 ? rest : rest.slice(0, nl);
+      out.push({ kind: "comment", text });
+      i += text.length;
+      continue;
+    }
+
+    if (rest.startsWith("/*")) {
+      const end = rest.indexOf("*/");
+      const text = end === -1 ? rest : rest.slice(0, end + 2);
+      out.push({ kind: "comment", text });
+      i += text.length;
+      continue;
+    }
+
+    if (rest.startsWith('"')) {
+      let j = 1;
+      while (j < rest.length && rest[j] !== '"') {
+        if (rest[j] === "\\") j += 2;
+        else j += 1;
+      }
+      const text = rest.slice(0, Math.min(j + 1, rest.length));
+      out.push({ kind: "string", text });
+      i += text.length;
+      continue;
+    }
+
+    const num = NUMBER_RE.exec(rest);
+    if (num) {
+      out.push({ kind: "number", text: num[0] });
+      i += num[0].length;
+      continue;
+    }
+
+    const id = IDENT_RE.exec(rest);
+    if (id) {
+      const text = id[0];
+      let kind: TokenKind = "text";
+      if (BUILTIN.has(text)) kind = "builtin";
+      else if (TYPE_KEYWORDS.has(text)) kind = "type";
+      else if (BOOLEAN_LITERALS.has(text) || NULL_LITERALS.has(text))
+        kind = "literal";
+      else if (
+        KEYWORD_DECLARATION.has(text) ||
+        KEYWORD_CONTROL.has(text) ||
+        KEYWORD_OTHER.has(text) ||
+        KEYWORD_LOGICAL.has(text)
+      )
+        kind = "keyword";
+      out.push({ kind, text });
+      i += text.length;
+      continue;
+    }
+
+    const op = OP_RE.exec(rest);
+    if (op) {
+      out.push({ kind: "op", text: op[0] });
+      i += op[0].length;
+      continue;
+    }
+
+    out.push({ kind: "text", text: rest[0] });
+    i += 1;
+  }
+
+  return out;
+}
+
+export const TOKEN_COLOR: Record<TokenKind, string> = {
+  keyword: "#c15833",
+  type: "#3f5a8a",
+  literal: "#8d6f2f",
+  builtin: "#c15833",
+  string: "#3c7a46",
+  number: "#8d6f2f",
+  comment: "#8f857e",
+  op: "#6a5f58",
+  text: "inherit",
+};

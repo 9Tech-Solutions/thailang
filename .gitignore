@@ -11,8 +11,9 @@ build/
 .pnpm-store/
 *.tsbuildinfo
 
-# wasm-pack outputs (regenerated via pnpm --filter playground-wasm build)
+# wasm-pack outputs (regenerated via bun run --filter playground-wasm build[:web])
 playground-wasm/pkg/
+playground-wasm/pkg-web/
 
 # Editor
 .vscode/
