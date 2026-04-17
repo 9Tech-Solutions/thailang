@@ -28,17 +28,13 @@ jobs:
         run: cargo test --workspace --all-features
 
   web:
-    name: Web (biome + turbo)
+    name: Web (biome + next build)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm exec biome ci .
-      - run: pnpm turbo run lint test build --continue
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bunx biome ci .
+      - run: bun run --filter web build

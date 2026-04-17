@@ -6,7 +6,6 @@
       "name": "thailang",
       "devDependencies": {
         "@biomejs/biome": "2.2.0",
-        "turbo": "2.3.0",
       },
     },
     "playground-wasm": {
@@ -245,20 +244,6 @@
     "tapable": ["tapable@2.3.2", "", {}, "sha512-1MOpMXuhGzGL5TTCZFItxCc0AARf1EZFQkGqMm7ERKj8+Hgr5oLvJOVFcC+lRmR8hCe2S3jC4T5D7Vg/d7/fhA=="],
 
     "tslib": ["tslib@2.8.1", "", {}, "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w=="],
-
-    "turbo": ["turbo@2.3.0", "", { "optionalDependencies": { "turbo-darwin-64": "2.3.0", "turbo-darwin-arm64": "2.3.0", "turbo-linux-64": "2.3.0", "turbo-linux-arm64": "2.3.0", "turbo-windows-64": "2.3.0", "turbo-windows-arm64": "2.3.0" }, "bin": { "turbo": "bin/turbo" } }, "sha512-/uOq5o2jwRPyaUDnwBpOR5k9mQq4c3wziBgWNWttiYQPmbhDtrKYPRBxTvA2WpgQwRIbt8UM612RMN8n/TvmHA=="],
-
-    "turbo-darwin-64": ["turbo-darwin-64@2.3.0", "", { "os": "darwin", "cpu": "x64" }, "sha512-pji+D49PhFItyQjf2QVoLZw2d3oRGo8gJgKyOiRzvip78Rzie74quA8XNwSg/DuzM7xx6gJ3p2/LylTTlgZXxQ=="],
-
-    "turbo-darwin-arm64": ["turbo-darwin-arm64@2.3.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-AJrGIL9BO41mwDF/IBHsNGwvtdyB911vp8f5mbNo1wG66gWTvOBg7WCtYQBvCo11XTenTfXPRSsAb7w3WAZb6w=="],
-
-    "turbo-linux-64": ["turbo-linux-64@2.3.0", "", { "os": "linux", "cpu": "x64" }, "sha512-jZqW6vc2sPJT3M/3ZmV1Cg4ecQVPqsbHncG/RnogHpBu783KCSXIndgxvUQNm9qfgBYbZDBnP1md63O4UTElhw=="],
-
-    "turbo-linux-arm64": ["turbo-linux-arm64@2.3.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-HUbDLJlvd/hxuyCNO0BmEWYQj0TugRMvSQeG8vHJH+Lq8qOgDAe7J0K73bFNbZejZQxW3C3XEiZFB3pnpO78+A=="],
-
-    "turbo-windows-64": ["turbo-windows-64@2.3.0", "", { "os": "win32", "cpu": "x64" }, "sha512-c5rxrGNTYDWX9QeMzWLFE9frOXnKjHGEvQMp1SfldDlbZYsloX9UKs31TzUThzfTgTiz8NYuShaXJ2UvTMnV/g=="],
-
-    "turbo-windows-arm64": ["turbo-windows-arm64@2.3.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-7qfUuYhfIVb1AZgs89DxhXK+zZez6O2ocmixEQ4hXZK7ytnBt5vaz2zGNJJKFNYIL5HX1C3tuHolnpNgDNCUIg=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
