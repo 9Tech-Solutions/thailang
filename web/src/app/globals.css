@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-thai: var(--font-plex-thai), var(--font-plex-sans), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-plex-thai), var(--font-plex-sans), Georgia, serif;
+
+  --color-bg: oklch(98% 0.01 60);
+  --color-bg-elevated: oklch(99% 0.005 60);
+  --color-surface: oklch(95% 0.015 55);
+  --color-fg: oklch(18% 0.02 30);
+  --color-fg-muted: oklch(45% 0.01 30);
+  --color-fg-subtle: oklch(62% 0.005 30);
+  --color-border: oklch(88% 0.01 40);
+  --color-accent: oklch(55% 0.17 35);         /* terracotta */
+  --color-accent-soft: oklch(92% 0.06 35);
+  --color-accent-deep: oklch(35% 0.14 30);
+  --color-gold: oklch(78% 0.12 85);
+
+  /* Syntax palette */
+  --color-type: oklch(42% 0.12 250);
+  --color-string: oklch(48% 0.13 145);
+  --color-number: oklch(50% 0.14 85);
+  --color-comment: oklch(60% 0.02 30);
+  --color-punct: oklch(45% 0.01 30);
+  --color-ident: oklch(25% 0.02 30);
+
+  --text-hero-th: clamp(4rem, 2rem + 11vw, 12rem);
+  --text-hero-en: clamp(2rem, 1rem + 5vw, 5rem);
+  --text-display: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+
+  --radius-card: 0.25rem;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  letter-spacing: -0.005em;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Subtle paper grain — applied via backdrop pattern below */
+.paper-grain {
+  background-image:
+    radial-gradient(oklch(0% 0 0 / 0.018) 1px, transparent 1px);
+  background-size: 3px 3px;
+  background-position: 0 0;
+}
+
+/* Thai display helpers */
+.thai-display {
+  font-family: var(--font-display);
+  font-feature-settings: "ss01";
+  letter-spacing: -0.02em;
+}
+
+/* Reveal animation for sections */
+@keyframes rise {
+  from { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.reveal {
+  animation: rise 0.9s var(--ease-out-quart) both;
+}
+.reveal-d1 { animation-delay: 0.15s; }
+.reveal-d2 { animation-delay: 0.3s; }
+.reveal-d3 { animation-delay: 0.45s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-d1, .reveal-d2, .reveal-d3 {
+    animation: none;
+  }
+}

@@ -1,6 +1,6 @@
 packages:
   - playground-wasm
+  - web
   # Future phases:
-  # - web         (Phase 5)
   # - vscode-ext  (Phase 4)
   # - tooling/*
