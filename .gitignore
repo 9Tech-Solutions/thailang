@@ -9,6 +9,7 @@ node_modules/
 dist/
 build/
 .pnpm-store/
+*.tsbuildinfo
 
 # wasm-pack outputs (regenerated via pnpm --filter playground-wasm build)
 playground-wasm/pkg/
