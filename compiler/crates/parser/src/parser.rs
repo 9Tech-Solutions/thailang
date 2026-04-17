@@ -21,7 +21,11 @@ struct Parser {
 
 impl Parser {
     fn new(tokens: Vec<Token>) -> Self {
-        Self { tokens, pos: 0, last_end: 0 }
+        Self {
+            tokens,
+            pos: 0,
+            last_end: 0,
+        }
     }
 
     // ── Top-level ──────────────────────────────────────────────────────
@@ -48,9 +52,15 @@ impl Parser {
     fn parse_item(&mut self) -> Result<Item, ParseError> {
         match self.peek().map(|t| &t.kind) {
             Some(TokenKind::Function) => self.parse_fn_item(),
-            Some(TokenKind::Let) | Some(TokenKind::Const) | Some(TokenKind::If)
-            | Some(TokenKind::While) | Some(TokenKind::For) | Some(TokenKind::ForEach)
-            | Some(TokenKind::Return) | Some(TokenKind::Break) | Some(TokenKind::Continue)
+            Some(TokenKind::Let)
+            | Some(TokenKind::Const)
+            | Some(TokenKind::If)
+            | Some(TokenKind::While)
+            | Some(TokenKind::For)
+            | Some(TokenKind::ForEach)
+            | Some(TokenKind::Return)
+            | Some(TokenKind::Break)
+            | Some(TokenKind::Continue)
             | Some(TokenKind::LBrace) => {
                 let stmt = self.parse_stmt()?;
                 Ok(stmt_into_item(stmt))
@@ -58,7 +68,10 @@ impl Parser {
             _ => {
                 let stmt = self.parse_expr_or_assign_stmt()?;
                 let span = stmt.span;
-                Ok(Item { kind: ItemKind::Stmt(stmt), span })
+                Ok(Item {
+                    kind: ItemKind::Stmt(stmt),
+                    span,
+                })
             }
         }
     }
@@ -79,7 +92,13 @@ impl Parser {
         let body = self.parse_block_stmts()?;
         let span = Span::new(start, self.last_end);
         Ok(Item {
-            kind: ItemKind::Fn(FnDecl { name, params, return_type, body, is_async: false }),
+            kind: ItemKind::Fn(FnDecl {
+                name,
+                params,
+                return_type,
+                body,
+                is_async: false,
+            }),
             span,
         })
     }
@@ -94,18 +113,24 @@ impl Parser {
             let start = tok.span.start;
             let name = match tok.kind {
                 TokenKind::Ident(n) => n,
-                other => return Err(ParseError::Expected {
-                    expected: "parameter name".to_string(),
-                    found: format!("{other:?}"),
-                    span: Span::new(start, tok.span.end),
-                }),
+                other => {
+                    return Err(ParseError::Expected {
+                        expected: "parameter name".to_string(),
+                        found: format!("{other:?}"),
+                        span: Span::new(start, tok.span.end),
+                    })
+                }
             };
             let type_ann = if self.eat(&TokenKind::Colon).is_some() {
                 Some(self.parse_type_ann()?)
             } else {
                 None
             };
-            params.push(Param { name, type_ann, span: Span::new(start, self.last_end) });
+            params.push(Param {
+                name,
+                type_ann,
+                span: Span::new(start, self.last_end),
+            });
             if self.eat(&TokenKind::Comma).is_none() {
                 break;
             }
@@ -117,8 +142,14 @@ impl Parser {
 
     fn parse_stmt(&mut self) -> Result<Stmt, ParseError> {
         match self.peek().map(|t| &t.kind) {
-            Some(TokenKind::Let) => { self.advance(); self.parse_let_stmt(true) }
-            Some(TokenKind::Const) => { self.advance(); self.parse_let_stmt(false) }
+            Some(TokenKind::Let) => {
+                self.advance();
+                self.parse_let_stmt(true)
+            }
+            Some(TokenKind::Const) => {
+                self.advance();
+                self.parse_let_stmt(false)
+            }
             Some(TokenKind::Return) => self.parse_return(),
             Some(TokenKind::If) => self.parse_if(),
             Some(TokenKind::While) => self.parse_while(),
@@ -136,11 +167,13 @@ impl Parser {
         let start = name_tok.span.start;
         let name = match name_tok.kind {
             TokenKind::Ident(n) => n,
-            other => return Err(ParseError::Expected {
-                expected: "identifier".to_string(),
-                found: format!("{other:?}"),
-                span: Span::new(start, name_tok.span.end),
-            }),
+            other => {
+                return Err(ParseError::Expected {
+                    expected: "identifier".to_string(),
+                    found: format!("{other:?}"),
+                    span: Span::new(start, name_tok.span.end),
+                })
+            }
         };
         let type_ann = if self.eat(&TokenKind::Colon).is_some() {
             Some(self.parse_type_ann()?)
@@ -151,7 +184,12 @@ impl Parser {
         let value = self.parse_expr()?;
         let end = self.expect(TokenKind::Semi)?.span.end;
         Ok(Stmt {
-            kind: StmtKind::Let { name, type_ann, value, mutable },
+            kind: StmtKind::Let {
+                name,
+                type_ann,
+                value,
+                mutable,
+            },
             span: Span::new(start, end),
         })
     }
@@ -187,7 +225,12 @@ impl Parser {
             else_branch = Some(self.parse_block_stmts()?);
         }
         Ok(Stmt {
-            kind: StmtKind::If { cond, then_branch, else_ifs, else_branch },
+            kind: StmtKind::If {
+                cond,
+                then_branch,
+                else_ifs,
+                else_branch,
+            },
             span: Span::new(start, self.last_end),
         })
     }
@@ -211,7 +254,11 @@ impl Parser {
         self.expect(TokenKind::RParen)?;
         let body = self.parse_block_stmts()?;
         Ok(Stmt {
-            kind: StmtKind::ForEach { var, iterable, body },
+            kind: StmtKind::ForEach {
+                var,
+                iterable,
+                body,
+            },
             span: Span::new(start, self.last_end),
         })
     }
@@ -239,8 +286,15 @@ impl Parser {
     fn parse_break_or_continue(&mut self, is_break: bool) -> Result<Stmt, ParseError> {
         let start = self.advance().unwrap().span.start;
         let end = self.expect(TokenKind::Semi)?.span.end;
-        let kind = if is_break { StmtKind::Break } else { StmtKind::Continue };
-        Ok(Stmt { kind, span: Span::new(start, end) })
+        let kind = if is_break {
+            StmtKind::Break
+        } else {
+            StmtKind::Continue
+        };
+        Ok(Stmt {
+            kind,
+            span: Span::new(start, end),
+        })
     }
 
     fn parse_block_as_stmt(&mut self) -> Result<Stmt, ParseError> {
@@ -270,7 +324,11 @@ impl Parser {
             let rhs = self.parse_expr()?;
             let end = self.expect(TokenKind::Semi)?.span.end;
             return Ok(Stmt {
-                kind: StmtKind::Assign { target: lhs, op, value: rhs },
+                kind: StmtKind::Assign {
+                    target: lhs,
+                    op,
+                    value: rhs,
+                },
                 span: Span::new(span_start, end),
             });
         }
@@ -289,12 +347,19 @@ impl Parser {
             let rhs = self.parse_expr()?;
             let end = rhs.span.end;
             return Ok(Stmt {
-                kind: StmtKind::Assign { target: lhs, op, value: rhs },
+                kind: StmtKind::Assign {
+                    target: lhs,
+                    op,
+                    value: rhs,
+                },
                 span: Span::new(span_start, end),
             });
         }
         let span = Span::new(span_start, lhs.span.end);
-        Ok(Stmt { kind: StmtKind::Expr(lhs), span })
+        Ok(Stmt {
+            kind: StmtKind::Expr(lhs),
+            span,
+        })
     }
 
     // ── Type annotations ───────────────────────────────────────────────
@@ -323,7 +388,10 @@ impl Parser {
             TokenKind::BoolType => Ok(TypeAnn::Bool),
             TokenKind::AnyType => Ok(TypeAnn::Any),
             TokenKind::VoidType => Ok(TypeAnn::Void),
-            TokenKind::Ident(name) => Ok(TypeAnn::Named { name, generics: vec![] }),
+            TokenKind::Ident(name) => Ok(TypeAnn::Named {
+                name,
+                generics: vec![],
+            }),
             other => Err(ParseError::Expected {
                 expected: "type annotation".to_string(),
                 found: format!("{other:?}"),
@@ -347,11 +415,7 @@ impl Parser {
 
     fn parse_expr_bp(&mut self, min_bp: u8) -> Result<Expr, ParseError> {
         let mut lhs = self.parse_unary()?;
-        loop {
-            let op = match self.peek().and_then(|t| token_to_binary_op(&t.kind)) {
-                Some(op) => op,
-                None => break,
-            };
+        while let Some(op) = self.peek().and_then(|t| token_to_binary_op(&t.kind)) {
             let (l_bp, r_bp) = infix_binding_power(op);
             if l_bp < min_bp {
                 break;
@@ -360,7 +424,11 @@ impl Parser {
             let rhs = self.parse_expr_bp(r_bp)?;
             let span = Span::new(lhs.span.start, rhs.span.end);
             lhs = Expr {
-                kind: ExprKind::Binary { op, left: Box::new(lhs), right: Box::new(rhs) },
+                kind: ExprKind::Binary {
+                    op,
+                    left: Box::new(lhs),
+                    right: Box::new(rhs),
+                },
                 span,
             };
         }
@@ -380,7 +448,10 @@ impl Parser {
         let operand = self.parse_unary()?;
         let span = Span::new(start, operand.span.end);
         Ok(Expr {
-            kind: ExprKind::Unary { op, operand: Box::new(operand) },
+            kind: ExprKind::Unary {
+                op,
+                operand: Box::new(operand),
+            },
             span,
         })
     }
@@ -395,7 +466,10 @@ impl Parser {
                     let end = self.expect(TokenKind::RParen)?.span.end;
                     let span = Span::new(e.span.start, end);
                     e = Expr {
-                        kind: ExprKind::Call { callee: Box::new(e), args },
+                        kind: ExprKind::Call {
+                            callee: Box::new(e),
+                            args,
+                        },
                         span,
                     };
                 }
@@ -405,15 +479,20 @@ impl Parser {
                     let end = member_tok.span.end;
                     let member = match member_tok.kind {
                         TokenKind::Ident(n) => n,
-                        other => return Err(ParseError::Expected {
-                            expected: "member name".to_string(),
-                            found: format!("{other:?}"),
-                            span: Span::new(member_tok.span.start, end),
-                        }),
+                        other => {
+                            return Err(ParseError::Expected {
+                                expected: "member name".to_string(),
+                                found: format!("{other:?}"),
+                                span: Span::new(member_tok.span.start, end),
+                            })
+                        }
                     };
                     let span = Span::new(e.span.start, end);
                     e = Expr {
-                        kind: ExprKind::Member { object: Box::new(e), member },
+                        kind: ExprKind::Member {
+                            object: Box::new(e),
+                            member,
+                        },
                         span,
                     };
                 }
@@ -475,10 +554,12 @@ impl Parser {
                     span: Span::new(span.start, end),
                 });
             }
-            other => return Err(ParseError::UnexpectedToken {
-                found: format!("{other:?}"),
-                span,
-            }),
+            other => {
+                return Err(ParseError::UnexpectedToken {
+                    found: format!("{other:?}"),
+                    span,
+                })
+            }
         };
         Ok(Expr { kind, span })
     }
@@ -567,9 +648,17 @@ impl Parser {
 fn stmt_into_item(stmt: Stmt) -> Item {
     let span = stmt.span;
     let kind = match stmt.kind {
-        StmtKind::Let { name, type_ann, value, mutable } => {
-            ItemKind::Let { name, type_ann, value, mutable }
-        }
+        StmtKind::Let {
+            name,
+            type_ann,
+            value,
+            mutable,
+        } => ItemKind::Let {
+            name,
+            type_ann,
+            value,
+            mutable,
+        },
         other => ItemKind::Stmt(Stmt { kind: other, span }),
     };
     Item { kind, span }

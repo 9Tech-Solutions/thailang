@@ -12,7 +12,11 @@ pub fn check(program: &Program) -> Vec<TypeError> {
 
 fn check_item(item: &Item, errors: &mut Vec<TypeError>) {
     match &item.kind {
-        ItemKind::Let { type_ann: Some(declared), value, .. } => {
+        ItemKind::Let {
+            type_ann: Some(declared),
+            value,
+            ..
+        } => {
             check_assignment(declared, value, errors);
         }
         ItemKind::Fn(f) => check_fn(f, errors),
@@ -30,16 +34,24 @@ fn check_fn(f: &FnDecl, errors: &mut Vec<TypeError>) {
 
 fn check_stmt(stmt: &Stmt, errors: &mut Vec<TypeError>) {
     match &stmt.kind {
-        StmtKind::Let { type_ann: Some(declared), value, .. } => {
+        StmtKind::Let {
+            type_ann: Some(declared),
+            value,
+            ..
+        } => {
             check_assignment(declared, value, errors);
         }
-        StmtKind::Block(stmts)
-        | StmtKind::While { body: stmts, .. } => {
+        StmtKind::Block(stmts) | StmtKind::While { body: stmts, .. } => {
             for s in stmts {
                 check_stmt(s, errors);
             }
         }
-        StmtKind::If { then_branch, else_ifs, else_branch, .. } => {
+        StmtKind::If {
+            then_branch,
+            else_ifs,
+            else_branch,
+            ..
+        } => {
             for s in then_branch {
                 check_stmt(s, errors);
             }

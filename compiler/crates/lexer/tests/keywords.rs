@@ -1,7 +1,11 @@
 use thailang_lexer::{tokenize, TokenKind};
 
 fn first_kind(source: &str) -> TokenKind {
-    tokenize(source).into_iter().next().expect("at least one token").kind
+    tokenize(source)
+        .into_iter()
+        .next()
+        .expect("at least one token")
+        .kind
 }
 
 #[test]
@@ -154,5 +158,8 @@ fn lexes_sequence_of_keywords() {
         .into_iter()
         .map(|t| t.kind)
         .collect();
-    assert_eq!(kinds, vec![TokenKind::Let, TokenKind::Const, TokenKind::Function]);
+    assert_eq!(
+        kinds,
+        vec![TokenKind::Let, TokenKind::Const, TokenKind::Function]
+    );
 }

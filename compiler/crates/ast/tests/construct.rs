@@ -20,8 +20,14 @@ fn int_literal_expr_is_constructible() {
 
 #[test]
 fn binary_addition_expression() {
-    let left = Expr { kind: ExprKind::Int(1), span: Span::new(0, 1) };
-    let right = Expr { kind: ExprKind::Int(2), span: Span::new(2, 3) };
+    let left = Expr {
+        kind: ExprKind::Int(1),
+        span: Span::new(0, 1),
+    };
+    let right = Expr {
+        kind: ExprKind::Int(2),
+        span: Span::new(2, 3),
+    };
     let e = Expr {
         kind: ExprKind::Binary {
             op: BinaryOp::Add,
@@ -41,8 +47,16 @@ fn fn_decl_with_thai_param_names() {
     let fn_decl = FnDecl {
         name: "บวก".to_string(),
         params: vec![
-            Param { name: "ก".to_string(), type_ann: Some(TypeAnn::Number), span: Span::new(0, 1) },
-            Param { name: "ข".to_string(), type_ann: Some(TypeAnn::Number), span: Span::new(2, 3) },
+            Param {
+                name: "ก".to_string(),
+                type_ann: Some(TypeAnn::Number),
+                span: Span::new(0, 1),
+            },
+            Param {
+                name: "ข".to_string(),
+                type_ann: Some(TypeAnn::Number),
+                span: Span::new(2, 3),
+            },
         ],
         return_type: Some(TypeAnn::Number),
         body: vec![],
@@ -79,13 +93,19 @@ fn empty_program_has_no_items() {
 
 #[test]
 fn if_stmt_with_else_if_chain() {
-    let cond = Expr { kind: ExprKind::Bool(true), span: Span::new(0, 4) };
+    let cond = Expr {
+        kind: ExprKind::Bool(true),
+        span: Span::new(0, 4),
+    };
     let stmt = Stmt {
         kind: StmtKind::If {
             cond,
             then_branch: vec![],
             else_ifs: vec![(
-                Expr { kind: ExprKind::Bool(false), span: Span::new(0, 5) },
+                Expr {
+                    kind: ExprKind::Bool(false),
+                    span: Span::new(0, 5),
+                },
                 vec![],
             )],
             else_branch: Some(vec![]),
@@ -93,7 +113,11 @@ fn if_stmt_with_else_if_chain() {
         span: Span::new(0, 20),
     };
     match stmt.kind {
-        StmtKind::If { else_ifs, else_branch, .. } => {
+        StmtKind::If {
+            else_ifs,
+            else_branch,
+            ..
+        } => {
             assert_eq!(else_ifs.len(), 1);
             assert!(else_branch.is_some());
         }

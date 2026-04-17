@@ -53,8 +53,5 @@ fn unary_negation() {
 
 #[test]
 fn string_with_escapes() {
-    assert_eq!(
-        compile(r#"ให้ x = "a\nb";"#),
-        "let x = \"a\\nb\";"
-    );
+    assert_eq!(compile(r#"ให้ x = "a\nb";"#), "let x = \"a\\nb\";");
 }

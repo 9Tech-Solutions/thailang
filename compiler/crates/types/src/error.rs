@@ -8,6 +8,9 @@ pub struct TypeError {
 
 impl TypeError {
     pub fn new(message: impl Into<String>, span: Span) -> Self {
-        Self { message: message.into(), span }
+        Self {
+            message: message.into(),
+            span,
+        }
     }
 }

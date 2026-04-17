@@ -27,7 +27,9 @@ impl ParseError {
     pub fn message(&self) -> String {
         match self {
             ParseError::Eof => "unexpected end of input".to_string(),
-            ParseError::Expected { expected, found, .. } => {
+            ParseError::Expected {
+                expected, found, ..
+            } => {
                 format!("expected {expected}, found {found}")
             }
             ParseError::UnexpectedToken { found, .. } => {

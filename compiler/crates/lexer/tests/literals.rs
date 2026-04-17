@@ -8,8 +8,8 @@ fn integer_literal() {
 
 #[test]
 fn float_literal() {
-    let tokens = tokenize("3.14");
-    assert_eq!(tokens[0].kind, TokenKind::Float(3.14));
+    let tokens = tokenize("4.25");
+    assert_eq!(tokens[0].kind, TokenKind::Float(4.25));
 }
 
 #[test]

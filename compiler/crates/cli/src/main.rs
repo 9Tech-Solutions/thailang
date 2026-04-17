@@ -3,6 +3,10 @@ use std::fs;
 use std::process::{Command, ExitCode};
 use thailang_ast::Span;
 
+const RED: &str = "\x1b[31;1m";
+const DIM: &str = "\x1b[2m";
+const RESET: &str = "\x1b[0m";
+
 #[derive(Parser)]
 #[command(name = "thai", version, about = "Thailang compiler — ภาษาโปรแกรมมิงไทย")]
 struct Cli {
@@ -157,38 +161,18 @@ fn report_parse_errors(
 
 fn emit_diagnostic(path: &str, source: &str, span: Span, message: &str, kind: DiagKind) {
     let location = locate(source, span);
-    eprintln!(
-        "{red}error[{kind}]{reset}: {message}",
-        red = "\x1b[31;1m",
-        reset = "\x1b[0m",
-        kind = kind.label(),
-    );
-    eprintln!(
-        "  {dim}-->{reset} {path}:{line}:{col}",
-        dim = "\x1b[2m",
-        reset = "\x1b[0m",
-        line = location.line_number,
-        col = location.column,
-    );
-    eprintln!("   {dim}|{reset}", dim = "\x1b[2m", reset = "\x1b[0m");
-    eprintln!(
-        " {line:>2} {dim}|{reset} {content}",
-        line = location.line_number,
-        dim = "\x1b[2m",
-        reset = "\x1b[0m",
-        content = location.line_content,
-    );
-    let caret_pad = " ".repeat(location.column.saturating_sub(1));
+    let kind_label = kind.label();
+    let line_number = location.line_number;
+    let column = location.column;
+    let line_content = location.line_content;
+    eprintln!("{RED}error[{kind_label}]{RESET}: {message}");
+    eprintln!("  {DIM}-->{RESET} {path}:{line_number}:{column}");
+    eprintln!("   {DIM}|{RESET}");
+    eprintln!(" {line_number:>2} {DIM}|{RESET} {line_content}");
+    let caret_pad = " ".repeat(column.saturating_sub(1));
     let caret_len = location.caret_width.max(1);
     let carets = "^".repeat(caret_len);
-    eprintln!(
-        "   {dim}|{reset} {pad}{red}{carets}{reset}",
-        dim = "\x1b[2m",
-        red = "\x1b[31;1m",
-        reset = "\x1b[0m",
-        pad = caret_pad,
-        carets = carets,
-    );
+    eprintln!("   {DIM}|{RESET} {caret_pad}{RED}{carets}{RESET}");
 }
 
 struct Location<'a> {
@@ -215,7 +199,9 @@ fn locate<'a>(source: &'a str, span: Span) -> Location<'a> {
     let line_content = &source[line_start..line_end];
     let line_number = source[..line_start].bytes().filter(|b| *b == b'\n').count() + 1;
     let column = source[line_start..clamped_start].chars().count() + 1;
-    let caret_width = source[clamped_start..clamped_end.min(line_end)].chars().count();
+    let caret_width = source[clamped_start..clamped_end.min(line_end)]
+        .chars()
+        .count();
     Location {
         line_number,
         column,

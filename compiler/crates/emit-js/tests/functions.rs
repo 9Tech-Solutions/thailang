@@ -14,9 +14,7 @@ fn empty_function() {
 
 #[test]
 fn function_preserves_thai_name_and_params() {
-    let js = compile(
-        "ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }",
-    );
+    let js = compile("ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }");
     assert!(js.starts_with("function บวก(ก, ข) {"));
     assert!(js.contains("return (ก + ข);"));
 }

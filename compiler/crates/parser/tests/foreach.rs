@@ -3,10 +3,7 @@ use thailang_parser::parse;
 
 #[test]
 fn foreach_over_array_literal() {
-    let p = parse(
-        "แต่ละ (ผล ใน [\"มะม่วง\", \"ทุเรียน\"]) { พิมพ์(ผล); }",
-    )
-    .unwrap();
+    let p = parse("แต่ละ (ผล ใน [\"มะม่วง\", \"ทุเรียน\"]) { พิมพ์(ผล); }").unwrap();
     match &p.items[0].kind {
         ItemKind::Stmt(s) => match &s.kind {
             StmtKind::ForEach { var, body, .. } => {

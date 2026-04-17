@@ -15,9 +15,7 @@ fn if_only() {
 
 #[test]
 fn if_elseif_else_chain() {
-    let js = compile(
-        "ถ้า (x == 1) { พิมพ์(1); } ไม่ก็ (x == 2) { พิมพ์(2); } ไม่งั้น { พิมพ์(0); }",
-    );
+    let js = compile("ถ้า (x == 1) { พิมพ์(1); } ไม่ก็ (x == 2) { พิมพ์(2); } ไม่งั้น { พิมพ์(0); }");
     assert!(js.contains("if ((x === 1))"));
     assert!(js.contains("else if ((x === 2))"));
     assert!(js.contains("else {"));

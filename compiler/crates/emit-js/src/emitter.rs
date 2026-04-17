@@ -13,7 +13,10 @@ struct Emitter {
 
 impl Emitter {
     fn new() -> Self {
-        Self { out: String::new(), indent: 0 }
+        Self {
+            out: String::new(),
+            indent: 0,
+        }
     }
 
     fn into_string(self) -> String {
@@ -56,7 +59,12 @@ impl Emitter {
     fn emit_item(&mut self, item: &Item) {
         match &item.kind {
             ItemKind::Fn(f) => self.emit_fn(f),
-            ItemKind::Let { name, value, mutable, .. } => {
+            ItemKind::Let {
+                name,
+                value,
+                mutable,
+                ..
+            } => {
                 self.write(if *mutable { "let " } else { "const " });
                 self.write(name);
                 self.write(" = ");
@@ -89,7 +97,12 @@ impl Emitter {
                 self.emit_expr(e);
                 self.write(";");
             }
-            StmtKind::Let { name, value, mutable, .. } => {
+            StmtKind::Let {
+                name,
+                value,
+                mutable,
+                ..
+            } => {
                 self.write(if *mutable { "let " } else { "const " });
                 self.write(name);
                 self.write(" = ");
@@ -104,7 +117,12 @@ impl Emitter {
                 }
                 self.write(";");
             }
-            StmtKind::If { cond, then_branch, else_ifs, else_branch } => {
+            StmtKind::If {
+                cond,
+                then_branch,
+                else_ifs,
+                else_branch,
+            } => {
                 self.write("if (");
                 self.emit_expr(cond);
                 self.write(") ");
@@ -126,7 +144,12 @@ impl Emitter {
                 self.write(") ");
                 self.emit_block(body);
             }
-            StmtKind::For { init, cond, update, body } => {
+            StmtKind::For {
+                init,
+                cond,
+                update,
+                body,
+            } => {
                 self.write("for (");
                 self.emit_stmt(init);
                 self.write(" ");
@@ -136,7 +159,11 @@ impl Emitter {
                 self.write(") ");
                 self.emit_block(body);
             }
-            StmtKind::ForEach { var, iterable, body } => {
+            StmtKind::ForEach {
+                var,
+                iterable,
+                body,
+            } => {
                 self.write("for (const ");
                 self.write(var);
                 self.write(" of ");

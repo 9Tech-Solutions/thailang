@@ -13,7 +13,12 @@ fn first_stmt_kind(src: &str) -> StmtKind {
 fn simple_if_with_then_only() {
     let kind = first_stmt_kind("ถ้า (จริง) { พิมพ์(1); }");
     match kind {
-        StmtKind::If { then_branch, else_ifs, else_branch, .. } => {
+        StmtKind::If {
+            then_branch,
+            else_ifs,
+            else_branch,
+            ..
+        } => {
             assert_eq!(then_branch.len(), 1);
             assert!(else_ifs.is_empty());
             assert!(else_branch.is_none());
@@ -24,11 +29,13 @@ fn simple_if_with_then_only() {
 
 #[test]
 fn if_with_else_if_chain_and_else() {
-    let kind = first_stmt_kind(
-        "ถ้า (x == 1) { พิมพ์(1); } ไม่ก็ (x == 2) { พิมพ์(2); } ไม่งั้น { พิมพ์(0); }",
-    );
+    let kind = first_stmt_kind("ถ้า (x == 1) { พิมพ์(1); } ไม่ก็ (x == 2) { พิมพ์(2); } ไม่งั้น { พิมพ์(0); }");
     match kind {
-        StmtKind::If { else_ifs, else_branch, .. } => {
+        StmtKind::If {
+            else_ifs,
+            else_branch,
+            ..
+        } => {
             assert_eq!(else_ifs.len(), 1);
             assert!(else_branch.is_some());
         }

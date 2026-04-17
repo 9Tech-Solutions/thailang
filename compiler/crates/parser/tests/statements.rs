@@ -6,7 +6,12 @@ fn let_decl_with_int() {
     let p = parse("ให้ x = 42;").unwrap();
     assert_eq!(p.items.len(), 1);
     match &p.items[0].kind {
-        ItemKind::Let { name, value, mutable, .. } => {
+        ItemKind::Let {
+            name,
+            value,
+            mutable,
+            ..
+        } => {
             assert_eq!(name, "x");
             assert!(*mutable);
             assert_eq!(value.kind, ExprKind::Int(42));

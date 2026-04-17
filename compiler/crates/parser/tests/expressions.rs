@@ -12,7 +12,7 @@ fn integer_literal() {
 
 #[test]
 fn float_literal() {
-    assert_eq!(parse_expr("3.14").kind, ExprKind::Float(3.14));
+    assert_eq!(parse_expr("4.25").kind, ExprKind::Float(4.25));
 }
 
 #[test]
@@ -22,7 +22,10 @@ fn ascii_string_literal() {
 
 #[test]
 fn thai_string_literal() {
-    assert_eq!(parse_expr(r#""สวัสดี""#).kind, ExprKind::Str("สวัสดี".to_string()));
+    assert_eq!(
+        parse_expr(r#""สวัสดี""#).kind,
+        ExprKind::Str("สวัสดี".to_string())
+    );
 }
 
 #[test]
@@ -62,8 +65,14 @@ fn binary_addition() {
 fn multiplication_higher_precedence_than_addition() {
     let e = parse_expr("1 + 2 * 3");
     match e.kind {
-        ExprKind::Binary { op: BinaryOp::Add, right, .. } => match right.kind {
-            ExprKind::Binary { op: BinaryOp::Mul, .. } => (),
+        ExprKind::Binary {
+            op: BinaryOp::Add,
+            right,
+            ..
+        } => match right.kind {
+            ExprKind::Binary {
+                op: BinaryOp::Mul, ..
+            } => (),
             _ => panic!("expected mul on right"),
         },
         _ => panic!("expected add at top"),
@@ -74,11 +83,18 @@ fn multiplication_higher_precedence_than_addition() {
 fn left_associative_subtraction() {
     let e = parse_expr("10 - 3 - 2");
     match e.kind {
-        ExprKind::Binary { op: BinaryOp::Sub, left, right } => {
+        ExprKind::Binary {
+            op: BinaryOp::Sub,
+            left,
+            right,
+        } => {
             assert_eq!(right.kind, ExprKind::Int(2));
             assert!(matches!(
                 left.kind,
-                ExprKind::Binary { op: BinaryOp::Sub, .. }
+                ExprKind::Binary {
+                    op: BinaryOp::Sub,
+                    ..
+                }
             ));
         }
         _ => panic!("expected subtraction"),
@@ -89,9 +105,16 @@ fn left_associative_subtraction() {
 fn parenthesized_expression_overrides_precedence() {
     let e = parse_expr("(1 + 2) * 3");
     match e.kind {
-        ExprKind::Binary { op: BinaryOp::Mul, left, .. } => assert!(matches!(
+        ExprKind::Binary {
+            op: BinaryOp::Mul,
+            left,
+            ..
+        } => assert!(matches!(
             left.kind,
-            ExprKind::Binary { op: BinaryOp::Add, .. }
+            ExprKind::Binary {
+                op: BinaryOp::Add,
+                ..
+            }
         )),
         _ => panic!("expected multiplication"),
     }
@@ -101,7 +124,10 @@ fn parenthesized_expression_overrides_precedence() {
 fn unary_negation() {
     let e = parse_expr("-5");
     match e.kind {
-        ExprKind::Unary { op: UnaryOp::Neg, operand } => {
+        ExprKind::Unary {
+            op: UnaryOp::Neg,
+            operand,
+        } => {
             assert_eq!(operand.kind, ExprKind::Int(5));
         }
         _ => panic!("expected unary neg"),
@@ -112,7 +138,10 @@ fn unary_negation() {
 fn unary_not_with_thai_keyword() {
     let e = parse_expr("ไม่ จริง");
     match e.kind {
-        ExprKind::Unary { op: UnaryOp::Not, operand } => {
+        ExprKind::Unary {
+            op: UnaryOp::Not,
+            operand,
+        } => {
             assert_eq!(operand.kind, ExprKind::Bool(true));
         }
         _ => panic!("expected unary not"),
@@ -158,17 +187,35 @@ fn print_keyword_lexes_as_callable_identifier() {
 #[test]
 fn comparison_eq() {
     let e = parse_expr("a == b");
-    assert!(matches!(e.kind, ExprKind::Binary { op: BinaryOp::Eq, .. }));
+    assert!(matches!(
+        e.kind,
+        ExprKind::Binary {
+            op: BinaryOp::Eq,
+            ..
+        }
+    ));
 }
 
 #[test]
 fn modulo_operator() {
     let e = parse_expr("i % 3");
-    assert!(matches!(e.kind, ExprKind::Binary { op: BinaryOp::Mod, .. }));
+    assert!(matches!(
+        e.kind,
+        ExprKind::Binary {
+            op: BinaryOp::Mod,
+            ..
+        }
+    ));
 }
 
 #[test]
 fn logical_and_thai_keyword() {
     let e = parse_expr("จริง และ เท็จ");
-    assert!(matches!(e.kind, ExprKind::Binary { op: BinaryOp::And, .. }));
+    assert!(matches!(
+        e.kind,
+        ExprKind::Binary {
+            op: BinaryOp::And,
+            ..
+        }
+    ));
 }

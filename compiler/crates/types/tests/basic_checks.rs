@@ -53,9 +53,7 @@ fn any_annotation_accepts_everything() {
 
 #[test]
 fn nested_let_in_function_body_is_checked() {
-    let errors = errors_for(
-        "ฟังก์ชัน f() { ให้ x: จำนวนเต็ม = \"oops\"; }",
-    );
+    let errors = errors_for("ฟังก์ชัน f() { ให้ x: จำนวนเต็ม = \"oops\"; }");
     assert_eq!(errors.len(), 1);
 }
 

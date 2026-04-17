@@ -10,5 +10,8 @@ pub enum TypeAnn {
     Array(Box<TypeAnn>),
     Map,
     Union(Vec<TypeAnn>),
-    Named { name: String, generics: Vec<TypeAnn> },
+    Named {
+        name: String,
+        generics: Vec<TypeAnn>,
+    },
 }

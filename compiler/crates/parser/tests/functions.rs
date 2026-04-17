@@ -17,10 +17,7 @@ fn function_with_no_params_and_no_return_type() {
 
 #[test]
 fn function_with_typed_params_and_return_type() {
-    let p = parse(
-        "ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }",
-    )
-    .unwrap();
+    let p = parse("ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }").unwrap();
     match &p.items[0].kind {
         ItemKind::Fn(f) => {
             assert_eq!(f.name, "บวก");
