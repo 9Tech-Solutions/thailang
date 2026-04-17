@@ -1,0 +1,107 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "thailang",
+  "scopeName": "source.thailang",
+  "displayName": "Thailang",
+  "fileTypes": ["th"],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#number" },
+    { "include": "#type" },
+    { "include": "#constant" },
+    { "include": "#keyword-declaration" },
+    { "include": "#keyword-control" },
+    { "include": "#keyword-other" },
+    { "include": "#keyword-logical" },
+    { "include": "#builtin-function" },
+    { "include": "#operator" },
+    { "include": "#function-call" }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.thailang",
+          "match": "//[^\\n]*"
+        },
+        {
+          "name": "comment.block.thailang",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.double.thailang",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.thailang",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float.thailang",
+          "match": "\\b[0-9]+\\.[0-9]+\\b"
+        },
+        {
+          "name": "constant.numeric.integer.thailang",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "type": {
+      "name": "storage.type.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ตัวเลข|จำนวนเต็ม|ข้อความ|จริงเท็จ|อะไรก็ได้|ไม่คืน)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "constant": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.thailang",
+          "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(จริง|เท็จ)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+        },
+        {
+          "name": "constant.language.null.thailang",
+          "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])ว่าง(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+        }
+      ]
+    },
+    "keyword-declaration": {
+      "name": "keyword.declaration.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ให้|คงที่|ฟังก์ชัน|โครงสร้าง|รายการ|แผนที่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "keyword-control": {
+      "name": "keyword.control.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ถ้า|ไม่ก็|ไม่งั้น|ตราบ|วน|แต่ละ|คืน|หยุด|ข้าม|เลือก|กรณี|เริ่มต้น|ลอง|จับ|สุดท้าย|โยน)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "keyword-other": {
+      "name": "keyword.other.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ใน|เป็น|จาก|รอ|ไม่พร้อม|นำเข้า|ส่งออก)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "keyword-logical": {
+      "name": "keyword.operator.logical.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(และ|หรือ|ไม่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "builtin-function": {
+      "name": "support.function.builtin.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])พิมพ์(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    },
+    "operator": {
+      "name": "keyword.operator.thailang",
+      "match": "==|!=|<=|>=|\\+=|-=|\\*=|/=|%=|->|=>|&&|\\|\\||[=+\\-*/%<>!]"
+    },
+    "function-call": {
+      "match": "([\\u0E00-\\u0E7Fa-zA-Z_][\\u0E00-\\u0E7Fa-zA-Z0-9_]*)(?=\\s*\\()",
+      "captures": {
+        "1": {
+          "name": "entity.name.function.thailang"
+        }
+      }
+    }
+  }
+}

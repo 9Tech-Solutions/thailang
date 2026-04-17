@@ -1,10 +1,8 @@
-import { CodeBlock } from '@/shared/ui/CodeBlock';
+import { CodeBlock } from "@/shared/ui/CodeBlock";
 
 const samples = [
   {
-    title: 'FizzBuzz',
-    titleTh: 'ฟิซบัซ',
-    filename: 'fizzbuzz.th',
+    filename: "fizzbuzz.th",
     source: `วน (ให้ i = 1; i <= 15; i += 1) {
     ถ้า (i % 15 == 0) {
         พิมพ์("FizzBuzz");
@@ -18,9 +16,7 @@ const samples = [
 }`,
   },
   {
-    title: 'Typed function',
-    titleTh: 'ฟังก์ชันแบบระบุชนิด',
-    filename: 'บวก.th',
+    filename: "บวก.th",
     source: `ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
     คืน ก + ข;
 }
@@ -28,9 +24,7 @@ const samples = [
 พิมพ์(บวก(10, 20));   // → 30`,
   },
   {
-    title: 'For-each over array',
-    titleTh: 'วนผ่านลิสต์',
-    filename: 'ผลไม้.th',
+    filename: "ผลไม้.th",
     source: `ให้ ผลไม้ = ["มะม่วง", "ทุเรียน", "มังคุด"];
 
 แต่ละ (ผล ใน ผลไม้) {
@@ -41,22 +35,24 @@ const samples = [
 
 export function CodeShowcase() {
   return (
-    <section className="border-b border-[var(--color-border)] py-24 lg:py-32">
+    <section className="border-b border-[var(--color-border)] py-14 lg:py-20">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
-        <header className="mb-16 grid grid-cols-12 gap-6">
+        <header className="mb-10 grid grid-cols-12 gap-6">
           <div className="col-span-12 lg:col-span-4">
             <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
               ตัวอย่าง · samples
             </p>
-            <h2 className="mt-2 text-[length:var(--text-display)] thai-display font-semibold leading-[0.95]">
-              โค้ดที่อ่าน<br />
+            <h2 className="mt-5 text-[length:var(--text-display)] thai-display font-semibold leading-[1.02]">
+              โค้ดที่อ่าน
+              <br />
               <span className="text-[var(--color-accent)]">ออกได้ทันที</span>
             </h2>
           </div>
           <p className="col-span-12 max-w-xl text-lg text-[var(--color-fg-muted)] lg:col-span-6 lg:col-start-7 lg:self-end">
-            Every keyword is Thai; every bit of syntax is recognizable. Paste the source into the
-            Thailang compiler and it emits clean, readable JavaScript you can run anywhere Node
-            runs — or compile to WebAssembly for the browser.
+            Every keyword is Thai; every bit of syntax is recognizable. Paste
+            the source into the Thailang compiler and it emits clean, readable
+            JavaScript you can run anywhere Node runs — or compile to
+            WebAssembly for the browser.
           </p>
         </header>
 
@@ -65,22 +61,25 @@ export function CodeShowcase() {
             <article
               key={sample.filename}
               className={`col-span-12 ${
-                i === 0 ? 'lg:col-span-7' : i === 1 ? 'lg:col-span-5' : 'lg:col-span-12'
+                i === 0
+                  ? "lg:col-span-7"
+                  : i === 1
+                    ? "lg:col-span-5"
+                    : "lg:col-span-12"
               }`}
             >
               <div className="flex items-baseline justify-between border-b border-[var(--color-border)] pb-3 mb-3">
-                <h3 className="thai-display text-xl font-medium">
-                  <span className="text-[var(--color-fg-subtle)] tabular-nums mr-3">
-                    {String(i + 1).padStart(2, '0')}
+                <h3 className="flex items-baseline gap-3 font-mono text-sm tracking-wide text-[var(--color-fg-muted)]">
+                  <span className="tabular-nums text-[var(--color-fg-subtle)]">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  {sample.titleTh}
-                  <span className="ml-3 text-sm font-normal text-[var(--color-fg-muted)]">
-                    {sample.title}
+                  <span className="text-[var(--color-fg)]">
+                    {sample.filename}
                   </span>
                 </h3>
               </div>
               <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)]">
-                <CodeBlock source={sample.source} filename={sample.filename} />
+                <CodeBlock source={sample.source} />
               </div>
             </article>
           ))}

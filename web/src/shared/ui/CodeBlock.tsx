@@ -1,15 +1,4 @@
-import { highlight, type Token } from '@/shared/lib/syntax';
-
-const tokenClass: Record<Token['kind'], string> = {
-  keyword: 'text-[var(--color-accent)] font-medium',
-  type: 'text-[var(--color-type)]',
-  string: 'text-[var(--color-string)]',
-  number: 'text-[var(--color-number)]',
-  comment: 'text-[var(--color-comment)] italic',
-  punct: 'text-[var(--color-punct)]',
-  ident: 'text-[var(--color-ident)]',
-  whitespace: '',
-};
+import { highlightToHtml } from "@/shared/lib/shiki";
 
 interface CodeBlockProps {
   source: string;
@@ -17,26 +6,26 @@ interface CodeBlockProps {
   className?: string;
 }
 
-export function CodeBlock({ source, filename, className }: CodeBlockProps) {
-  const tokens = highlight(source);
+export async function CodeBlock({
+  source,
+  filename,
+  className,
+}: CodeBlockProps) {
+  const html = await highlightToHtml(source);
 
   return (
-    <figure className={`group relative ${className ?? ''}`}>
+    <figure className={`group relative ${className ?? ""}`}>
       {filename && (
-        <figcaption className="flex items-center gap-2 px-5 pt-4 pb-0 text-xs tracking-wide text-[var(--color-fg-muted)]">
+        <figcaption className="flex items-center gap-2 px-4 pt-3 pb-0 text-xs tracking-wide text-[var(--color-fg-muted)]">
           <span className="inline-block size-2 rounded-full bg-[var(--color-accent)]/40" />
           <code className="font-mono">{filename}</code>
         </figcaption>
       )}
-      <pre className="overflow-x-auto px-5 pb-5 pt-3 text-[0.95rem] leading-[1.75] font-mono">
-        <code>
-          {tokens.map((t, i) => (
-            <span key={i} className={tokenClass[t.kind]}>
-              {t.text}
-            </span>
-          ))}
-        </code>
-      </pre>
+      <div
+        className="thailang-code overflow-x-auto px-4 pb-4 pt-2 text-[0.875rem] leading-[1.45] font-mono"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Shiki output is produced server-side by our highlighter over trusted static source strings.
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </figure>
   );
 }
