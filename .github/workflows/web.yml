@@ -1,0 +1,67 @@
+name: Web
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "playground-wasm/**"
+      - "compiler/crates/ast/**"
+      - "compiler/crates/lexer/**"
+      - "compiler/crates/parser/**"
+      - "compiler/crates/emit-js/**"
+      - "compiler/crates/wasm/**"
+      - "tests/wasm-smoke.cjs"
+      - "examples/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "package.json"
+      - "bun.lock"
+      - "biome.json"
+      - ".github/workflows/web.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "playground-wasm/**"
+      - "compiler/crates/ast/**"
+      - "compiler/crates/lexer/**"
+      - "compiler/crates/parser/**"
+      - "compiler/crates/emit-js/**"
+      - "compiler/crates/wasm/**"
+      - "tests/wasm-smoke.cjs"
+      - "examples/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "package.json"
+      - "bun.lock"
+      - "biome.json"
+      - ".github/workflows/web.yml"
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: biome + wasm + next build + smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - name: Build WASM (nodejs + web targets)
+        run: bun run --filter playground-wasm build:all
+      - name: Biome
+        run: bunx biome ci .
+      - name: Next build
+        run: bun run --filter web build
+      - name: WASM smoke test
+        run: node tests/wasm-smoke.cjs

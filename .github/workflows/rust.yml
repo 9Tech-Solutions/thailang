@@ -1,18 +1,30 @@
-name: CI
+name: Rust
 
 on:
   push:
     branches: [main]
+    paths:
+      - "compiler/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - ".github/workflows/rust.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "compiler/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "rust-toolchain.toml"
+      - ".github/workflows/rust.yml"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: rust-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  rust:
-    name: Rust (fmt + clippy + test)
+  check:
+    name: fmt + clippy + test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,15 +38,3 @@ jobs:
         run: cargo clippy --workspace --all-targets -- -D warnings
       - name: Tests
         run: cargo test --workspace --all-features
-
-  web:
-    name: Web (biome + next build)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bunx biome ci .
-      - run: bun run --filter web build
