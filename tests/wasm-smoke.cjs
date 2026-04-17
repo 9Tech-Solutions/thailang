@@ -30,7 +30,7 @@ const captured = [];
 const origLog = console.log;
 console.log = (...args) => captured.push(args.map(String).join(' '));
 try {
-  // eslint-disable-next-line no-eval
+  // biome-ignore lint/security/noGlobalEval: compiled output from our own compiler over a fixed example input — this is the whole point of the smoke test.
   eval(js);
 } finally {
   console.log = origLog;
@@ -66,10 +66,7 @@ ok(`tokenizeToJson returned ${tokens.length} tokens`);
 // 5. WASM size budget — under 300 KB gzipped
 const wasmPath = path.join(ROOT, 'playground-wasm/pkg/thailang_wasm_bg.wasm');
 const rawSize = fs.statSync(wasmPath).size;
-const gzippedSize = parseInt(
-  execSync(`gzip -9 -c "${wasmPath}" | wc -c`).toString().trim(),
-  10,
-);
+const gzippedSize = parseInt(execSync(`gzip -9 -c "${wasmPath}" | wc -c`).toString().trim(), 10);
 const KB = 1024;
 const BUDGET_KB = 300;
 console.log(
