@@ -30,6 +30,9 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Vercel CLI state (local link / deploy cache)
+.vercel/
+
 # Logs
 *.log
 npm-debug.log*
