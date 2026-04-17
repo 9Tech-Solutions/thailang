@@ -17,6 +17,11 @@ if ! command -v cargo >/dev/null 2>&1; then
 fi
 echo "[vercel-install] $(cargo --version)"
 
+# Vercel's pre-installed Rust doesn't ship the wasm target. Add it
+# (idempotent — fast no-op if already installed locally).
+echo "[vercel-install] Ensuring wasm32-unknown-unknown target…"
+rustup target add wasm32-unknown-unknown
+
 # wasm-pack isn't pre-installed. Grab the upstream prebuilt binary —
 # much faster than `cargo install wasm-pack` from source.
 if ! command -v wasm-pack >/dev/null 2>&1; then
