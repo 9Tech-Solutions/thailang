@@ -22,15 +22,42 @@ Syntax highlighting and language support for [Thailang](https://github.com/9Tech
 
 ## Install
 
-**From the Marketplace** (once published):
-```
-code --install-extension thailang-dev.thailang
-```
+### Build the `.vsix` from source
 
-**From a `.vsix` locally** (built from source):
 ```
 cd vscode-ext && bunx vsce package
+```
+
+Produces `thailang-0.1.0.vsix` (~6 KB).
+
+### VS Code
+
+```
 code --install-extension thailang-0.1.0.vsix
+```
+
+### Google Antigravity / Cursor / Windsurf (VS Code forks)
+
+The `code` CLI talks only to VS Code's own extension registry, so it
+won't install into these forks. Use the Extensions panel instead:
+
+1. Open the Extensions view (`Cmd/Ctrl+Shift+X`)
+2. Click the `⋯` menu → **Install from VSIX…**
+3. Pick `thailang-0.1.0.vsix`
+
+Or from each editor's own CLI:
+- Antigravity: `antigravity --install-extension thailang-0.1.0.vsix`
+- Cursor: `cursor --install-extension thailang-0.1.0.vsix`
+- Windsurf: `windsurf --install-extension thailang-0.1.0.vsix`
+
+### Marketplace (once published)
+
+```
+# VS Code
+code --install-extension thailang-dev.thailang
+
+# Antigravity / Cursor / Windsurf default to OpenVSX — listing needs
+# to be published there separately via `bunx ovsx publish`.
 ```
 
 ## Development
