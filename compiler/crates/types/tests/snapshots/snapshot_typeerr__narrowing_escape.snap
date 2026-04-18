@@ -1,0 +1,8 @@
+---
+source: compiler/crates/types/tests/snapshot_typeerr.rs
+assertion_line: 91
+expression: fixture_report(& path)
+---
+5:18  type mismatch: expected ข้อความ, found ตัวเลข | ข้อความ
+  | ให้ s: ข้อความ = ค่า;
+  |                  ^^^

@@ -7,22 +7,23 @@
 
 ## Module name
 
-| Proposed | Means | Clash | Notes |
-|---|---|---|---|
-| `วันที่` | date | low — compound | direct translation |
-| _alt_ | — | — |  |
+| Proposed | Means | Clash          | Notes              |
+| -------- | ----- | -------------- | ------------------ |
+| `วันที่` | date  | low — compound | direct translation |
+| _alt_    | —     | —              |                    |
 
 ---
 
 ## Creation / static helpers
 
-| Current (proposed) | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| _?_ | current date-time | `new Date()` / `Date.now()` |  |  |
-| _?_ | parse from string | `new Date(str)` |  |  |
-| _?_ | from components | `new Date(y, m, d, ...)` |  |  |
+| Current (proposed) | Means             | JS target                   | Clash | Proposed |
+| ------------------ | ----------------- | --------------------------- | ----- | -------- |
+| _?_                | current date-time | `new Date()` / `Date.now()` |       |          |
+| _?_                | parse from string | `new Date(str)`             |       |          |
+| _?_                | from components   | `new Date(y, m, d, ...)`    |       |          |
 
 Suggested candidates:
+
 - `new Date()` → `วันที่.ตอนนี้()` / `วันที่.เดี๋ยวนี้()`
 - `Date.now()` (ms epoch) → `วันที่.เวลาปัจจุบัน()` / `วันที่.เอพอค()`
 - `new Date(str)` → `วันที่.จากข้อความ(s)`
@@ -32,21 +33,22 @@ Suggested candidates:
 
 ## Accessors on a date value `d`
 
-| Current (proposed) | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| _?_ | year | `d.getFullYear()` |  |  |
-| _?_ | month (0-indexed!) | `d.getMonth()` |  |  |
-| _?_ | day of month | `d.getDate()` |  |  |
-| _?_ | day of week | `d.getDay()` |  |  |
-| _?_ | hour | `d.getHours()` |  |  |
-| _?_ | minute | `d.getMinutes()` |  |  |
-| _?_ | second | `d.getSeconds()` |  |  |
-| _?_ | millisecond | `d.getMilliseconds()` |  |  |
-| _?_ | epoch ms | `d.getTime()` |  |  |
-| _?_ | ISO string | `d.toISOString()` |  |  |
-| _?_ | locale string | `d.toLocaleString()` |  |  |
+| Current (proposed) | Means              | JS target             | Clash | Proposed |
+| ------------------ | ------------------ | --------------------- | ----- | -------- |
+| _?_                | year               | `d.getFullYear()`     |       |          |
+| _?_                | month (0-indexed!) | `d.getMonth()`        |       |          |
+| _?_                | day of month       | `d.getDate()`         |       |          |
+| _?_                | day of week        | `d.getDay()`          |       |          |
+| _?_                | hour               | `d.getHours()`        |       |          |
+| _?_                | minute             | `d.getMinutes()`      |       |          |
+| _?_                | second             | `d.getSeconds()`      |       |          |
+| _?_                | millisecond        | `d.getMilliseconds()` |       |          |
+| _?_                | epoch ms           | `d.getTime()`         |       |          |
+| _?_                | ISO string         | `d.toISOString()`     |       |          |
+| _?_                | locale string      | `d.toLocaleString()`  |       |          |
 
 Suggested candidates (short forms preferred for children):
+
 - `.getFullYear` → `.ปี`
 - `.getMonth` → `.เดือน` — **warning**: JS is 0-indexed. Consider wrapping to +1 so `.เดือน` returns 1–12 (natural for kids).
 - `.getDate` → `.วันที่` (conflicts with module name) / `.วัน`

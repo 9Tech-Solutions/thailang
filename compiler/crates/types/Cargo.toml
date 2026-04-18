@@ -14,3 +14,4 @@ thailang-ast = { path = "../ast" }
 
 [dev-dependencies]
 thailang-parser = { path = "../parser" }
+insta = { workspace = true }

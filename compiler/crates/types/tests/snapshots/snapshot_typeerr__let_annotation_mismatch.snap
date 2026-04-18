@@ -1,0 +1,8 @@
+---
+source: compiler/crates/types/tests/snapshot_typeerr.rs
+assertion_line: 87
+expression: fixture_report(& path)
+---
+1:20  type mismatch: expected จำนวนเต็ม, found ข้อความ
+  | ให้ n: จำนวนเต็ม = "hello";
+  |                    ^^^^^^^

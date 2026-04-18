@@ -7,14 +7,14 @@
 
 ## Shipped in Phase 3B
 
-| Current | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| `.ความยาว` | length | `.length` | **high** — universal |  |
-| `.เรียง` | sort (non-mutating) | `.slice().sort` | medium — "arrange/order" |  |
-| `.กรอง` | filter | `.filter` | medium — "filter/strain" |  |
-| `.แปลง` | map | `.map` | medium — "transform/convert" |  |
-| `.ลด` | reduce | `.reduce` | **high** — "decrease" |  |
-| `.มี` | includes / has | `.includes` | **high** — "to have" |  |
+| Current    | Means               | JS target       | Clash                        | Proposed |
+| ---------- | ------------------- | --------------- | ---------------------------- | -------- |
+| `.ความยาว` | length              | `.length`       | **high** — universal         | `ขนาด`   |
+| `.เรียง`   | sort (non-mutating) | `.slice().sort` | medium — "arrange/order"     |          |
+| `.กรอง`    | filter              | `.filter`       | medium — "filter/strain"     |          |
+| `.แปลง`    | map                 | `.map`          | medium — "transform/convert" |          |
+| `.ลด`      | reduce              | `.reduce`       | **high** — "decrease"        | `รวบ`    |
+| `.มี`      | includes / has      | `.includes`     | **high** — "to have"         |          |
 
 ### Child-friendliness notes
 
@@ -31,29 +31,30 @@
 
 Array methods commonly needed:
 
-| Missing | Means | JS target | Proposed |
-|---|---|---|---|
-| _?_ | append item (mutates) | `.push` |  |
-| _?_ | remove last | `.pop` |  |
-| _?_ | remove first | `.shift` |  |
-| _?_ | prepend (mutates) | `.unshift` |  |
-| _?_ | find first match | `.find` |  |
-| _?_ | find first index | `.findIndex` |  |
-| _?_ | find item index | `.indexOf` |  |
-| _?_ | last find index | `.lastIndexOf` |  |
-| _?_ | any match | `.some` |  |
-| _?_ | all match | `.every` |  |
-| _?_ | join into string | `.join` |  |
-| _?_ | reverse (mutates) | `.reverse` |  |
-| _?_ | flatten one level | `.flat` |  |
-| _?_ | map then flatten | `.flatMap` |  |
-| _?_ | concatenate arrays | `.concat` |  |
-| _?_ | slice copy | `.slice` |  |
-| _?_ | splice (mutates) | `.splice` |  |
-| _?_ | fill with value | `.fill` |  |
-| _?_ | shallow entries | `.entries` |  |
+| Missing | Means                 | JS target      | Proposed            |
+| ------- | --------------------- | -------------- | ------------------- |
+| _?_     | append item (mutates) | `.push`        | `ต่อท้าย`           |
+| _?_     | remove last           | `.pop`         | `เอาท้ายออก`        |
+| _?_     | remove first          | `.shift`       | `เอาหน้าออก`        |
+| _?_     | prepend (mutates)     | `.unshift`     | `ต่อหน้า`           |
+| _?_     | find first match      | `.find`        | `หา`                |
+| _?_     | find first index      | `.findIndex`   | `หาตำแหน่ง`         |
+| _?_     | find item index       | `.indexOf`     | `ตำแหน่งของ`        |
+| _?_     | last find index       | `.lastIndexOf` | `ตำแหน่งสุดท้ายของ` |
+| _?_     | any match             | `.some`        | `บางตัว`            |
+| _?_     | all match             | `.every`       | `ทุกตัว`            |
+| _?_     | join into string      | `.join`        | `เชื่อม`            |
+| _?_     | reverse (mutates)     | `.reverse`     | `ย้อน`              |
+| _?_     | flatten one level     | `.flat`        | `ยุบชั้น`           |
+| _?_     | map then flatten      | `.flatMap`     | `แปลงยุบ`           |
+| _?_     | concatenate arrays    | `.concat`      | `ต่อด้วย`           |
+| _?_     | slice copy            | `.slice`       | `หั่น`              |
+| _?_     | splice (mutates)      | `.splice`      | `แทนช่วง`           |
+| _?_     | fill with value       | `.fill`        | `เติม`              |
+| _?_     | shallow entries       | `.entries`     | `คู่ค่า`            |
 
 Suggested candidates:
+
 - `.push` → `.เพิ่ม` / `.ต่อท้าย`
 - `.pop` → `.ดึงท้าย` / `.เอาท้ายออก`
 - `.shift` → `.ดึงหน้า` / `.เอาหน้าออก`

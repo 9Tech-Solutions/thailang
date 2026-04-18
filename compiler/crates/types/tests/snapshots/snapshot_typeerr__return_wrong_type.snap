@@ -1,0 +1,8 @@
+---
+source: compiler/crates/types/tests/snapshot_typeerr.rs
+assertion_line: 89
+expression: fixture_report(& path)
+---
+2:9  return type mismatch: expected จำนวนเต็ม, found ข้อความ
+  |     คืน "oops";
+  |         ^^^^^^

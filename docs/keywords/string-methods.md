@@ -11,13 +11,13 @@ Also applies to arrays where there's overlap (`.ความยาว` works on 
 
 ## Shipped in Phase 3B
 
-| Current | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| `.ความยาว` | length | `.length` | **high** — "length" is universal |  |
-| `.ตัด` | slice | `.slice` | **high** — "cut" is common verb |  |
-| `.เป็นตัวใหญ่` | toUpperCase | `.toUpperCase` | low — long compound |  |
-| `.เป็นตัวเล็ก` | toLowerCase | `.toLowerCase` | low — long compound |  |
-| `.แยก` | split | `.split` | medium — "separate" |  |
+| Current        | Means       | JS target      | Clash                            | Proposed |
+| -------------- | ----------- | -------------- | -------------------------------- | -------- |
+| `.ความยาว`     | length      | `.length`      | **high** — "length" is universal |          |
+| `.ตัด`         | slice       | `.slice`       | **high** — "cut" is common verb  |          |
+| `.เป็นตัวใหญ่` | toUpperCase | `.toUpperCase` | low — long compound              |          |
+| `.เป็นตัวเล็ก` | toLowerCase | `.toLowerCase` | low — long compound              |          |
+| `.แยก`         | split       | `.split`       | medium — "separate"              |          |
 
 ### Child-friendliness notes
 
@@ -34,25 +34,26 @@ Also applies to arrays where there's overlap (`.ความยาว` works on 
 
 String methods commonly needed:
 
-| Missing | Means | JS target | Proposed |
-|---|---|---|---|
-| _?_ | strip whitespace | `.trim` |  |
-| _?_ | replace substring | `.replace` |  |
-| _?_ | replace all | `.replaceAll` |  |
-| _?_ | find substring position | `.indexOf` |  |
-| _?_ | last find position | `.lastIndexOf` |  |
-| _?_ | contains substring | `.includes` |  |
-| _?_ | starts with prefix | `.startsWith` |  |
-| _?_ | ends with suffix | `.endsWith` |  |
-| _?_ | repeat N times | `.repeat` |  |
-| _?_ | concat strings | `.concat` |  |
-| _?_ | char at index | `.charAt` |  |
-| _?_ | char code at | `.charCodeAt` |  |
-| _?_ | pad front | `.padStart` |  |
-| _?_ | pad back | `.padEnd` |  |
-| _?_ | normalize Unicode | `.normalize` |  |
+| Missing | Means                   | JS target      | Proposed     |
+| ------- | ----------------------- | -------------- | ------------ |
+| _?_     | strip whitespace        | `.trim`        | .ตัดช่องว่าง |
+| _?_     | replace substring       | `.replace`     | .แทนที่      |
+| _?_     | replace all             | `.replaceAll`  | .แทนทั้งหมด  |
+| _?_     | find substring position | `.indexOf`     | .ตำแหน่ง     |
+| _?_     | last find position      | `.lastIndexOf` | .มี          |
+| _?_     | contains substring      | `.includes`    | .ขึ้นต้นด้วย |
+| _?_     | starts with prefix      | `.startsWith`  | .ลงท้ายด้วย  |
+| _?_     | ends with suffix        | `.endsWith`    | .ลงท้ายด้วย  |
+| _?_     | repeat N times          | `.repeat`      | .ซ้ำ         |
+| _?_     | concat strings          | `.concat`      | .เชื่อม      |
+| _?_     | char at index           | `.charAt`      | .ตัวที่      |
+| _?_     | char code at            | `.charCodeAt`  |              |
+| _?_     | pad front               | `.padStart`    | .เติมหน้า    |
+| _?_     | pad back                | `.padEnd`      | .เติมท้าย    |
+| _?_     | normalize Unicode       | `.normalize`   |              |
 
 Suggested candidates:
+
 - `.trim` → `.ตัดช่องว่าง` / `.ตัดว่าง`
 - `.replace` → `.แทนที่`
 - `.replaceAll` → `.แทนทั้งหมด`

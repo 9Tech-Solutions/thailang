@@ -7,10 +7,10 @@
 
 ## Module name
 
-| Proposed | Means | Clash | Notes |
-|---|---|---|---|
-| `วัตถุ` | object / thing | medium — "an object" | matches JS naming |
-| _alt_ | — | — |  |
+| Proposed | Means          | Clash                | Notes             |
+| -------- | -------------- | -------------------- | ----------------- |
+| `วัตถุ`  | object / thing | medium — "an object" | matches JS naming |
+| _alt_    | —              | —                    |                   |
 
 Possible alternative if `วัตถุ` feels physics-y: `ข้อมูล` (data) — but
 that's potentially used for `JSON` module too. Pick once.
@@ -19,19 +19,20 @@ that's potentially used for `JSON` module too. Pick once.
 
 ## Statics
 
-| Current (proposed) | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| _?_ | keys of object | `Object.keys` |  |  |
-| _?_ | values of object | `Object.values` |  |  |
-| _?_ | key-value pairs | `Object.entries` |  |  |
-| _?_ | from entries array | `Object.fromEntries` |  |  |
-| _?_ | merge objects | `Object.assign` |  |  |
-| _?_ | freeze (immutable) | `Object.freeze` |  |  |
-| _?_ | check frozen | `Object.isFrozen` |  |  |
-| _?_ | shallow clone | `structuredClone` (global) |  |  |
-| _?_ | check has own prop | `Object.hasOwn` |  |  |
+| Current (proposed) | Means              | JS target                  | Clash | Proposed     |
+| ------------------ | ------------------ | -------------------------- | ----- | ------------ |
+| _?_                | keys of object     | `Object.keys`              |       | .ชื่อทั้งหมด |
+| _?_                | values of object   | `Object.values`            |       | .ค่าทั้งหมด  |
+| _?_                | key-value pairs    | `Object.entries`           |       | .รายการคู่   |
+| _?_                | from entries array | `Object.fromEntries`       |       | .จากคู่      |
+| _?_                | merge objects      | `Object.assign`            |       | .รวม         |
+| _?_                | freeze (immutable) | `Object.freeze`            |       | .ล็อก        |
+| _?_                | check frozen       | `Object.isFrozen`          |       | .ล็อกอยู่    |
+| _?_                | shallow clone      | `structuredClone` (global) |       | .มีของตัวเอง |
+| _?_                | check has own prop | `Object.hasOwn`            |       | .ทำสำเนา     |
 
 Suggested candidates:
+
 - `Object.keys` → `.กุญแจ` / `.ชื่อ` / `.กุญแจทั้งหมด`
 - `Object.values` → `.ค่า` / `.ค่าทั้งหมด`
 - `Object.entries` → `.คู่` (conflicts with user's proposed `แผนที่→คู่`) / `.รายการคู่`

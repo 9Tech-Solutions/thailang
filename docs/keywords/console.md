@@ -41,10 +41,10 @@ canonical form — both compile to `console.log`. Best of both worlds.
 
 ## Module name
 
-| Proposed | Means | Clash | Notes |
-|---|---|---|---|
-| `ระบบ` | system | medium — "the system" | your proposal |
-| _alt_ | — | — |  |
+| Proposed | Means  | Clash                 | Notes         |
+| -------- | ------ | --------------------- | ------------- |
+| `ระบบ`   | system | medium — "the system" | your proposal |
+| _alt_    | —      | —                     |               |
 
 ---
 
@@ -52,22 +52,23 @@ canonical form — both compile to `console.log`. Best of both worlds.
 
 Map `ระบบ.X` → JS `console.X`. Child-friendly, Thai-native names:
 
-| Current (proposed) | Means | JS target | Clash | Proposed |
-|---|---|---|---|---|
-| `.พิมพ์` | print / log | `console.log` | low — already established |  |
-| _?_ | warn | `console.warn` |  |  |
-| _?_ | error | `console.error` |  |  |
-| _?_ | info | `console.info` |  |  |
-| _?_ | debug | `console.debug` |  |  |
-| _?_ | clear screen | `console.clear` |  |  |
-| _?_ | table output | `console.table` |  |  |
-| _?_ | start timer | `console.time` |  |  |
-| _?_ | stop timer | `console.timeEnd` |  |  |
-| _?_ | count | `console.count` |  |  |
-| _?_ | group | `console.group` |  |  |
-| _?_ | group end | `console.groupEnd` |  |  |
+| Current (proposed) | Means        | JS target          | Clash                     | Proposed        |
+| ------------------ | ------------ | ------------------ | ------------------------- | --------------- |
+| `.พิมพ์`           | print / log  | `console.log`      | low — already established | `.แสดง`         |
+| _?_                | warn         | `console.warn`     |                           | `.เตือน`        |
+| _?_                | error        | `console.error`    |                           | `.ผิดพลาด`      |
+| _?_                | info         | `console.info`     |                           | `.แจ้ง`         |
+| _?_                | debug        | `console.debug`    |                           | `.ตรวจ`         |
+| _?_                | clear screen | `console.clear`    |                           | `.ล้าง`         |
+| _?_                | table output | `console.table`    |                           | `.ตาราง`        |
+| _?_                | start timer  | `console.time`     |                           | `.จับเวลา`      |
+| _?_                | stop timer   | `console.timeEnd`  |                           | `.หยุดจับเวลา`  |
+| _?_                | count        | `console.count`    |                           | `.นับ`          |
+| _?_                | group        | `console.group`    |                           | `.จับกลุ่ม`     |
+| _?_                | group end    | `console.groupEnd` |                           | `.เลิกจับกลุ่ม` |
 
 Suggested candidates:
+
 - `console.warn` → `.เตือน`
 - `console.error` → `.ผิด` / `.ข้อผิดพลาด` / `.ล้ม`
 - `console.info` → `.แจ้ง` / `.ข้อมูล` (but `ข้อมูล` clashes if we use it for `JSON`)
