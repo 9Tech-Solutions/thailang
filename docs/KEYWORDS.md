@@ -112,6 +112,43 @@
 
 ---
 
+## 11. Stdlib — `คณิต` module (Math)
+
+> **Soft reservations.** These aren't lexer keywords — the lexer treats them
+> as plain identifiers. But the emitter rewrites `คณิต.X` → `Math.X` at
+> compile time, so if a user picks `คณิต` as a variable name they get silent
+> shadowing. Practically: reserve for stdlib use only.
+
+| Current | Means | JS analog | Clash | Proposed |
+|---|---|---|---|---|
+| `คณิต` | Math module | `Math` | **high** — common noun "math/arithmetic" |  |
+| `คณิต.สูงสุด` | max | `Math.max` | medium — "highest/peak" |  |
+| `คณิต.ต่ำสุด` | min | `Math.min` | medium — "lowest" |  |
+| `คณิต.สุ่ม` | random | `Math.random` | low |  |
+| `คณิต.ปัดขึ้น` | ceil | `Math.ceil` | low |  |
+| `คณิต.ปัดลง` | floor | `Math.floor` | low |  |
+
+## 12. Stdlib — String / Array methods
+
+> Same soft-reservation story as §11 — the emitter renames these members at
+> compile time regardless of the receiver's actual type. A user method named
+> `.ความยาว` on their own object will get silently rewritten to `.length`.
+
+| Current | Means | JS target | Clash | Proposed |
+|---|---|---|---|---|
+| `.ความยาว` | length (shared str/arr) | `.length` | **high** — "length" is everywhere |  |
+| `.ตัด` | slice (string) | `.slice` | **high** — "cut" is very common verb |  |
+| `.เป็นตัวใหญ่` | toUpperCase | `.toUpperCase` | low — compound |  |
+| `.เป็นตัวเล็ก` | toLowerCase | `.toLowerCase` | low — compound |  |
+| `.แยก` | split | `.split` | medium — "separate" |  |
+| `.เรียง` | sort (non-mutating) | `.slice().sort` | medium — "arrange/order" |  |
+| `.กรอง` | filter | `.filter` | medium — "filter/strain" |  |
+| `.แปลง` | map | `.map` | medium — "transform/convert" |  |
+| `.ลด` | reduce | `.reduce` | **high** — "decrease/reduce" |  |
+| `.มี` | includes / has | `.includes` | **high** — "to have" |  |
+
+---
+
 ## Priority hints (pick the fight to fight)
 
 If you only want to touch the highest-pain items:
@@ -119,12 +156,15 @@ If you only want to touch the highest-pain items:
 1. **`ตัวเลข`** — biggest single win. Users expect to write `ให้ ตัวเลข = 42` as a variable.
 2. **`ข้อความ`** — same story: "a message" is a very natural variable name.
 3. **`รายการ`** — "an item in a list" is the classic inventory/cart example.
-4. **`แผนที่`** — less common as a variable but still a real word.
+4. **`.ความยาว`** — "the length of X" is a natural phrase that may clash with user member names.
+5. **`.มี`** — "has" is a very common method name in any domain (`cart.มี(item)`).
+6. **`แผนที่`** — less common as a variable but still a real word.
 
 If you want a blanket child-friendly pass, also consider softening:
 - `ฟังก์ชัน` (transliterated) → something actually-Thai like `สูตร` or `กลไก`?
 - `จำนวนเต็ม` (4 syllables) → shorter noun?
 - `อะไรก็ได้` (whole phrase) → single word?
+- `.เป็นตัวใหญ่` / `.เป็นตัวเล็ก` — mouthful; `.ใหญ่` / `.เล็ก` shorter?
 
 ---
 
@@ -138,12 +178,15 @@ Add anything you want to call out here while editing:
 
 **When you're done editing:** just say "done" (or point at specific rows), and
 the rename sweep runs across:
-- `compiler/crates/lexer/src/token.rs`
+- `compiler/crates/lexer/src/token.rs` (§1–10 hard keywords)
 - `compiler/crates/parser/src/parser.rs` (type-annotation paths)
-- `compiler/crates/emit-js/src/emitter.rs` (prelude identifier rewrites if any)
-- `compiler/crates/types/src/checker.rs` and `stdlib.rs`
+- `compiler/crates/emit-js/src/stdlib.rs` (§11–12 rewrite tables)
+- `compiler/crates/emit-js/src/emitter.rs`
+- `compiler/crates/types/src/stdlib.rs` (method signatures)
+- `compiler/crates/types/src/checker.rs`
 - `docs/SPEC.md`
 - `examples/*.th` and `*.expected.txt`
 - `web/src/shared/lib/thailang.tmLanguage.json` (Shiki + VS Code grammar)
+- `web/src/widgets/hero-playground/highlight.ts` (client tokenizer keyword sets)
 - `vscode-ext/syntaxes/thailang.tmLanguage.json`
 - All test fixtures across crates
