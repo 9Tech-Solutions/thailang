@@ -18,6 +18,12 @@ on:
         type: boolean
         default: false
 
+# Opt all JS-based actions onto Node 24. GitHub deprecates the Node 20
+# runtime in June 2026; forcing Node 24 now makes the upgrade a no-op
+# when the deprecation actually lands and silences the per-run warning.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
