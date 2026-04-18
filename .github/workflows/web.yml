@@ -19,6 +19,7 @@ on:
       - "bun.lock"
       - "biome.json"
       - ".github/workflows/web.yml"
+      - ".github/actions/setup-thailang/**"
   pull_request:
     branches: [main]
     paths:
@@ -37,10 +38,14 @@ on:
       - "bun.lock"
       - "biome.json"
       - ".github/workflows/web.yml"
+      - ".github/actions/setup-thailang/**"
 
 concurrency:
   group: web-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   check:
@@ -48,15 +53,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - uses: taiki-e/install-action@v2
+      - uses: ./.github/actions/setup-thailang
         with:
-          tool: wasm-pack
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
+          wasm-pack: "true"
+          bun: "true"
+          bun-install: "true"
       - name: Build WASM (nodejs + web targets)
         run: bun run --filter playground-wasm build:all
       - name: Biome

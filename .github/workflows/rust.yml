@@ -9,6 +9,7 @@ on:
       - "Cargo.lock"
       - "rust-toolchain.toml"
       - ".github/workflows/rust.yml"
+      - ".github/actions/setup-thailang/**"
   pull_request:
     branches: [main]
     paths:
@@ -17,10 +18,14 @@ on:
       - "Cargo.lock"
       - "rust-toolchain.toml"
       - ".github/workflows/rust.yml"
+      - ".github/actions/setup-thailang/**"
 
 concurrency:
   group: rust-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   check:
@@ -28,10 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: ./.github/actions/setup-thailang
         with:
-          components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
+          rust-components: "rustfmt, clippy"
       - name: Format check
         run: cargo fmt --all --check
       - name: Clippy

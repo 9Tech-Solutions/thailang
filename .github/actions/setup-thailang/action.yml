@@ -1,0 +1,94 @@
+name: Setup Thailang toolchain
+description: >
+  Composite setup for Rust · wasm-pack · Bun · Node across Thailang CI
+  workflows. Opt in to each tool via its boolean input. Callers run
+  actions/checkout@v4 first; this action assumes the working directory
+  is the repo root.
+
+inputs:
+  rust:
+    description: Install Rust stable toolchain + rust-cache
+    required: false
+    default: "true"
+  rust-components:
+    description: Extra rustup components (comma-separated, e.g. "rustfmt, clippy")
+    required: false
+    default: ""
+  wasm32-target:
+    description: Add wasm32-unknown-unknown target (only needed when compiling to WASM)
+    required: false
+    default: "false"
+  wasm-pack:
+    description: Install wasm-pack
+    required: false
+    default: "false"
+  wasm-pack-version:
+    description: wasm-pack version
+    required: false
+    default: "0.14.0"
+  bun:
+    description: Install Bun
+    required: false
+    default: "false"
+  bun-version:
+    description: Bun version (pinned for reproducibility)
+    required: false
+    default: "1.3.12"
+  bun-install:
+    description: Run `bun install --frozen-lockfile` after Bun setup
+    required: false
+    default: "false"
+  node:
+    description: Install Node.js
+    required: false
+    default: "false"
+  node-version:
+    description: Node.js major version
+    required: false
+    default: "22"
+  node-registry-url:
+    description: Node registry URL (set for npm publish; auth token still comes from env)
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Rust
+      if: inputs.rust == 'true'
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        components: ${{ inputs.rust-components }}
+
+    - name: Add wasm32 target
+      if: inputs.wasm32-target == 'true'
+      shell: bash
+      run: rustup target add wasm32-unknown-unknown
+
+    - name: Cache cargo
+      if: inputs.rust == 'true'
+      uses: Swatinem/rust-cache@v2
+
+    - name: Install wasm-pack
+      if: inputs.wasm-pack == 'true'
+      uses: taiki-e/install-action@v2
+      with:
+        tool: wasm-pack@${{ inputs.wasm-pack-version }}
+
+    - name: Setup Node
+      if: inputs.node == 'true'
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        registry-url: ${{ inputs.node-registry-url }}
+
+    - name: Setup Bun
+      if: inputs.bun == 'true'
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ inputs.bun-version }}
+
+    - name: Bun install
+      if: inputs.bun-install == 'true'
+      shell: bash
+      run: bun install --frozen-lockfile
