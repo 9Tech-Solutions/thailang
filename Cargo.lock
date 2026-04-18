@@ -672,6 +672,7 @@ dependencies = [
  "thailang-emit-js",
  "thailang-lexer",
  "thailang-parser",
+ "thailang-types",
  "wasm-bindgen",
 ]
 
