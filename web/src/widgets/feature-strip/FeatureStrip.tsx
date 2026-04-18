@@ -21,13 +21,13 @@ const features: readonly Feature[] = [
   {
     titleTh: "อ่านเป็นไทย",
     title: "Reads in Thai",
-    body: "Keywords, stdlib, errors — everything in Thai. Your variable names can be Thai too. JavaScript supports the characters natively.",
+    body: "Keywords, stdlib, errors, everything in Thai. Your variable names can be Thai too. JavaScript supports the characters natively.",
     kbd: "ให้ ชื่อ",
   },
   {
     titleTh: "รันได้ทุกที่",
     title: "Runs anywhere",
-    body: "Node, browser, edge — wherever JavaScript or WebAssembly runs, Thailang runs. One source, many targets.",
+    body: "Node, browser, edge, wherever JavaScript or WebAssembly runs, Thailang runs. One source, many targets.",
     kbd: "node | wasm",
   },
 ];

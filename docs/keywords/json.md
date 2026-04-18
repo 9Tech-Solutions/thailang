@@ -4,7 +4,7 @@
 
 ---
 
-## Module name — to decide
+## Module name: to decide
 
 JSON is internationally recognized. Three options:
 

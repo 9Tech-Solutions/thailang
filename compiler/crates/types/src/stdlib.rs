@@ -1,4 +1,4 @@
-//! Stdlib type signatures — enables the checker to infer return types for
+//! Stdlib type signatures, enables the checker to infer return types for
 //! `.ความยาว`, `.ตัด()`, `คณิต.สูงสุด()`, etc. Kept in sync with
 //! `thailang-emit-js::stdlib` by convention (same names, same semantics).
 
@@ -27,7 +27,7 @@ pub fn method_return_type(member: &str) -> Option<TypeAnn> {
         "มี" => TypeAnn::Bool,
         // `.เรียง/.กรอง/.แปลง/.ลด` return types are receiver-dependent (e.g.,
         // `.แปลง` returns an Array of whatever the callback produces). Phase 3B
-        // leaves these as Any — accurate inference requires tracking the
+        // leaves these as Any, accurate inference requires tracking the
         // receiver's element type through the call, which is Phase 3C work.
         _ => return None,
     })

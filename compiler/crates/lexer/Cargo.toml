@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Thailang lexer — Thai-aware tokenizer (logos)"
+description = "Thailang lexer, Thai-aware tokenizer (logos)"
 
 [lib]
 path = "src/lib.rs"

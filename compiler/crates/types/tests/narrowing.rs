@@ -8,7 +8,7 @@ fn errors_for(src: &str) -> Vec<String> {
 
 #[test]
 fn narrowing_on_is_check_inside_if_body() {
-    // Inside `ถ้า (x เป็น ข้อความ)`, x should be narrowed to ข้อความ — so
+    // Inside `ถ้า (x เป็น ข้อความ)`, x should be narrowed to ข้อความ, so
     // assigning it into a ข้อความ slot must type-check.
     let src = "ให้ x: ตัวเลข | ข้อความ = \"hi\";\n\
                ถ้า (x เป็น ข้อความ) {\n\

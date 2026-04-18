@@ -15,7 +15,7 @@ function loadWasm() {
 
 function usage() {
   return [
-    "thailang — ภาษาโปรแกรมมิงไทย",
+    "thailang, ภาษาโปรแกรมมิงไทย",
     "",
     "Usage:",
     "  thailang run <file.th>       Type-check, compile, and execute",
@@ -62,13 +62,13 @@ function runFile(file) {
     js = wasm.compileToJs(source);
   } catch (err) {
     // Parse errors surface here when typeCheck reported zero errors AND
-    // compile still fails — treat as unexpected.
+    // compile still fails, treat as unexpected.
     process.stderr.write(`thailang: compile failed: ${err.message}\n`);
     process.exit(1);
   }
 
   try {
-    // Fresh context — emitted JS references `console` and JS globals like
+    // Fresh context, emitted JS references `console` and JS globals like
     // `Math`, `Number.isInteger`, `Array.isArray`, which we pass through.
     vm.runInNewContext(js, {
       console,

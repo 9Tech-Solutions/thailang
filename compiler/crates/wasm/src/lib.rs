@@ -46,7 +46,7 @@ pub fn type_check(source: &str) -> String {
     serde_json::to_string(&diagnostics).unwrap_or_else(|_| "[]".to_string())
 }
 
-/// Tokenize source — returns a JSON array string suitable for JS consumption
+/// Tokenize source, returns a JSON array string suitable for JS consumption
 /// (intended for syntax highlighting in the future Monaco-based playground).
 #[wasm_bindgen(js_name = tokenizeToJson)]
 pub fn tokenize_to_json(source: &str) -> String {

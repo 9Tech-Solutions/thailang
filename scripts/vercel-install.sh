@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Vercel install step — makes sure `playground-wasm` can produce the
+# Vercel install step: makes sure `playground-wasm` can produce the
 # browser-target `pkg-web/` output that the Next build imports from
 # `playground-wasm/web`.
 #
@@ -11,18 +11,18 @@ set -euo pipefail
 export PATH="/rust/bin:$PATH"
 
 if ! command -v cargo >/dev/null 2>&1; then
-  echo "[vercel-install] cargo not on PATH — Vercel build image layout may have changed." >&2
+  echo "[vercel-install] cargo not on PATH, Vercel build image layout may have changed." >&2
   echo "[vercel-install] PATH=$PATH" >&2
   exit 1
 fi
 echo "[vercel-install] $(cargo --version)"
 
 # Vercel's pre-installed Rust doesn't ship the wasm target. Add it
-# (idempotent — fast no-op if already installed locally).
+# (idempotent: fast no-op if already installed locally).
 echo "[vercel-install] Ensuring wasm32-unknown-unknown target…"
 rustup target add wasm32-unknown-unknown
 
-# wasm-pack isn't pre-installed. Grab the upstream prebuilt binary —
+# wasm-pack isn't pre-installed. Grab the upstream prebuilt binary, 
 # much faster than `cargo install wasm-pack` from source.
 if ! command -v wasm-pack >/dev/null 2>&1; then
   WASM_PACK_VERSION="v0.14.0"

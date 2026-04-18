@@ -3,11 +3,11 @@
 //! Thailang's standard library uses Thai names (ความยาว, เรียง, คณิต, …) that
 //! map onto host JS names (length, sort, Math, …). This module centralizes
 //! that mapping so the emitter can rename members / modules without knowing
-//! the receiver type — JS dispatches at runtime, we just pick the right name.
+//! the receiver type, JS dispatches at runtime, we just pick the right name.
 
 /// Rewrite for a member access. Returns the JS name to emit in place of `.<thai>`,
 /// OR `None` to leave the Thai name untouched. Applies to both bare property
-/// reads (`s.ความยาว`) and method calls (`s.ตัด(...)`) — the caller separately
+/// reads (`s.ความยาว`) and method calls (`s.ตัด(...)`), the caller separately
 /// appends `(args)` when it's a call.
 pub fn method_name(thai: &str) -> Option<&'static str> {
     Some(match thai {
@@ -27,7 +27,7 @@ pub fn method_name(thai: &str) -> Option<&'static str> {
     })
 }
 
-/// Non-renaming methods that take a JS method chain — emitted by the caller
+/// Non-renaming methods that take a JS method chain, emitted by the caller
 /// directly. Returns the raw JS snippet that replaces the `.<thai>` member
 /// access; the caller appends the call arguments. Only applies when the
 /// access is a method call, not a bare property read.

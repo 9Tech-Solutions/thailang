@@ -55,7 +55,7 @@ fn param_name_this_is_mangled() {
 
 #[test]
 fn reference_of_mangled_name_matches_declaration() {
-    // Declaration and use must rename consistently — otherwise the JS
+    // Declaration and use must rename consistently, otherwise the JS
     // references an undefined `class$` or shadows the global `class`.
     let out = compile("ให้ class = 5; พิมพ์(class);");
     assert!(out.contains("let class$ = 5"), "got: {out}");
@@ -81,7 +81,7 @@ fn user_written_dollar_suffix_not_double_mangled() {
 #[test]
 fn strict_mode_reserved_also_mangled() {
     // `let`, `static`, `implements`, `interface`, `package`, `private`,
-    // `protected`, `public`, `await` — strict-mode reserved; JS modules
+    // `protected`, `public`, `await`, strict-mode reserved; JS modules
     // are strict so these need mangling too.
     let out = compile("ให้ let = 1; ให้ static = 2; ให้ await = 3;");
     assert!(out.contains("let let$ = 1"), "got: {out}");

@@ -1,4 +1,4 @@
-# 🇹🇭 Thailang — Language Design Spec v0.1
+# 🇹🇭 Thailang: Language Design Spec v0.1
 
 > **Thai-first. Type-safe. Compiled. Feels like JS/TS.**
 >
@@ -12,10 +12,10 @@
 "เขียนเป็นไทย รันเหมือน Rust"
 ```
 
-- **Keyword ไทยทั้งหมด** — ให้คนไทยอ่านโค้ดแล้วเข้าใจได้ทันที
-- **Syntax คุ้นเคย** — โครงสร้างเหมือน JS/TS ไม่ต้องเรียนใหม่
-- **Type-safe แต่ไม่บังคับ** — ประกาศ type ก็ได้ ไม่ประกาศ compiler เดาให้
-- **Compiled ด้วย Rust** — ได้ performance จริง ไม่ใช่แค่ interpreter
+- **Keyword ไทยทั้งหมด**: ให้คนไทยอ่านโค้ดแล้วเข้าใจได้ทันที
+- **Syntax คุ้นเคย**: โครงสร้างเหมือน JS/TS ไม่ต้องเรียนใหม่
+- **Type-safe แต่ไม่บังคับ**: ประกาศ type ก็ได้ ไม่ประกาศ compiler เดาให้
+- **Compiled ด้วย Rust**: ได้ performance จริง ไม่ใช่แค่ interpreter
 
 ---
 
@@ -23,83 +23,83 @@
 
 ### Core Keywords
 
-| Thailang | เทียบ JS/TS | ความหมาย |
-|----------|-------------|----------|
-| `ให้` | `let` / `const` | ประกาศตัวแปร |
-| `คงที่` | `const` | ประกาศค่าคงที่ (immutable) |
-| `ฟังก์ชัน` | `function` | ประกาศฟังก์ชัน |
-| `คืน` | `return` | คืนค่า |
-| `พิมพ์` | `console.log` | แสดงผล |
+| Thailang   | เทียบ JS/TS     | ความหมาย                   |
+| ---------- | -------------   | ----------                 |
+| `ให้`      | `let` / `const` | ประกาศตัวแปร               |
+| `คงที่`    | `const`         | ประกาศค่าคงที่ (immutable) |
+| `ฟังก์ชัน` | `function`      | ประกาศฟังก์ชัน             |
+| `คืน`      | `return`        | คืนค่า                     |
+| `พิมพ์`    | `console.log`   | แสดงผล                     |
 
 ### Control Flow
 
-| Thailang | เทียบ JS/TS | ความหมาย |
-|----------|-------------|----------|
-| `ถ้า` | `if` | เงื่อนไข |
-| `ไม่ก็` | `else if` | เงื่อนไขเพิ่ม |
-| `ไม่งั้น` | `else` | กรณีอื่น |
-| `ตราบ` | `while` | วนลูป while |
-| `วน` | `for` | วนลูป for |
-| `แต่ละ` | `for...of` | วนลูป for-each |
-| `หยุด` | `break` | หยุดลูป |
-| `ข้าม` | `continue` | ข้ามรอบ |
-| `เลือก` | `switch` | switch-case |
-| `กรณี` | `case` | case |
-| `เริ่มต้น` | `default` | default case |
+| Thailang   | เทียบ JS/TS   | ความหมาย       |
+| ---------- | ------------- | ----------     |
+| `ถ้า`      | `if`          | เงื่อนไข       |
+| `ไม่ก็`    | `else if`     | เงื่อนไขเพิ่ม  |
+| `ไม่งั้น`  | `else`        | กรณีอื่น       |
+| `ตราบ`     | `while`       | วนลูป while    |
+| `วน`       | `for`         | วนลูป for      |
+| `แต่ละ`    | `for...of`    | วนลูป for-each |
+| `หยุด`     | `break`       | หยุดลูป        |
+| `ข้าม`     | `continue`    | ข้ามรอบ        |
+| `เลือก`    | `switch`      | switch-case    |
+| `กรณี`     | `case`        | case           |
+| `เริ่มต้น` | `default`     | default case   |
 
 ### Types
 
-| Thailang | เทียบ TS | ความหมาย |
-|----------|----------|----------|
-| `ตัวเลข` | `number` | ตัวเลข (f64 default) |
-| `จำนวนเต็ม` | `int` | จำนวนเต็ม (i64) |
-| `ข้อความ` | `string` | string |
-| `จริงเท็จ` | `boolean` | boolean |
-| `ว่าง` | `null` | null |
-| `อะไรก็ได้` | `any` | any type |
-| `ไม่คืน` | `void` | void |
+| Thailang    | เทียบ TS   | ความหมาย             |
+| ----------  | ---------- | ----------           |
+| `ตัวเลข`    | `number`   | ตัวเลข (f64 default) |
+| `จำนวนเต็ม` | `int`      | จำนวนเต็ม (i64)      |
+| `ข้อความ`   | `string`   | string               |
+| `จริงเท็จ`  | `boolean`  | boolean              |
+| `ว่าง`      | `null`     | null                 |
+| `อะไรก็ได้` | `any`      | any type             |
+| `ไม่คืน`    | `void`     | void                 |
 
 ### Boolean & Logic
 
-| Thailang | เทียบ JS | ความหมาย |
-|----------|----------|----------|
-| `จริง` | `true` | true |
-| `เท็จ` | `false` | false |
-| `และ` | `&&` | AND |
+| Thailang   | เทียบ JS   | ความหมาย   |
+| ---------- | ---------- | ---------- |
+| `จริง`     | `true`     | true       |
+| `เท็จ`     | `false`    | false      |
+| `และ`      | `&&`       | AND        |
 | `หรือ` | `\|\|` | OR |
-| `ไม่` | `!` | NOT |
+| `ไม่`      | `!`        | NOT        |
 
 ### Data Structures
 
-| Thailang | เทียบ TS | ความหมาย |
-|----------|----------|----------|
-| `รายการ` | `Array` / `[]` | array |
-| `แผนที่` | `Map` / `{}` | object / map |
+| Thailang    | เทียบ TS             | ความหมาย                 |
+| ----------  | ----------           | ----------               |
+| `รายการ`    | `Array` / `[]`       | array                    |
+| `แผนที่`    | `Map` / `{}`         | object / map             |
 | `โครงสร้าง` | `interface` / `type` | struct / type definition |
 
 ### Async
 
-| Thailang | เทียบ JS | ความหมาย |
-|----------|----------|----------|
-| `รอ` | `await` | await |
-| `ไม่พร้อม` | `async` | async |
+| Thailang   | เทียบ JS   | ความหมาย   |
+| ---------- | ---------- | ---------- |
+| `รอ`       | `await`    | await      |
+| `ไม่พร้อม` | `async`    | async      |
 
 ### Error Handling
 
-| Thailang | เทียบ JS | ความหมาย |
-|----------|----------|----------|
-| `ลอง` | `try` | try |
-| `จับ` | `catch` | catch |
-| `สุดท้าย` | `finally` | finally |
-| `โยน` | `throw` | throw |
+| Thailang   | เทียบ JS   | ความหมาย   |
+| ---------- | ---------- | ---------- |
+| `ลอง`      | `try`      | try        |
+| `จับ`      | `catch`    | catch      |
+| `สุดท้าย`  | `finally`  | finally    |
+| `โยน`      | `throw`    | throw      |
 
 ### Module System
 
-| Thailang | เทียบ JS/TS | ความหมาย |
-|----------|-------------|----------|
-| `นำเข้า` | `import` | import |
-| `ส่งออก` | `export` | export |
-| `จาก` | `from` | from |
+| Thailang   | เทียบ JS/TS   | ความหมาย   |
+| ---------- | ------------- | ---------- |
+| `นำเข้า`   | `import`      | import     |
+| `ส่งออก`   | `export`      | export     |
+| `จาก`      | `from`        | from       |
 
 ---
 
@@ -111,22 +111,22 @@
 พิมพ์("สวัสดีชาวโลก!");
 ```
 
-### 3.2 ตัวแปร — ประกาศ type หรือไม่ก็ได้
+### 3.2 ตัวแปร: ประกาศ type หรือไม่ก็ได้
 
 ```thailang
-// แบบ inferred — compiler เดา type ให้
+// แบบ inferred, compiler เดา type ให้
 ให้ ชื่อ = "สมชาย";
 ให้ อายุ = 25;
 ให้ สูง = 175.5;
 ให้ เป็นนักเรียน = จริง;
 
-// แบบ explicit — ประกาศ type ชัดเจน
+// แบบ explicit, ประกาศ type ชัดเจน
 ให้ ชื่อ: ข้อความ = "สมชาย";
 ให้ อายุ: จำนวนเต็ม = 25;
 ให้ สูง: ตัวเลข = 175.5;
 ให้ เป็นนักเรียน: จริงเท็จ = จริง;
 
-// ค่าคงที่ — เปลี่ยนแปลงไม่ได้
+// ค่าคงที่, เปลี่ยนแปลงไม่ได้
 คงที่ PI = 3.14159;
 คงที่ ชื่อแอป: ข้อความ = "Thailang";
 ```
@@ -370,11 +370,11 @@
 
 ### Compilation Targets
 
-| Target | ใช้กับ | คำสั่ง |
-|--------|-------|--------|
-| **Native** | CLI tools, servers | `thailang build หลัก.th` |
-| **WASM** | Browser, Edge | `thailang build หลัก.th --target wasm` |
-| **JS** | ใช้กับ Node/Bun ecosystem | `thailang build หลัก.th --target js` |
+| Target     | ใช้กับ                    | คำสั่ง                                 |
+| --------   | -------                   | --------                               |
+| **Native** | CLI tools, servers        | `thailang build หลัก.th`               |
+| **WASM**   | Browser, Edge             | `thailang build หลัก.th --target wasm` |
+| **JS**     | ใช้กับ Node/Bun ecosystem | `thailang build หลัก.th --target js`   |
 
 ---
 
@@ -408,7 +408,7 @@ thailang ตรวจ หลัก.th
 
 ## 7. File Extension
 
-- `.th` — สั้น ชัดเจน ย่อมาจาก **Th**ailang และ **Th**ai
+- `.th`: สั้น ชัดเจน ย่อมาจาก **Th**ailang และ **Th**ai
 
 ---
 
@@ -452,10 +452,10 @@ thailang ตรวจ หลัก.th
 
 ---
 
-## 9. FizzBuzz — ตัวอย่างเต็ม
+## 9. FizzBuzz: ตัวอย่างเต็ม
 
 ```thailang
-// fizzbuzz.th — โปรแกรมแรกของ Thailang
+// fizzbuzz.th, โปรแกรมแรกของ Thailang
 
 วน (ให้ i = 1; i <= 100; i += 1) {
     ถ้า (i % 15 == 0) {
@@ -504,7 +504,7 @@ if (age >= 18) {
 
 ## 11. Roadmap
 
-### Phase 1 — MVP (เดือน 1-3)
+### Phase 1: MVP (เดือน 1-3)
 - [ ] Lexer + Parser ใน Rust (รองรับ keyword ไทย + Unicode)
 - [ ] Type checker พื้นฐาน (inferred + explicit)
 - [ ] Compile to JS (ง่ายสุด ใช้ได้เร็วสุด)
@@ -512,19 +512,19 @@ if (age >= 18) {
 - [ ] REPL
 - [ ] Web playground
 
-### Phase 2 — Type System (เดือน 3-6)
+### Phase 2: Type System (เดือน 3-6)
 - [ ] Union types, Generics
 - [ ] Type narrowing
 - [ ] โครงสร้าง (struct/interface)
 - [ ] Standard library พื้นฐาน (คณิต, ข้อความ, รายการ)
 
-### Phase 3 — Native Compile (เดือน 6-12)
+### Phase 3: Native Compile (เดือน 6-12)
 - [ ] LLVM backend → native binary
 - [ ] WASM target
 - [ ] Async runtime
 - [ ] Package manager (`thailang เพิ่ม`)
 
-### Phase 4 — Ecosystem (ปีที่ 2)
+### Phase 4: Ecosystem (ปีที่ 2)
 - [ ] VS Code extension (syntax highlight + LSP)
 - [ ] Formatter + Linter
 - [ ] Documentation site (thailang.dev)
@@ -561,5 +561,5 @@ thailang/
 
 ---
 
-*Thailang — ภาษาโปรแกรมมิงไทยตัวแรกที่ compile จริง 🚀*
+*Thailang, ภาษาโปรแกรมมิงไทยตัวแรกที่ compile จริง 🚀*
 *thailang.dev (coming soon)*

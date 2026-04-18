@@ -1,6 +1,6 @@
 # thailang
 
-> ภาษาโปรแกรมมิงไทย — Thai-first programming language.
+> ภาษาโปรแกรมมิงไทย, Thai-first programming language.
 
 ```bash
 npm i -g thailang
@@ -17,10 +17,10 @@ npm i -g @9tech.solutions/thailang
 
 ## What you get
 
-- `thailang run <file.th>` — type-check, compile to JS, execute via Node
-- `thailang emit-js <file.th>` — print the emitted JavaScript to stdout
-- `thailang check <file.th>` — type-check only (exit 1 on errors)
-- `thai` alias — `thai run hello.th` works the same
+- `thailang run <file.th>`: type-check, compile to JS, execute via Node
+- `thailang emit-js <file.th>`: print the emitted JavaScript to stdout
+- `thailang check <file.th>`: type-check only (exit 1 on errors)
+- `thai` alias, `thai run hello.th` works the same
 
 No Rust toolchain required. The compiler ships as a bundled WASM module
 built from the [Thailang project](https://github.com/9Tech-Solutions/thailang).

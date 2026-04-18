@@ -827,7 +827,7 @@ fn token_to_assign_op(t: &TokenKind) -> Option<AssignOp> {
     })
 }
 
-/// Infix binding powers — left and right. Higher = binds tighter.
+/// Infix binding powers, left and right. Higher = binds tighter.
 fn infix_binding_power(op: BinaryOp) -> (u8, u8) {
     match op {
         BinaryOp::Or => (1, 2),

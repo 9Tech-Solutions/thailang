@@ -59,7 +59,7 @@ body {
   color: var(--color-bg);
 }
 
-/* Subtle paper grain — applied via backdrop pattern below */
+/* Subtle paper grain, applied via backdrop pattern below */
 .paper-grain {
   background-image: radial-gradient(oklch(0% 0 0 / 0.018) 1px, transparent 1px);
   background-size: 3px 3px;
@@ -106,7 +106,7 @@ body {
   }
 }
 
-/* Shiki output integration — let our outer chrome own the surface */
+/* Shiki output integration, let our outer chrome own the surface */
 .thailang-code pre {
   background: transparent !important;
   padding: 0;

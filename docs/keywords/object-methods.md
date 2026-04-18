@@ -1,6 +1,6 @@
-# `วัตถุ` — Object static methods
+# `วัตถุ`: Object static methods
 
-> **Not yet implemented.** Covers JS `Object.*` statics — the most useful
+> **Not yet implemented.** Covers JS `Object.*` statics, the most useful
 > ones for Thai children will be `keys` / `values` / `entries` / `freeze`.
 
 ---
@@ -9,10 +9,10 @@
 
 | Proposed | Means          | Clash                | Notes             |
 | -------- | -------------- | -------------------- | ----------------- |
-| `วัตถุ`  | object / thing | medium — "an object" | matches JS naming |
-| _alt_    | —              | —                    |                   |
+| `วัตถุ`  | object / thing | medium, "an object"  | matches JS naming |
+| _alt_    |                |                      |                   |
 
-Possible alternative if `วัตถุ` feels physics-y: `ข้อมูล` (data) — but
+Possible alternative if `วัตถุ` feels physics-y: `ข้อมูล` (data), but
 that's potentially used for `JSON` module too. Pick once.
 
 ---
@@ -49,4 +49,4 @@ Suggested candidates:
 
 Thailang doesn't have `...spread` or `{ a, b } = obj` destructuring yet.
 These are ES2015+ features that would reduce the need for many `Object.*`
-helpers. Out of scope for this rename — Phase 3C or later design decision.
+helpers. Out of scope for this rename, Phase 3C or later design decision.

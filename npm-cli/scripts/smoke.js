@@ -29,7 +29,7 @@ function checkPair(name) {
   const src = path.join(examples, `${name}.th`);
   const expected = path.join(examples, `${name}.expected.txt`);
   if (!fs.existsSync(src) || !fs.existsSync(expected)) {
-    process.stdout.write(`[smoke] skip ${name} — fixture missing\n`);
+    process.stdout.write(`[smoke] skip ${name}, fixture missing\n`);
     return;
   }
   const got = run(src);
@@ -41,7 +41,7 @@ function checkPair(name) {
 function main() {
   if (!wasmPresent()) {
     process.stdout.write(
-      "[smoke] wasm/ not populated — run `node scripts/prepack.js` first, or `bun run --filter playground-wasm build && cp playground-wasm/pkg/thailang_wasm*.{js,wasm,d.ts} npm-cli/wasm/`\n",
+      "[smoke] wasm/ not populated, run `node scripts/prepack.js` first, or `bun run --filter playground-wasm build && cp playground-wasm/pkg/thailang_wasm*.{js, wasm, d.ts} npm-cli/wasm/`\n",
     );
     process.exit(0);
   }

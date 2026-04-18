@@ -16,7 +16,7 @@ pub fn check(program: &Program) -> Vec<TypeError> {
 #[derive(Default)]
 struct Ctx {
     errors: Vec<TypeError>,
-    /// Scope stack — each frame holds local bindings. `check_fn` pushes its
+    /// Scope stack, each frame holds local bindings. `check_fn` pushes its
     /// params onto a fresh frame so they go out of scope when the fn ends.
     scopes: Vec<Scope>,
     /// Globals (top-level `ให้` + `ฟังก์ชัน`).
@@ -102,7 +102,7 @@ impl Ctx {
     fn check_fn(&mut self, f: &FnDecl) {
         // Register the function at its enclosing scope so sibling/inner code
         // can reference it by name. (Signatures as first-class types are not
-        // tracked in Phase 3A — callers fall back to `Any`.)
+        // tracked in Phase 3A, callers fall back to `Any`.)
         self.declare(&f.name, TypeAnn::Any);
 
         let prev_return = self
@@ -279,7 +279,7 @@ impl Ctx {
         // Type-check the condition expression itself (surfaces errors inside it).
         self.infer_expr(cond);
 
-        // Narrow bindings referenced by `IsCheck` — then-branch sees the
+        // Narrow bindings referenced by `IsCheck`, then-branch sees the
         // narrowed view; on exit, restore the outer bindings.
         let narrowing = collect_narrowings(cond);
         let saved = self.apply_narrowings(&narrowing);
@@ -358,7 +358,7 @@ impl Ctx {
             }
             ExprKind::Call { callee, args } => {
                 let return_ty = match &callee.kind {
-                    // Module call: `คณิต.สุ่ม()` — look up the (module, member)
+                    // Module call: `คณิต.สุ่ม()`, look up the (module, member)
                     // pair in the stdlib registry before falling back to Any.
                     ExprKind::Member { object, member } => {
                         if let ExprKind::Ident(obj_name) = &object.kind {
@@ -447,7 +447,7 @@ impl Ctx {
 
 /// Collect type-guards that should narrow a binding inside the truthy branch
 /// of `cond`. Only top-level `&&`-conjoined IsChecks on plain identifiers are
-/// extracted; anything else is ignored — producing no false positives.
+/// extracted; anything else is ignored, producing no false positives.
 fn collect_narrowings(cond: &Expr) -> Vec<(String, TypeAnn)> {
     let mut out = Vec::new();
     walk_narrowings(cond, &mut out);

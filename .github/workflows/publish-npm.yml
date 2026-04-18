@@ -1,7 +1,7 @@
 name: Publish npm
 
 # Triggered by pushing a git tag matching `v*` (e.g. `v0.1.0`). The tag
-# version must match `npm-cli/package.json` — the `verify-version` step
+# version must match `npm-cli/package.json`: the `verify-version` step
 # gates on this so nobody ships a tag that disagrees with the manifest.
 #
 # Also exposes `workflow_dispatch` with a `dry_run` toggle so you can
@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Pack + verify only — skip the actual npm publish"
+        description: "Pack + verify only, skip the actual npm publish"
         type: boolean
         default: false
 
@@ -30,7 +30,7 @@ jobs:
     permissions:
       contents: read
       # Required for `npm publish --provenance`. Works alongside the
-      # classic NPM_TOKEN secret — npm signs the provenance statement
+      # classic NPM_TOKEN secret: npm signs the provenance statement
       # using the GitHub OIDC token, not the npm token.
       id-token: write
 
@@ -63,8 +63,8 @@ jobs:
       # ── Decide whether each of the two names needs publishing ───────────
       #
       # We ship under two names from one source:
-      # - `thailang`                   (unscoped — canonical short name)
-      # - `@9tech.solutions/thailang`  (scoped — shows on the org's page)
+      # - `thailang`                   (unscoped: canonical short name)
+      # - `@9tech.solutions/thailang`  (scoped: shows on the org's page)
       #
       # Each version is only publishable once per name, so we pre-check npm
       # to skip gracefully on reruns. Avoids spurious failures when only one
@@ -83,32 +83,32 @@ jobs:
 
           if [ -z "$UNSCOPED_PUBLISHED" ]; then
             echo "publish_unscoped=true" >> $GITHUB_OUTPUT
-            echo "[check] thailang@$CURRENT — not yet published"
+            echo "[check] thailang@$CURRENT, not yet published"
           else
             echo "publish_unscoped=false" >> $GITHUB_OUTPUT
-            echo "[check] thailang@$CURRENT — already on npm, skipping"
+            echo "[check] thailang@$CURRENT, already on npm, skipping"
           fi
 
           if [ -z "$SCOPED_PUBLISHED" ]; then
             echo "publish_scoped=true" >> $GITHUB_OUTPUT
-            echo "[check] @9tech.solutions/thailang@$CURRENT — not yet published"
+            echo "[check] @9tech.solutions/thailang@$CURRENT, not yet published"
           else
             echo "publish_scoped=false" >> $GITHUB_OUTPUT
-            echo "[check] @9tech.solutions/thailang@$CURRENT — already on npm, skipping"
+            echo "[check] @9tech.solutions/thailang@$CURRENT, already on npm, skipping"
           fi
 
       # ── Dry run (manual only) ───────────────────────────────────────────
 
-      - name: Publish — dry run (unscoped)
+      - name: Publish, dry run (unscoped)
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
         working-directory: npm-cli
         run: npm publish --provenance --access public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # ── Real publish — unscoped first, then mutate name and publish scoped ──
+      # Real publish, unscoped first, then mutate name and publish scoped
 
-      - name: Publish (unscoped — `thailang`)
+      - name: Publish (unscoped, `thailang`)
         if: (github.event_name == 'push' || github.event.inputs.dry_run != 'true') && steps.check.outputs.publish_unscoped == 'true'
         working-directory: npm-cli
         run: npm publish --provenance --access public
@@ -129,10 +129,10 @@ jobs:
           echo '[rewrite] package.json now pinned to @9tech.solutions/thailang'
           node -e "console.log(require('./package.json').name)"
 
-      - name: Publish (scoped alias — `@9tech.solutions/thailang`)
+      - name: Publish (scoped alias, `@9tech.solutions/thailang`)
         if: (github.event_name == 'push' || github.event.inputs.dry_run != 'true') && steps.check.outputs.publish_scoped == 'true'
         working-directory: npm-cli
-        # --ignore-scripts skips the prepack rebuild — wasm/ is already
+        # --ignore-scripts skips the prepack rebuild: wasm/ is already
         # populated from the unscoped publish above, and rebuilding would
         # be wasteful + could race the fresh provenance signature.
         run: npm publish --provenance --access public --ignore-scripts

@@ -1,4 +1,4 @@
-# `จำนวน` — Number module + global numeric helpers
+# `จำนวน`: Number module + global numeric helpers
 
 > **Not yet implemented.** Covers `Number.*` statics and the global numeric
 > parsing/validation functions (`parseInt`, `parseFloat`, `isNaN`, `isFinite`).
@@ -9,15 +9,15 @@
 
 | Proposed | Means                     | Clash                   | Notes                                  |
 | -------- | ------------------------- | ----------------------- | -------------------------------------- |
-| `จำนวน`  | number / count / quantity | medium — "count/amount" | stem of `จำนวนเต็ม` (int type keyword) |
-| _alt_    | —                         | —                       |                                        |
+| `จำนวน`  | number / count / quantity | medium, "count/amount"  | stem of `จำนวนเต็ม` (int type keyword) |
+| _alt_    |                           |                         |                                        |
 
 Note: `จำนวน` stands alone (doesn't collide with `จำนวนเต็ม` token because
 logos uses longest-match). Safe.
 
 ---
 
-## Parsing — global helpers
+## Parsing: global helpers
 
 JS exposes these at global scope. Thailang namespaces them under `จำนวน.*`:
 
@@ -55,7 +55,7 @@ Suggested candidates:
 
 Suggested candidates:
 
-- `MAX_SAFE_INTEGER` → `.สูงสุด` (but conflicts with `คณิต.สูงสุด` — prefix with something like `.ค่าสูงสุด` or `.เต็มสูงสุด`)
+- `MAX_SAFE_INTEGER` → `.สูงสุด` (but conflicts with `คณิต.สูงสุด`, prefix with something like `.ค่าสูงสุด` or `.เต็มสูงสุด`)
 - `MIN_SAFE_INTEGER` → `.ต่ำสุด` (same conflict)
 - `POSITIVE_INFINITY` → `.อนันต์` (infinity)
 - `NEGATIVE_INFINITY` → `.อนันต์ลบ`

@@ -1,6 +1,6 @@
-# `วันที่` — Date module
+# `วันที่`: Date module
 
-> **Not yet implemented.** Covers JS `Date` — creation, current-time helpers,
+> **Not yet implemented.** Covers JS `Date`, creation, current-time helpers,
 > and accessors on a date value.
 
 ---
@@ -9,8 +9,8 @@
 
 | Proposed | Means | Clash          | Notes              |
 | -------- | ----- | -------------- | ------------------ |
-| `วันที่` | date  | low — compound | direct translation |
-| _alt_    | —     | —              |                    |
+| `วันที่` | date  | low, compound  | direct translation |
+| _alt_    |       |                |                    |
 
 ---
 
@@ -50,7 +50,7 @@ Suggested candidates:
 Suggested candidates (short forms preferred for children):
 
 - `.getFullYear` → `.ปี`
-- `.getMonth` → `.เดือน` — **warning**: JS is 0-indexed. Consider wrapping to +1 so `.เดือน` returns 1–12 (natural for kids).
+- `.getMonth` → `.เดือน`, **warning**: JS is 0-indexed. Consider wrapping to +1 so `.เดือน` returns 1–12 (natural for kids).
 - `.getDate` → `.วันที่` (conflicts with module name) / `.วัน`
 - `.getDay` → `.วันสัปดาห์` / `.วันที่เท่าไหร่`
 - `.getHours` → `.ชั่วโมง`

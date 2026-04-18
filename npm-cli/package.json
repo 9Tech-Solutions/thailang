@@ -1,7 +1,7 @@
 {
   "name": "thailang",
   "version": "0.1.0",
-  "description": "ภาษาโปรแกรมมิงไทย — Thai-first programming language. Compiles to JS; ships as a Node-only CLI (no Rust toolchain needed at install time).",
+  "description": "ภาษาโปรแกรมมิงไทย, Thai-first programming language. Compiles to JS; ships as a Node-only CLI (no Rust toolchain needed at install time).",
   "keywords": [
     "thailang",
     "thai",

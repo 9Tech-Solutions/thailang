@@ -51,7 +51,7 @@ export function CodeShowcase() {
           <p className="col-span-12 max-w-xl text-lg text-[var(--color-fg-muted)] lg:col-span-6 lg:col-start-7 lg:self-end">
             Every keyword is Thai; every bit of syntax is recognizable. Paste
             the source into the Thailang compiler and it emits clean, readable
-            JavaScript you can run anywhere Node runs — or compile to
+            JavaScript you can run anywhere Node runs, or compile to
             WebAssembly for the browser.
           </p>
         </header>

@@ -37,12 +37,12 @@ function ensureWasmPack() {
 function copyWasmArtifacts() {
   if (!fs.existsSync(playgroundWasmPkg)) {
     throw new Error(
-      `[prepack] expected wasm-pack output at ${playgroundWasmPkg} — did the build fail?`,
+      `[prepack] expected wasm-pack output at ${playgroundWasmPkg}, did the build fail?`,
     );
   }
   fs.mkdirSync(cliWasmDir, { recursive: true });
 
-  // Only the runtime artifacts — skip package.json/.gitignore from the
+  // Only the runtime artifacts, skip package.json/.gitignore from the
   // wasm-pack output since they'd conflict with our own.
   const wanted = [
     "thailang_wasm.js",

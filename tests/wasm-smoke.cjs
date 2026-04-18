@@ -30,7 +30,7 @@ const captured = [];
 const origLog = console.log;
 console.log = (...args) => captured.push(args.map(String).join(' '));
 try {
-  // biome-ignore lint/security/noGlobalEval: compiled output from our own compiler over a fixed example input — this is the whole point of the smoke test.
+  // biome-ignore lint/security/noGlobalEval: compiled output from our own compiler over a fixed example input, this is the whole point of the smoke test.
   eval(js);
 } finally {
   console.log = origLog;
@@ -43,16 +43,16 @@ const expected = fs
   .split('\n');
 
 if (captured.length !== expected.length) {
-  fail(`line count mismatch — got ${captured.length}, expected ${expected.length}`);
+  fail(`line count mismatch, got ${captured.length}, expected ${expected.length}`);
 }
 for (let i = 0; i < expected.length; i++) {
   if (captured[i] !== expected[i]) {
-    fail(`line ${i + 1} mismatch — expected "${expected[i]}", got "${captured[i]}"`);
+    fail(`line ${i + 1} mismatch, expected "${expected[i]}", got "${captured[i]}"`);
   }
 }
 ok(`${captured.length} lines match expected fizzbuzz output`);
 
-// 4. tokenize round-trip — sanity check
+// 4. tokenize round-trip, sanity check
 const tokensJson = wasm.tokenizeToJson('ให้ x = 42;');
 const tokens = JSON.parse(tokensJson);
 if (!Array.isArray(tokens) || tokens.length === 0) {
@@ -63,7 +63,7 @@ if (tokens[0].kind !== 'Let') {
 }
 ok(`tokenizeToJson returned ${tokens.length} tokens`);
 
-// 5. WASM size budget — under 300 KB gzipped
+// 5. WASM size budget, under 300 KB gzipped
 const wasmPath = path.join(ROOT, 'playground-wasm/pkg/thailang_wasm_bg.wasm');
 const rawSize = fs.statSync(wasmPath).size;
 const gzippedSize = parseInt(execSync(`gzip -9 -c "${wasmPath}" | wc -c`).toString().trim(), 10);

@@ -201,7 +201,7 @@ pub enum TokenKind {
     #[regex(r#""([^"\\]|\\.)*""#, |lex| unescape_string_literal(lex.slice()))]
     Str(String),
 
-    // ── Identifiers (Thai + ASCII; lowest priority — keywords win) ─────
+    // ── Identifiers (Thai + ASCII; lowest priority, keywords win) ─────
     #[regex(
         r"[\u0E00-\u0E7Fa-zA-Z_][\u0E00-\u0E7Fa-zA-Z0-9_]*",
         |lex| lex.slice().to_string()

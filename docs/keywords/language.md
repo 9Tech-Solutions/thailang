@@ -1,6 +1,6 @@
-# Language keywords — hard reservations
+# Language keywords: hard reservations
 
-> These are **lexer keywords** — the parser refuses them as identifiers.
+> These are **lexer keywords**, the parser refuses them as identifiers.
 > Renaming touches `compiler/crates/lexer/src/token.rs` first, then flows
 > through parser / emitter / SPEC / grammars / examples.
 
@@ -41,38 +41,38 @@ Total: **42 words** across 10 sections.
 
 | Current     | Means         | TS analog | Clash                   | Proposed     |
 | ----------- | ------------- | --------- | ----------------------- | ------------ |
-| `ตัวเลข`    | number        | `number`  | **high** — "the number" |              |
-| `จำนวนเต็ม` | integer       | `int`     | low — technical         |              |
-| `ข้อความ`   | string / text | `string`  | **high** — "a message"  |              |
-| `จริงเท็จ`  | boolean       | `boolean` | low — compound          | `ถูกผิด`     |
-| `อะไรก็ได้` | any           | `any`     | low — long phrase       | `ทั่วไป`     |
-| `ไม่คืน`    | void          | `void`    | low — compound          | `ไม่ส่งกลับ` |
+| `ตัวเลข`    | number        | `number`  | **high**: "the number"  |              |
+| `จำนวนเต็ม` | integer       | `int`     | low, technical          |              |
+| `ข้อความ`   | string / text | `string`  | **high**: "a message"   |              |
+| `จริงเท็จ`  | boolean       | `boolean` | low, compound           | `ถูกผิด`     |
+| `อะไรก็ได้` | any           | `any`     | low, long phrase        | `ทั่วไป`     |
+| `ไม่คืน`    | void          | `void`    | low, compound           | `ไม่ส่งกลับ` |
 
 ## 4. Boolean & Null Literals
 
 | Current | Means        | JS analog | Clash                     | Proposed |
 | ------- | ------------ | --------- | ------------------------- | -------- |
-| `จริง`  | true         | `true`    | medium — adj "real/true"  | `ถูก`    |
+| `จริง`  | true         | `true`    | medium, adj "real/true"   | `ถูก`    |
 | `เท็จ`  | false        | `false`   | low                       | `ผิด`    |
-| `ว่าง`  | null / empty | `null`    | medium — adj "free/empty" |          |
+| `ว่าง`  | null / empty | `null`    | medium, adj "free/empty"  |          |
 
 ## 5. Logical Operators
 
-> These ALSO accept ASCII aliases (`&&`, `\|\|`, `!`) — the ASCII forms stay
+> These ALSO accept ASCII aliases (`&&`, `\|\|`, `!`), the ASCII forms stay
 > regardless of what you do to the Thai keywords.
 
 | Current | Means | JS analog | Clash                    | Proposed |
 | ------- | ----- | --------- | ------------------------ | -------- |
-| `และ`   | and   | `&&`      | **high** — conjunction   |          |
-| `หรือ`  | or    | `\|\|`    | **high** — conjunction   |          |
-| `ไม่`   | not   | `!`       | **high** — negation word | `ไม่ใช่` |
+| `และ`   | and   | `&&`      | **high**: conjunction    |          |
+| `หรือ`  | or    | `\|\|`    | **high**: conjunction    |          |
+| `ไม่`   | not   | `!`       | **high**: negation word  | `ไม่ใช่` |
 
 ## 6. Data Structure Keywords
 
 | Current     | Means              | TS analog   | Clash                    | Proposed |
 | ----------- | ------------------ | ----------- | ------------------------ | -------- |
-| `รายการ`    | list / array       | `Array`     | **high** — "a list item" | `ชุด`    |
-| `แผนที่`    | map / object       | `Map`/`{}`  | **high** — "a map"       | `คู่`    |
+| `รายการ`    | list / array       | `Array`     | **high**: "a list item"  | `ชุด`    |
+| `แผนที่`    | map / object       | `Map`/`{}`  | **high**: "a map"        | `คู่`    |
 | `โครงสร้าง` | struct / interface | `interface` | medium                   | `โครง`   |
 
 ## 7. Async
@@ -97,11 +97,11 @@ Total: **42 words** across 10 sections.
 | -------- | ------ | --------- | ---------------------- | -------- |
 | `นำเข้า` | import | `import`  | low                    |          |
 | `ส่งออก` | export | `export`  | low                    |          |
-| `จาก`    | from   | `from`    | **high** — preposition |          |
+| `จาก`    | from   | `from`    | **high**: preposition  |          |
 
 ## 10. Misc (membership + type guard)
 
 | Current | Means           | JS/TS analog    | Clash                  | Proposed |
 | ------- | --------------- | --------------- | ---------------------- | -------- |
-| `ใน`    | in              | `in`            | **high** — preposition |          |
-| `เป็น`  | is (type guard) | no direct equiv | **high** — "to be"     |          |
+| `ใน`    | in              | `in`            | **high**: preposition  |          |
+| `เป็น`  | is (type guard) | no direct equiv | **high**: "to be"      |          |

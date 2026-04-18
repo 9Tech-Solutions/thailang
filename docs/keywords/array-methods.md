@@ -1,6 +1,6 @@
-# Array methods — receiver methods on `รายการ` / `ชุด`
+# Array methods: receiver methods on `รายการ` / `ชุด`
 
-> **Soft reservations.** Same pattern as `string-methods.md` — emitter rewrites
+> **Soft reservations.** Same pattern as `string-methods.md`, emitter rewrites
 > these member names regardless of receiver type.
 
 ---
@@ -9,25 +9,25 @@
 
 | Current    | Means               | JS target       | Clash                        | Proposed |
 | ---------- | ------------------- | --------------- | ---------------------------- | -------- |
-| `.ความยาว` | length              | `.length`       | **high** — universal         | `ขนาด`   |
-| `.เรียง`   | sort (non-mutating) | `.slice().sort` | medium — "arrange/order"     |          |
-| `.กรอง`    | filter              | `.filter`       | medium — "filter/strain"     |          |
-| `.แปลง`    | map                 | `.map`          | medium — "transform/convert" |          |
-| `.ลด`      | reduce              | `.reduce`       | **high** — "decrease"        | `รวบ`    |
-| `.มี`      | includes / has      | `.includes`     | **high** — "to have"         |          |
+| `.ความยาว` | length              | `.length`       | **high**: universal          | `ขนาด`   |
+| `.เรียง`   | sort (non-mutating) | `.slice().sort` | medium, "arrange/order"      |          |
+| `.กรอง`    | filter              | `.filter`       | medium, "filter/strain"      |          |
+| `.แปลง`    | map                 | `.map`          | medium, "transform/convert"  |          |
+| `.ลด`      | reduce              | `.reduce`       | **high**: "decrease"         | `รวบ`    |
+| `.มี`      | includes / has      | `.includes`     | **high**: "to have"          |          |
 
 ### Child-friendliness notes
 
 - `.ลด` is the most natural Thai word for "reduce" but also extremely
   common as a verb meaning "decrease". In a cart context `ตะกร้า.ลด(...)` is
-  ambiguous — does it reduce (fold) or discount (decrease the price)?
-- `.มี` ("to have") as a method name is very natural (`ตะกร้า.มี(ของ)`) —
+  ambiguous, does it reduce (fold) or discount (decrease the price)?
+- `.มี` ("to have") as a method name is very natural (`ตะกร้า.มี(ของ)`), 
   this is GOOD, not bad. Keeping it is probably the right call despite
   being flagged as **high**.
 
 ---
 
-## Missing — to add in Phase 3C
+## Missing: to add in Phase 3C
 
 Array methods commonly needed:
 
@@ -69,7 +69,7 @@ Suggested candidates:
 - `.flat` → `.แบน`
 - `.flatMap` → `.แบนแปลง`
 - `.concat` → `.เชื่อม`
-- `.slice` → `.ตัด` (conflicts with string — could reuse if we want same verb)
+- `.slice` → `.ตัด` (conflicts with string, could reuse if we want same verb)
 - `.fill` → `.เติม`
 
 ---

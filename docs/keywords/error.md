@@ -1,4 +1,4 @@
-# `ข้อผิดพลาด` — Error types
+# `ข้อผิดพลาด`: Error types
 
 > **Not yet implemented.** Covers JS built-in error classes. Relevant once
 > `โยน` (throw) + `ลอง`/`จับ` (try/catch) are exercised with real error
@@ -12,9 +12,9 @@
 | ------------ | --------------------- | ----- | ------------------- |
 | `ข้อผิดพลาด` | error (long compound) | low   | literal translation |
 | `ผิดพลาด`    | error (shorter)       | low   | shorter alternative |
-| _alt_        | —                     | —     |                     |
+| _alt_        |                       |       |                     |
 
-Consider whether error types deserve a module prefix at all — JS exposes
+Consider whether error types deserve a module prefix at all, JS exposes
 them as bare globals (`throw new TypeError(...)`). Thailang could do
 either:
 
@@ -44,7 +44,7 @@ either:
 | _?_                | URI error               | `URIError`       |       |                     |
 | _?_                | eval error (deprecated) | `EvalError`      |       |                     |
 
-Suggested candidates (option B — bare Thai compounds):
+Suggested candidates (option B, bare Thai compounds):
 
 - `Error` → `ข้อผิดพลาด`
 - `TypeError` → `ข้อผิดพลาดประเภท`
@@ -66,7 +66,7 @@ Suggested candidates (option B — bare Thai compounds):
 Suggested:
 
 - `.message` → `.ข้อความ` (conflicts with `String` type keyword if we
-  rename that away — check against `language.md` §3)
+  rename that away, check against `language.md` §3)
 - `.name` → `.ชื่อ`
 - `.stack` → `.ร่องรอย` / `.สแต็ก`
 - `.cause` → `.สาเหตุ`

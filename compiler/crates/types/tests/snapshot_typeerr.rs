@@ -14,7 +14,7 @@ use thailang_ast::Span;
 use thailang_parser::parse;
 use thailang_types::{check, TypeError};
 
-/// Format a diagnostic the way a user would read it — "line:col message"
+/// Format a diagnostic the way a user would read it, "line:col message"
 /// with a short snippet underlined. Deterministic, column-in-chars for
 /// Thai correctness.
 fn format_diagnostic(source: &str, error: &TypeError) -> String {
@@ -59,7 +59,7 @@ fn fixture_report(path: &Path) -> String {
     let errors = check(&program);
     assert!(
         !errors.is_empty(),
-        "fixture {} produced no type errors — expected at least one",
+        "fixture {} produced no type errors, expected at least one",
         path.display()
     );
     errors
@@ -71,7 +71,7 @@ fn fixture_report(path: &Path) -> String {
 
 /// One `#[test]` per fixture. Listed explicitly (instead of glob-driven) so
 /// failing cases fail by name under `cargo test`, and so adding a fixture
-/// forces an explicit test entry — preventing silent skips.
+/// forces an explicit test entry, preventing silent skips.
 macro_rules! snapshot_fixture {
     ($name:ident) => {
         #[test]

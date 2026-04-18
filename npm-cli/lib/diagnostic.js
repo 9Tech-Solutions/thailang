@@ -1,6 +1,6 @@
 "use strict";
 
-// ANSI colors — match the Rust CLI's rendering so both entrypoints feel the same.
+// ANSI colors, match the Rust CLI's rendering so both entrypoints feel the same.
 const RED = "\x1b[31;1m";
 const DIM = "\x1b[2m";
 const RESET = "\x1b[0m";

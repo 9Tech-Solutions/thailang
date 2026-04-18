@@ -4,7 +4,7 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-description = "Thailang parser — handwritten recursive descent + Pratt"
+description = "Thailang parser, handwritten recursive descent + Pratt"
 
 [lib]
 path = "src/lib.rs"

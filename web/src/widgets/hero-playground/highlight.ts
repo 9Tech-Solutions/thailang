@@ -1,6 +1,6 @@
 /**
  * Client-side Thai-aware tokenizer for live editing in the hero playground.
- * Produces tokens the overlay <pre> can style with CSS variables — matching
+ * Produces tokens the overlay <pre> can style with CSS variables, matching
  * the Shiki palette used by the static code blocks elsewhere on the page.
  *
  * Kept intentionally small: mirrors the Rust lexer's keyword sets (see

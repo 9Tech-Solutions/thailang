@@ -1,4 +1,4 @@
-# Thailang — Project Conventions
+# Thailang: Project Conventions
 
 ## Architecture
 
@@ -11,7 +11,7 @@
 
 - **Thai** for: language keywords, stdlib module/method names, example program identifiers.
 - **English** for: Rust crate/struct/fn names, CI scripts, repo tooling.
-- `.th` programs may use English identifiers freely — Thailang only enforces Thai keywords.
+- `.th` programs may use English identifiers freely, Thailang only enforces Thai keywords.
 - Test fixture filenames: descriptive English (`fizzbuzz.th`, `error_unbalanced_brace.th`), even though contents are Thai source.
 
 ## Testing (TDD required)

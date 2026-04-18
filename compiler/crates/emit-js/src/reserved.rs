@@ -6,8 +6,8 @@
 //! SyntaxError. We rename any collision by appending `$`, which is a
 //! valid JS ident char and is itself never a reserved word.
 //!
-//! Mangling is deterministic — the same input always produces the same
-//! output — so declaration sites and use sites agree without any shared
+//! Mangling is deterministic, the same input always produces the same
+//! output, so declaration sites and use sites agree without any shared
 //! state between emit passes.
 
 /// All words that cannot appear as a plain identifier in strict-mode

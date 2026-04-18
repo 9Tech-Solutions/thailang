@@ -1,4 +1,4 @@
-# `ระบบ` — Console / I/O module
+# `ระบบ`: Console / I/O module
 
 > **Not yet implemented.** This file captures the design of a new stdlib
 > module based on your §1 note ("should change to std related, use the word
@@ -35,7 +35,7 @@ their first program, `ระบบ.พิมพ์("สวัสดี")` is mor
 Worth weighing against the "std-related" benefit.
 
 **Alternative:** Keep `พิมพ์` as a shortcut AND expose `ระบบ.พิมพ์` as the
-canonical form — both compile to `console.log`. Best of both worlds.
+canonical form, both compile to `console.log`. Best of both worlds.
 
 ---
 
@@ -43,8 +43,8 @@ canonical form — both compile to `console.log`. Best of both worlds.
 
 | Proposed | Means  | Clash                 | Notes         |
 | -------- | ------ | --------------------- | ------------- |
-| `ระบบ`   | system | medium — "the system" | your proposal |
-| _alt_    | —      | —                     |               |
+| `ระบบ`   | system | medium, "the system"  | your proposal |
+| _alt_    |        |                       |               |
 
 ---
 
@@ -54,7 +54,7 @@ Map `ระบบ.X` → JS `console.X`. Child-friendly, Thai-native names:
 
 | Current (proposed) | Means        | JS target          | Clash                     | Proposed        |
 | ------------------ | ------------ | ------------------ | ------------------------- | --------------- |
-| `.พิมพ์`           | print / log  | `console.log`      | low — already established | `.แสดง`         |
+| `.พิมพ์`           | print / log  | `console.log`      | low, already established  | `.แสดง`         |
 | _?_                | warn         | `console.warn`     |                           | `.เตือน`        |
 | _?_                | error        | `console.error`    |                           | `.ผิดพลาด`      |
 | _?_                | info         | `console.info`     |                           | `.แจ้ง`         |

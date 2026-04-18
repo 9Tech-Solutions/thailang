@@ -1,3 +1,3 @@
-// typeerr_reassign.th — ควร fail type-check
+// typeerr_reassign.th, ควร fail type-check
 ให้ ชื่อ: ข้อความ = "สมชาย";
 ชื่อ = 42;

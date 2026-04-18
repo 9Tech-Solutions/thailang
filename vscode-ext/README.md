@@ -1,13 +1,13 @@
 # Thailang for VS Code
 
-Syntax highlighting and language support for [Thailang](https://github.com/9Tech-Solutions/thailang) — a Thai-first programming language that compiles to JavaScript, WebAssembly, and (soon) native binaries.
+Syntax highlighting and language support for [Thailang](https://github.com/9Tech-Solutions/thailang), a Thai-first programming language that compiles to JavaScript, WebAssembly, and (soon) native binaries.
 
 ## Features
 
 - Syntax highlighting for `.th` files (Thai keywords, type annotations, string/number literals, comments, operators)
 - Bracket matching and auto-closing for `{}`, `[]`, `()`, and `""`
 - Line (`//`) and block (`/* */`) comment toggling via `Ctrl+/`
-- Thai-aware word selection — `Ctrl+D` / double-click selects full Thai identifiers without splitting on vowel marks
+- Thai-aware word selection, `Ctrl+D` / double-click selects full Thai identifiers without splitting on vowel marks
 - Smart indentation after `{`, `[`, `(`
 
 ## Example
@@ -56,7 +56,7 @@ Or from each editor's own CLI:
 # VS Code
 code --install-extension thailang-dev.thailang
 
-# Antigravity / Cursor / Windsurf default to OpenVSX — listing needs
+# Antigravity / Cursor / Windsurf default to OpenVSX: listing needs
 # to be published there separately via `bunx ovsx publish`.
 ```
 
@@ -71,4 +71,4 @@ To add a keyword:
 
 ## License
 
-MIT — see [LICENSE](./LICENSE) in the repository root.
+MIT, see [LICENSE](./LICENSE) in the repository root.

@@ -2,7 +2,7 @@
   "name": "playground-wasm",
   "version": "0.1.0",
   "private": true,
-  "description": "Thailang compiler as a WASM module — wraps wasm-pack output",
+  "description": "Thailang compiler as a WASM module, wraps wasm-pack output",
   "type": "module",
   "main": "./pkg/thailang_wasm.js",
   "types": "./pkg/thailang_wasm.d.ts",

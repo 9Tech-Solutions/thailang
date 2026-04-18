@@ -11,7 +11,7 @@ const heroSample = `// สวัสดี.th
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-[var(--color-border)]">
-      {/* Asymmetric grid — title bleeds right, meta sits top-left */}
+      {/* Asymmetric grid, title bleeds right, meta sits top-left */}
       <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-6 px-6 pt-8 pb-12 lg:px-12 lg:pt-12 lg:pb-20">
         {/* Meta rail */}
         <aside className="col-span-12 lg:col-span-3 reveal">
@@ -47,7 +47,7 @@ export function Hero() {
           </div>
         </aside>
 
-        {/* Headline — Thai display, massive */}
+        {/* Headline, Thai display, massive */}
         <div className="col-span-12 lg:col-span-9 reveal reveal-d1">
           <h1 className="thai-display leading-[1.05] text-balance">
             <span className="block text-[length:var(--text-hero-th)] font-semibold tracking-tight">
@@ -64,7 +64,7 @@ export function Hero() {
             programming language with{" "}
             <span className="text-[var(--color-fg)]">Thai keywords</span>,
             TypeScript-flavored syntax, and a Rust compiler that emits
-            JavaScript, WebAssembly, and — soon — native binaries. Built for
+            JavaScript, WebAssembly, and (soon) native binaries. Built for
             Thai developers who want their code to read in their own language
             without giving up the tooling they already know.
           </p>
@@ -90,7 +90,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Oversized code sample — breaks grid, floats into negative margin */}
+        {/* Oversized code sample, breaks grid, floats into negative margin */}
         <div className="col-span-12 lg:col-span-9 lg:col-start-3 reveal reveal-d3">
           <div className="relative mt-8 lg:mt-10">
             <div

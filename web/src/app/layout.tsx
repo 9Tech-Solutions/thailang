@@ -32,7 +32,7 @@ const plexThai = IBM_Plex_Sans_Thai_Looped({
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${site.domain}`),
   title: {
-    default: `${site.name} — ${site.taglineEn}`,
+    default: `${site.name}, ${site.taglineEn}`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    title: `${site.name} — ${site.taglineEn}`,
+    title: `${site.name}, ${site.taglineEn}`,
     description: site.description,
     siteName: site.name,
     locale: "th_TH",

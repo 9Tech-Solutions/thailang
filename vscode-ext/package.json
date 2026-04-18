@@ -1,7 +1,7 @@
 {
   "name": "thailang",
   "displayName": "Thailang",
-  "description": "Thai-language programming — syntax highlighting for .th files",
+  "description": "Thai-language programming, syntax highlighting for .th files",
   "version": "0.1.0",
   "publisher": "9Tech",
   "license": "MIT",

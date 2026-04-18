@@ -8,7 +8,7 @@ const DIM: &str = "\x1b[2m";
 const RESET: &str = "\x1b[0m";
 
 #[derive(Parser)]
-#[command(name = "thai", version, about = "Thailang compiler — ภาษาโปรแกรมมิงไทย")]
+#[command(name = "thai", version, about = "Thailang compiler, ภาษาโปรแกรมมิงไทย")]
 struct Cli {
     #[command(subcommand)]
     cmd: Cmd,
@@ -191,7 +191,7 @@ struct Location<'a> {
 
 /// Convert a byte-offset span into a (line, column, line-content, caret-width)
 /// where column and caret-width are measured in Unicode scalar values (chars),
-/// not bytes — so Thai multi-byte chars align correctly in the terminal.
+/// not bytes, so Thai multi-byte chars align correctly in the terminal.
 fn locate<'a>(source: &'a str, span: Span) -> Location<'a> {
     let clamped_start = span.start.min(source.len());
     let clamped_end = span.end.min(source.len()).max(clamped_start);

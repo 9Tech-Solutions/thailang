@@ -86,7 +86,7 @@ export function HeroPlayground({
 
   const tokens = tokenize(source);
   // Trailing newline keeps the overlay height in sync with a final blank line
-  // the user just typed — <pre> needs something after the trailing \n to include it.
+  // the user just typed, <pre> needs something after the trailing \n to include it.
   const overlayTrailer = source.endsWith("\n") ? "\u200B" : "";
 
   return (
@@ -124,7 +124,7 @@ export function HeroPlayground({
           <code>
             {tokens.map((t, i) => (
               <span
-                // biome-ignore lint/suspicious/noArrayIndexKey: tokens are re-derived every render — index is stable for this frame.
+                // biome-ignore lint/suspicious/noArrayIndexKey: tokens are re-derived every render, index is stable for this frame.
                 key={i}
                 style={{
                   color: TOKEN_COLOR[t.kind],
