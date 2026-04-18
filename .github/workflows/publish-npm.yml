@@ -1,0 +1,95 @@
+name: Publish npm
+
+# Triggered by pushing a git tag matching `v*` (e.g. `v0.1.0`). The tag
+# version must match `npm-cli/package.json` — the `verify-version` step
+# gates on this so nobody ships a tag that disagrees with the manifest.
+#
+# Also exposes `workflow_dispatch` with a `dry_run` toggle so you can
+# validate the pack layout without actually publishing.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Pack + verify only — skip the actual npm publish"
+        type: boolean
+        default: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Required for `npm publish --provenance`. Works alongside the
+      # classic NPM_TOKEN secret — npm signs the provenance statement
+      # using the GitHub OIDC token, not the npm token.
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.12"
+
+      - name: Setup Rust + wasm32 target
+        run: |
+          rustup default stable
+          rustup target add wasm32-unknown-unknown
+
+      - name: Install wasm-pack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack@0.14.0
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Verify tag matches package.json
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          PKG_VERSION=$(node -p "require('./npm-cli/package.json').version")
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag v$TAG_VERSION does not match npm-cli/package.json version $PKG_VERSION"
+            echo "Bump npm-cli/package.json to $TAG_VERSION, commit, and re-tag."
+            exit 1
+          fi
+          echo "OK: tag v$TAG_VERSION matches package.json"
+
+      - name: Cargo test (safety gate)
+        run: cargo test --workspace
+
+      - name: Publish — dry run
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+        working-directory: npm-cli
+        run: npm publish --provenance --access public --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish
+        if: github.event_name == 'push' || github.event.inputs.dry_run != 'true'
+        working-directory: npm-cli
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Summary
+        if: success()
+        run: |
+          echo "## 📦 Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View on npm: https://www.npmjs.com/package/thailang" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Install: \`npm i -g thailang\` or \`npx thailang run hello.th\`" >> $GITHUB_STEP_SUMMARY
