@@ -77,25 +77,100 @@ jobs:
       - name: Cargo test (safety gate)
         run: cargo test --workspace
 
-      - name: Publish — dry run
+      # ── Decide whether each of the two names needs publishing ───────────
+      #
+      # We ship under two names from one source:
+      # - `thailang`                   (unscoped — canonical short name)
+      # - `@9tech.solutions/thailang`  (scoped — shows on the org's page)
+      #
+      # Each version is only publishable once per name, so we pre-check npm
+      # to skip gracefully on reruns. Avoids spurious failures when only one
+      # of the two names has been bumped, or when a previous run published
+      # one but failed on the other.
+
+      - name: Check if versions already published
+        id: check
+        shell: bash
+        run: |
+          CURRENT=$(node -p "require('./npm-cli/package.json').version")
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+
+          UNSCOPED_PUBLISHED=$(npm view thailang@$CURRENT version 2>/dev/null || echo "")
+          SCOPED_PUBLISHED=$(npm view "@9tech.solutions/thailang@$CURRENT" version 2>/dev/null || echo "")
+
+          if [ -z "$UNSCOPED_PUBLISHED" ]; then
+            echo "publish_unscoped=true" >> $GITHUB_OUTPUT
+            echo "[check] thailang@$CURRENT — not yet published"
+          else
+            echo "publish_unscoped=false" >> $GITHUB_OUTPUT
+            echo "[check] thailang@$CURRENT — already on npm, skipping"
+          fi
+
+          if [ -z "$SCOPED_PUBLISHED" ]; then
+            echo "publish_scoped=true" >> $GITHUB_OUTPUT
+            echo "[check] @9tech.solutions/thailang@$CURRENT — not yet published"
+          else
+            echo "publish_scoped=false" >> $GITHUB_OUTPUT
+            echo "[check] @9tech.solutions/thailang@$CURRENT — already on npm, skipping"
+          fi
+
+      # ── Dry run (manual only) ───────────────────────────────────────────
+
+      - name: Publish — dry run (unscoped)
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
         working-directory: npm-cli
         run: npm publish --provenance --access public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish
-        if: github.event_name == 'push' || github.event.inputs.dry_run != 'true'
+      # ── Real publish — unscoped first, then mutate name and publish scoped ──
+
+      - name: Publish (unscoped — `thailang`)
+        if: (github.event_name == 'push' || github.event.inputs.dry_run != 'true') && steps.check.outputs.publish_unscoped == 'true'
         working-directory: npm-cli
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Rewrite package.json → scoped name
+        if: (github.event_name == 'push' || github.event.inputs.dry_run != 'true') && steps.check.outputs.publish_scoped == 'true'
+        working-directory: npm-cli
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.name = '@9tech.solutions/thailang';
+            pkg.publishConfig = { access: 'public' };
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + String.fromCharCode(10));
+          "
+          echo '[rewrite] package.json now pinned to @9tech.solutions/thailang'
+          node -e "console.log(require('./package.json').name)"
+
+      - name: Publish (scoped alias — `@9tech.solutions/thailang`)
+        if: (github.event_name == 'push' || github.event.inputs.dry_run != 'true') && steps.check.outputs.publish_scoped == 'true'
+        working-directory: npm-cli
+        # --ignore-scripts skips the prepack rebuild — wasm/ is already
+        # populated from the unscoped publish above, and rebuilding would
+        # be wasteful + could race the fresh provenance signature.
+        run: npm publish --provenance --access public --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Summary
         if: success()
         run: |
-          echo "## 📦 Published" >> $GITHUB_STEP_SUMMARY
+          VERSION="${{ steps.check.outputs.current }}"
+          echo "## 📦 Published thailang@$VERSION" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "View on npm: https://www.npmjs.com/package/thailang" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check.outputs.publish_unscoped }}" = "true" ]; then
+            echo "- ✅ https://www.npmjs.com/package/thailang" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ↩️  thailang@$VERSION already published (skipped)" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ steps.check.outputs.publish_scoped }}" = "true" ]; then
+            echo "- ✅ https://www.npmjs.com/package/@9tech.solutions/thailang" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ↩️  @9tech.solutions/thailang@$VERSION already published (skipped)" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Install: \`npm i -g thailang\` or \`npx thailang run hello.th\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Install:** \`npm i -g thailang\` · \`npm i -g @9tech.solutions/thailang\`" >> $GITHUB_STEP_SUMMARY

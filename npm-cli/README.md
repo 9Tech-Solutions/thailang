@@ -8,6 +8,13 @@ npm i -g thailang
 npx thailang run hello.th
 ```
 
+Also available as the scoped alias `@9tech.solutions/thailang` (same
+package, same version, different registry surface for org discovery):
+
+```bash
+npm i -g @9tech.solutions/thailang
+```
+
 ## What you get
 
 - `thailang run <file.th>` — type-check, compile to JS, execute via Node
