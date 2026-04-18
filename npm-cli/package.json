@@ -18,8 +18,8 @@
   },
   "license": "MIT",
   "bin": {
-    "thailang": "./bin/thailang.js",
-    "thai": "./bin/thailang.js"
+    "thailang": "bin/thailang.js",
+    "thai": "bin/thailang.js"
   },
   "files": [
     "bin",
