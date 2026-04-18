@@ -43,6 +43,15 @@ pub enum ExprKind {
     Object(Vec<(String, Expr)>),
     Template(Vec<TemplatePart>),
 
+    /// Runtime type guard: `value เป็น ty`. The RHS is a type, not an expression.
+    /// Emits as a JS type predicate and enables flow-sensitive narrowing in the
+    /// type checker.
+    IsCheck {
+        value: Box<Expr>,
+        ty: TypeAnn,
+        ty_span: Span,
+    },
+
     ArrowFn {
         params: Vec<Param>,
         return_type: Option<TypeAnn>,
@@ -77,7 +86,6 @@ pub enum BinaryOp {
     GtEq,
     And,
     Or,
-    Is,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

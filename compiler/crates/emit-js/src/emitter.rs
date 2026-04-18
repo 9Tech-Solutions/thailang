@@ -255,7 +255,79 @@ impl Emitter {
             ExprKind::Array(items) => self.emit_array(items),
             ExprKind::Object(pairs) => self.emit_object(pairs),
             ExprKind::Template(parts) => self.emit_template(parts),
+            ExprKind::IsCheck { value, ty, .. } => self.emit_is_check(value, ty),
             ExprKind::ArrowFn { params, body, .. } => self.emit_arrow_fn(params, body),
+        }
+    }
+
+    fn emit_is_check(&mut self, value: &Expr, ty: &TypeAnn) {
+        // Each concrete type emits its own JS runtime predicate; unions fold with `||`.
+        match ty {
+            TypeAnn::Union(variants) => {
+                self.write("(");
+                for (i, v) in variants.iter().enumerate() {
+                    if i > 0 {
+                        self.write(" || ");
+                    }
+                    self.emit_is_check(value, v);
+                }
+                self.write(")");
+            }
+            TypeAnn::Any => self.write("true"),
+            _ => {
+                self.write("(");
+                match ty {
+                    TypeAnn::String => {
+                        self.write("typeof ");
+                        self.emit_expr(value);
+                        self.write(" === \"string\"");
+                    }
+                    TypeAnn::Number => {
+                        self.write("typeof ");
+                        self.emit_expr(value);
+                        self.write(" === \"number\"");
+                    }
+                    TypeAnn::Int => {
+                        self.write("Number.isInteger(");
+                        self.emit_expr(value);
+                        self.write(")");
+                    }
+                    TypeAnn::Bool => {
+                        self.write("typeof ");
+                        self.emit_expr(value);
+                        self.write(" === \"boolean\"");
+                    }
+                    TypeAnn::Null => {
+                        self.emit_expr(value);
+                        self.write(" === null");
+                    }
+                    TypeAnn::Void => {
+                        self.emit_expr(value);
+                        self.write(" === undefined");
+                    }
+                    TypeAnn::Array(_) => {
+                        self.write("Array.isArray(");
+                        self.emit_expr(value);
+                        self.write(")");
+                    }
+                    TypeAnn::Map => {
+                        self.write("(typeof ");
+                        self.emit_expr(value);
+                        self.write(" === \"object\" && ");
+                        self.emit_expr(value);
+                        self.write(" !== null && !Array.isArray(");
+                        self.emit_expr(value);
+                        self.write("))");
+                    }
+                    TypeAnn::Named { name, .. } => {
+                        self.emit_expr(value);
+                        self.write(" instanceof ");
+                        self.write(name);
+                    }
+                    TypeAnn::Any | TypeAnn::Union(_) => unreachable!(),
+                }
+                self.write(")");
+            }
         }
     }
 
@@ -355,7 +427,6 @@ fn binary_op_str(op: BinaryOp) -> &'static str {
         BinaryOp::GtEq => ">=",
         BinaryOp::And => "&&",
         BinaryOp::Or => "||",
-        BinaryOp::Is => "instanceof",
     }
 }
 

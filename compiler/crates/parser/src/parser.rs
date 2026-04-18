@@ -376,7 +376,7 @@ impl Parser {
                 other => TypeAnn::Union(vec![other, next]),
             };
         }
-        Ok(ty)
+        Ok(ty.normalized())
     }
 
     fn parse_single_type_ann(&mut self) -> Result<TypeAnn, ParseError> {
@@ -388,6 +388,18 @@ impl Parser {
             TokenKind::BoolType => Ok(TypeAnn::Bool),
             TokenKind::AnyType => Ok(TypeAnn::Any),
             TokenKind::VoidType => Ok(TypeAnn::Void),
+            // `ว่าง` is a value literal in expression position but a type here.
+            TokenKind::Null => Ok(TypeAnn::Null),
+            TokenKind::ArrayKw => {
+                if self.eat(&TokenKind::Lt).is_some() {
+                    let inner = self.parse_type_ann()?;
+                    self.expect(TokenKind::Gt)?;
+                    Ok(TypeAnn::Array(Box::new(inner)))
+                } else {
+                    Ok(TypeAnn::Array(Box::new(TypeAnn::Any)))
+                }
+            }
+            TokenKind::MapKw => Ok(TypeAnn::Map),
             TokenKind::Ident(name) => Ok(TypeAnn::Named {
                 name,
                 generics: vec![],
@@ -414,8 +426,36 @@ impl Parser {
     }
 
     fn parse_expr_bp(&mut self, min_bp: u8) -> Result<Expr, ParseError> {
+        // `เป็น` binds tighter than arithmetic in the spec but looser than unary;
+        // 13/14 matches the table it replaced in the Pratt ladder.
+        const IS_BP: (u8, u8) = (13, 14);
+
         let mut lhs = self.parse_unary()?;
-        while let Some(op) = self.peek().and_then(|t| token_to_binary_op(&t.kind)) {
+        loop {
+            if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::Is)) {
+                let (l_bp, _) = IS_BP;
+                if l_bp < min_bp {
+                    break;
+                }
+                self.advance();
+                let ty_start = self.peek().map(|t| t.span.start).unwrap_or(lhs.span.end);
+                let ty = self.parse_type_ann()?;
+                let ty_end = self.cursor_end().unwrap_or(ty_start);
+                let span = Span::new(lhs.span.start, ty_end);
+                lhs = Expr {
+                    kind: ExprKind::IsCheck {
+                        value: Box::new(lhs),
+                        ty,
+                        ty_span: Span::new(ty_start, ty_end),
+                    },
+                    span,
+                };
+                continue;
+            }
+
+            let Some(op) = self.peek().and_then(|t| token_to_binary_op(&t.kind)) else {
+                break;
+            };
             let (l_bp, r_bp) = infix_binding_power(op);
             if l_bp < min_bp {
                 break;
@@ -433,6 +473,11 @@ impl Parser {
             };
         }
         Ok(lhs)
+    }
+
+    /// Span end of the most recently consumed token, used to bound IsCheck type spans.
+    fn cursor_end(&self) -> Option<usize> {
+        Some(self.last_end)
     }
 
     fn parse_unary(&mut self) -> Result<Expr, ParseError> {
@@ -679,7 +724,6 @@ fn token_to_binary_op(t: &TokenKind) -> Option<BinaryOp> {
         TokenKind::GtEq => BinaryOp::GtEq,
         TokenKind::AndAnd => BinaryOp::And,
         TokenKind::OrOr => BinaryOp::Or,
-        TokenKind::Is => BinaryOp::Is,
         _ => return None,
     })
 }
@@ -705,6 +749,5 @@ fn infix_binding_power(op: BinaryOp) -> (u8, u8) {
         BinaryOp::Lt | BinaryOp::LtEq | BinaryOp::Gt | BinaryOp::GtEq => (7, 8),
         BinaryOp::Add | BinaryOp::Sub => (9, 10),
         BinaryOp::Mul | BinaryOp::Div | BinaryOp::Mod => (11, 12),
-        BinaryOp::Is => (13, 14),
     }
 }

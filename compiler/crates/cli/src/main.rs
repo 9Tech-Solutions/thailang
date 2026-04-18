@@ -93,11 +93,18 @@ fn run_emit_js(path: &str) -> ExitCode {
 }
 
 fn run_program(path: &str) -> ExitCode {
-    let program = match read_and_parse(path) {
-        Outcome::Ok(_, p) => p,
+    let (source, program) = match read_and_parse(path) {
+        Outcome::Ok(s, p) => (s, p),
         Outcome::ParseFailed(s, errors) => return report_parse_errors(path, &s, &errors),
         Outcome::ReadFailed(e) => return die(&e),
     };
+    let type_errors = thailang_types::check(&program);
+    if !type_errors.is_empty() {
+        for error in &type_errors {
+            emit_diagnostic(path, &source, error.span, &error.message, DiagKind::Type);
+        }
+        return ExitCode::FAILURE;
+    }
     let js = thailang_emit_js::emit(&program);
     match Command::new("node").arg("-e").arg(&js).status() {
         Ok(status) if status.success() => ExitCode::SUCCESS,
