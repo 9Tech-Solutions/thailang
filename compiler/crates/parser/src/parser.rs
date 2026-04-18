@@ -574,6 +574,86 @@ impl Parser {
         Ok(args)
     }
 
+    /// Scan forward from position `start` (just after `(`) to the matching `)`,
+    /// then peek for `=>`. Skips nested `()`/`[]`/`{}` so we don't confuse
+    /// an inner tuple/call for our closing paren.
+    fn looks_like_arrow_fn(&self, start: usize) -> bool {
+        let mut depth_paren = 1i32;
+        let mut depth_bracket = 0i32;
+        let mut depth_brace = 0i32;
+        let mut i = start;
+        while i < self.tokens.len() {
+            match self.tokens[i].kind {
+                TokenKind::LParen => depth_paren += 1,
+                TokenKind::RParen => {
+                    depth_paren -= 1;
+                    if depth_paren == 0 && depth_bracket == 0 && depth_brace == 0 {
+                        return matches!(
+                            self.tokens.get(i + 1).map(|t| &t.kind),
+                            Some(TokenKind::FatArrow)
+                        );
+                    }
+                }
+                TokenKind::LBracket => depth_bracket += 1,
+                TokenKind::RBracket => depth_bracket -= 1,
+                TokenKind::LBrace => depth_brace += 1,
+                TokenKind::RBrace => depth_brace -= 1,
+                _ => {}
+            }
+            i += 1;
+        }
+        false
+    }
+
+    fn parse_arrow_fn_params_and_body(&mut self, start: usize) -> Result<Expr, ParseError> {
+        let mut params = Vec::new();
+        if !matches!(self.peek().map(|t| &t.kind), Some(TokenKind::RParen)) {
+            loop {
+                let tok = self.advance().ok_or(ParseError::Eof)?;
+                let p_start = tok.span.start;
+                let name = match tok.kind {
+                    TokenKind::Ident(n) => n,
+                    other => {
+                        return Err(ParseError::Expected {
+                            expected: "parameter name".to_string(),
+                            found: format!("{other:?}"),
+                            span: Span::new(p_start, tok.span.end),
+                        })
+                    }
+                };
+                let type_ann = if self.eat(&TokenKind::Colon).is_some() {
+                    Some(self.parse_type_ann()?)
+                } else {
+                    None
+                };
+                params.push(Param {
+                    name,
+                    type_ann,
+                    span: Span::new(p_start, self.last_end),
+                });
+                if self.eat(&TokenKind::Comma).is_none() {
+                    break;
+                }
+            }
+        }
+        self.expect(TokenKind::RParen)?;
+        self.expect(TokenKind::FatArrow)?;
+        let body = if matches!(self.peek().map(|t| &t.kind), Some(TokenKind::LBrace)) {
+            ArrowBody::Block(self.parse_block_stmts()?)
+        } else {
+            ArrowBody::Expr(self.parse_expr()?)
+        };
+        let end = self.last_end;
+        Ok(Expr {
+            kind: ExprKind::ArrowFn {
+                params,
+                return_type: None,
+                body: Box::new(body),
+            },
+            span: Span::new(start, end),
+        })
+    }
+
     fn parse_primary(&mut self) -> Result<Expr, ParseError> {
         let tok = self.advance().ok_or(ParseError::Eof)?;
         let span = Span::new(tok.span.start, tok.span.end);
@@ -587,6 +667,13 @@ impl Parser {
             TokenKind::Ident(name) => ExprKind::Ident(name),
             TokenKind::Print => ExprKind::Ident("พิมพ์".to_string()),
             TokenKind::LParen => {
+                // Distinguish paren-expr from arrow-fn: scan the matching `)` and
+                // peek `=>`. `pos` has already advanced past the `(`, so rewind
+                // one slot if we decide to parse as arrow params.
+                let after_lparen = self.pos;
+                if self.looks_like_arrow_fn(after_lparen) {
+                    return self.parse_arrow_fn_params_and_body(span.start);
+                }
                 let inner = self.parse_expr()?;
                 self.expect(TokenKind::RParen)?;
                 return Ok(inner);

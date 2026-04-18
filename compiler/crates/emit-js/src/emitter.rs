@@ -1,5 +1,8 @@
 use thailang_ast::*;
 
+use crate::reserved;
+use crate::stdlib;
+
 pub fn emit(program: &Program) -> String {
     let mut emitter = Emitter::new();
     emitter.emit_program(program);
@@ -66,7 +69,7 @@ impl Emitter {
                 ..
             } => {
                 self.write(if *mutable { "let " } else { "const " });
-                self.write(name);
+                self.write_ident(name);
                 self.write(" = ");
                 self.emit_expr(value);
                 self.write(";");
@@ -77,16 +80,21 @@ impl Emitter {
 
     fn emit_fn(&mut self, f: &FnDecl) {
         self.write("function ");
-        self.write(&f.name);
+        self.write_ident(&f.name);
         self.write("(");
         for (i, p) in f.params.iter().enumerate() {
             if i > 0 {
                 self.write(", ");
             }
-            self.write(&p.name);
+            self.write_ident(&p.name);
         }
         self.write(") ");
         self.emit_block(&f.body);
+    }
+
+    /// Emit a user identifier, mangling JS reserved collisions (`class` → `class$`).
+    fn write_ident(&mut self, name: &str) {
+        self.write(&reserved::safe(name));
     }
 
     // ── Statements ─────────────────────────────────────────────────────
@@ -104,7 +112,7 @@ impl Emitter {
                 ..
             } => {
                 self.write(if *mutable { "let " } else { "const " });
-                self.write(name);
+                self.write_ident(name);
                 self.write(" = ");
                 self.emit_expr(value);
                 self.write(";");
@@ -165,7 +173,7 @@ impl Emitter {
                 body,
             } => {
                 self.write("for (const ");
-                self.write(var);
+                self.write_ident(var);
                 self.write(" of ");
                 self.emit_expr(iterable);
                 self.write(") ");
@@ -224,7 +232,7 @@ impl Emitter {
             ExprKind::Str(s) => self.emit_string_literal(s),
             ExprKind::Bool(b) => self.write(if *b { "true" } else { "false" }),
             ExprKind::Null => self.write("null"),
-            ExprKind::Ident(name) => self.write(name),
+            ExprKind::Ident(name) => self.write_ident(name),
             ExprKind::Binary { op, left, right } => {
                 self.write("(");
                 self.emit_expr(left);
@@ -241,11 +249,7 @@ impl Emitter {
                 self.write(")");
             }
             ExprKind::Call { callee, args } => self.emit_call(callee, args),
-            ExprKind::Member { object, member } => {
-                self.emit_expr(object);
-                self.write(".");
-                self.write(member);
-            }
+            ExprKind::Member { object, member } => self.emit_member(object, member),
             ExprKind::Index { object, index } => {
                 self.emit_expr(object);
                 self.write("[");
@@ -332,15 +336,28 @@ impl Emitter {
     }
 
     fn emit_call(&mut self, callee: &Expr, args: &[Expr]) {
-        if let ExprKind::Ident(name) = &callee.kind {
-            if name == "พิมพ์" {
-                self.write("console.log");
-            } else {
-                self.write(name);
+        // Stdlib method-chain rewrite: e.g., `xs.เรียง()` → `xs.slice().sort()`.
+        // Must fire before the generic Member branch because it replaces the
+        // member access with a multi-hop chain.
+        if let ExprKind::Member { object, member } = &callee.kind {
+            if let Some(chain) = stdlib::method_chain(member) {
+                self.emit_expr(object);
+                self.write(".");
+                self.write(chain);
+                self.emit_args(args);
+                return;
             }
-        } else {
-            self.emit_expr(callee);
         }
+
+        match &callee.kind {
+            ExprKind::Ident(name) if name == "พิมพ์" => self.write("console.log"),
+            ExprKind::Ident(name) => self.write_ident(name),
+            _ => self.emit_expr(callee),
+        }
+        self.emit_args(args);
+    }
+
+    fn emit_args(&mut self, args: &[Expr]) {
         self.write("(");
         for (i, a) in args.iter().enumerate() {
             if i > 0 {
@@ -349,6 +366,32 @@ impl Emitter {
             self.emit_expr(a);
         }
         self.write(")");
+    }
+
+    fn emit_member(&mut self, object: &Expr, member: &str) {
+        // Module-member rewrite: `คณิต.สูงสุด` → `Math.max`.
+        if let ExprKind::Ident(obj_name) = &object.kind {
+            if let Some(js_module) = stdlib::module_ident(obj_name) {
+                if let Some(js_member) = stdlib::module_member(obj_name, member) {
+                    self.write(js_module);
+                    self.write(".");
+                    self.write(js_member);
+                    return;
+                }
+                // Known module, unknown member: still rewrite the module name.
+                self.write(js_module);
+                self.write(".");
+                self.write(member);
+                return;
+            }
+        }
+        self.emit_expr(object);
+        self.write(".");
+        // Instance-method rewrite: `.ความยาว` → `.length`, etc.
+        match stdlib::method_name(member) {
+            Some(js_name) => self.write(js_name),
+            None => self.write(member),
+        }
     }
 
     fn emit_string_literal(&mut self, s: &str) {
@@ -402,7 +445,7 @@ impl Emitter {
             if i > 0 {
                 self.write(", ");
             }
-            self.write(&p.name);
+            self.write_ident(&p.name);
         }
         self.write(") => ");
         match body {

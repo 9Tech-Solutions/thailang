@@ -3,6 +3,7 @@ use std::collections::HashMap;
 use thailang_ast::*;
 
 use crate::error::TypeError;
+use crate::stdlib;
 
 pub fn check(program: &Program) -> Vec<TypeError> {
     let mut cx = Ctx::default();
@@ -356,15 +357,42 @@ impl Ctx {
                 Some(TypeAnn::Bool)
             }
             ExprKind::Call { callee, args } => {
-                self.infer_expr(callee);
+                let return_ty = match &callee.kind {
+                    // Module call: `คณิต.สุ่ม()` — look up the (module, member)
+                    // pair in the stdlib registry before falling back to Any.
+                    ExprKind::Member { object, member } => {
+                        if let ExprKind::Ident(obj_name) = &object.kind {
+                            stdlib::module_call_return_type(obj_name, member).or_else(|| {
+                                self.infer_expr(object);
+                                stdlib::method_return_type(member)
+                            })
+                        } else {
+                            self.infer_expr(callee);
+                            stdlib::method_return_type(member)
+                        }
+                    }
+                    _ => {
+                        self.infer_expr(callee);
+                        None
+                    }
+                };
                 for a in args {
                     self.infer_expr(a);
                 }
-                Some(TypeAnn::Any)
+                Some(return_ty.unwrap_or(TypeAnn::Any))
             }
-            ExprKind::Member { object, .. } => {
-                self.infer_expr(object);
-                Some(TypeAnn::Any)
+            ExprKind::Member { object, member } => {
+                // Bare property read (no call): `.ความยาว` returns จำนวนเต็ม.
+                // Skip inferring the object when it's a known stdlib module
+                // name, since those aren't declared as regular bindings.
+                let is_module = matches!(
+                    &object.kind,
+                    ExprKind::Ident(name) if stdlib::is_module_name(name)
+                );
+                if !is_module {
+                    self.infer_expr(object);
+                }
+                Some(stdlib::property_type(member).unwrap_or(TypeAnn::Any))
             }
             ExprKind::Index { object, index } => {
                 let obj_ty = self.infer_expr(object);
