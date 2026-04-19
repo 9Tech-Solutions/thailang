@@ -1,10 +1,15 @@
 {
   "name": "thailang",
   "displayName": "Thailang",
-  "description": "Thai-language programming, syntax highlighting for .th files",
-  "version": "0.1.0",
+  "description": "Syntax highlighting and language support for Thailang, a Thai-first programming language that compiles to JavaScript and WebAssembly.",
+  "version": "0.1.1",
   "publisher": "9Tech",
   "license": "MIT",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1a1030",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -15,7 +20,9 @@
     "thai",
     "thailang",
     "ภาษาไทย",
-    "programming language"
+    "programming language",
+    "compiler",
+    "wasm"
   ],
   "repository": {
     "type": "git",
@@ -26,6 +33,7 @@
     "url": "https://github.com/9Tech-Solutions/thailang/issues"
   },
   "homepage": "https://github.com/9Tech-Solutions/thailang#readme",
+  "qna": "https://github.com/9Tech-Solutions/thailang/discussions",
   "contributes": {
     "languages": [
       {
@@ -50,7 +58,8 @@
   },
   "scripts": {
     "package": "vsce package --out thailang-${npm_package_version}.vsix",
-    "publish": "vsce publish"
+    "publish": "vsce publish",
+    "publish:ovsx": "ovsx publish thailang-${npm_package_version}.vsix"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.6.0"
