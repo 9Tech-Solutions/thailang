@@ -50,6 +50,7 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js",
+    "generate": "tree-sitter generate && bunx biome check --write src/grammar.json src/node-types.json",
     "build:wasm": "tree-sitter build --wasm && cp tree-sitter-thailang.wasm ../web/public/thailang.wasm"
   }
 }

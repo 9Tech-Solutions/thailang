@@ -2587,18 +2587,9 @@
     }
   ],
   "conflicts": [
-    [
-      "parameter",
-      "_expression"
-    ],
-    [
-      "block",
-      "object_literal"
-    ],
-    [
-      "_type",
-      "_type_non_union"
-    ]
+    ["parameter", "_expression"],
+    ["block", "object_literal"],
+    ["_type", "_type_non_union"]
   ],
   "precedences": [],
   "externals": [],
