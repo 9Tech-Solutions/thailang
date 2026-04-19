@@ -11,6 +11,13 @@ interface HeroPlaygroundProps {
 type RunResult = { lines: string[] } | { error: string };
 
 const INDENT = "    ";
+const TIMEOUT_MS = 3000;
+
+function spawnWorker(): Worker {
+  return new Worker(new URL("./run.worker.ts", import.meta.url), {
+    type: "module",
+  });
+}
 
 export function HeroPlayground({
   initialSource,
@@ -23,24 +30,34 @@ export function HeroPlayground({
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
-    const worker = new Worker(new URL("./run.worker.ts", import.meta.url), {
-      type: "module",
-    });
-    workerRef.current = worker;
+    workerRef.current = spawnWorker();
     return () => {
-      worker.terminate();
+      workerRef.current?.terminate();
       workerRef.current = null;
     };
   }, []);
 
   async function run() {
+    if (running) return;
+    // Respawn if a previous run's timeout terminated the worker.
+    if (!workerRef.current) {
+      workerRef.current = spawnWorker();
+    }
     const worker = workerRef.current;
-    if (!worker || running) return;
     setRunning(true);
     setError(null);
 
     const result = await new Promise<RunResult>((resolve) => {
+      const timeout = setTimeout(() => {
+        worker.terminate();
+        workerRef.current = null;
+        resolve({
+          error: `Execution timed out (${TIMEOUT_MS / 1000}s limit). Check for an infinite loop.`,
+        });
+      }, TIMEOUT_MS);
+
       const onMessage = (e: MessageEvent<RunResult>) => {
+        clearTimeout(timeout);
         worker.removeEventListener("message", onMessage);
         resolve(e.data);
       };
