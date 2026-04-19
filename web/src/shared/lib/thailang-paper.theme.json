@@ -1,96 +1,95 @@
 {
-  "name": "thailang-paper",
-  "type": "light",
+  "name": "thailang-lacquer",
+  "type": "dark",
   "colors": {
-    "editor.background": "transparent",
-    "editor.foreground": "#2a211c"
+    "editor.background": "#00000000",
+    "editor.foreground": "#f5ecdb"
   },
   "tokenColors": [
     {
       "scope": ["comment", "comment.line", "comment.block"],
       "settings": {
-        "foreground": "#8f857e",
+        "foreground": "#857796",
         "fontStyle": "italic"
       }
     },
     {
       "scope": ["string", "string.quoted"],
       "settings": {
-        "foreground": "#3c7a46"
+        "foreground": "#9dd6a3"
       }
     },
     {
       "scope": ["constant.character.escape"],
       "settings": {
-        "foreground": "#3f7a8a"
+        "foreground": "#f0a665"
       }
     },
     {
       "scope": ["constant.numeric"],
       "settings": {
-        "foreground": "#8d6f2f"
+        "foreground": "#f0b974"
       }
     },
     {
       "scope": ["constant.language.boolean", "constant.language.null"],
       "settings": {
-        "foreground": "#8d6f2f"
+        "foreground": "#c99adf"
       }
     },
     {
       "scope": ["storage.type"],
       "settings": {
-        "foreground": "#3f5a8a"
+        "foreground": "#8fc4cc"
       }
     },
     {
       "scope": ["keyword.declaration"],
       "settings": {
-        "foreground": "#c15833",
+        "foreground": "#c99adf",
         "fontStyle": ""
       }
     },
     {
       "scope": ["keyword.control"],
       "settings": {
-        "foreground": "#c15833"
+        "foreground": "#eec98c"
       }
     },
     {
       "scope": ["keyword.other"],
       "settings": {
-        "foreground": "#b15030"
+        "foreground": "#c99adf"
       }
     },
     {
       "scope": ["keyword.operator.logical"],
       "settings": {
-        "foreground": "#c15833"
+        "foreground": "#eec98c"
       }
     },
     {
       "scope": ["keyword.operator"],
       "settings": {
-        "foreground": "#6a5f58"
+        "foreground": "#c5b7a7"
       }
     },
     {
       "scope": ["support.function.builtin"],
       "settings": {
-        "foreground": "#c15833",
-        "fontStyle": "italic"
+        "foreground": "#f5d59b"
       }
     },
     {
       "scope": ["entity.name.function"],
       "settings": {
-        "foreground": "#2a211c"
+        "foreground": "#f5d59b"
       }
     },
     {
       "scope": ["variable", "variable.other"],
       "settings": {
-        "foreground": "#2a211c"
+        "foreground": "#f5ecdb"
       }
     }
   ]

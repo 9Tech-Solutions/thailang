@@ -1,104 +1,116 @@
 import { site } from "@/shared/config/site";
-import { HeroPlayground } from "@/widgets/hero-playground/HeroPlayground";
-
-const heroSample = `// สวัสดี.th
-สูตร ทักทาย(ชื่อ: ข้อความ) {
-    ส่งกลับ "สวัสดี " + ชื่อ + "!";
-}
-
-ระบบ.แสดง(ทักทาย("ชาวโลก"));`;
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-[var(--color-border)]">
-      {/* Asymmetric grid, title bleeds right, meta sits top-left */}
-      <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-6 px-6 pt-8 pb-12 lg:px-12 lg:pt-12 lg:pb-20">
-        {/* Meta rail */}
-        <aside className="col-span-12 lg:col-span-3 reveal">
-          <div className="flex flex-col gap-6 border-l border-[var(--color-border)] pl-6">
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-                Volume 01
-              </p>
-              <p className="mt-1 text-sm text-[var(--color-fg-muted)]">
-                Thai-first programming, v{site.version}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-                เวอร์ชัน
-              </p>
-              <p className="mt-1 font-mono text-sm text-[var(--color-fg)]">
-                {site.version} · preview
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-                Backends
-              </p>
-              <ul className="mt-1 space-y-0.5 text-sm text-[var(--color-fg-muted)]">
-                <li>↳ JavaScript (today)</li>
-                <li>↳ WebAssembly (today)</li>
-                <li className="text-[var(--color-fg-subtle)]">
-                  ↳ LLVM native (soon)
-                </li>
-              </ul>
-            </div>
-          </div>
-        </aside>
+    <section className="hero">
+      <div className="hero-grid-bg" aria-hidden="true" />
+      <div className="wrap">
+        <div className="hero-grid">
+          <aside className="hero-meta">
+            <h6>เล่มที่ 01 · Volume 01</h6>
+            <dl>
+              <dt>เผยแพร่เมื่อ · released</dt>
+              <dd>
+                <span className="th">เมษายน 2569</span>
+                {"  ·  "}preview build
+              </dd>
+              <dt>เวอร์ชัน · version</dt>
+              <dd
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "13px",
+                  color: "var(--gold)",
+                }}
+              >
+                v{site.version}
+              </dd>
+              <dt>ปลายทาง · targets</dt>
+            </dl>
+            <ul className="targets">
+              <li>JavaScript (Node · browser)</li>
+              <li>WebAssembly</li>
+              <li className="soon">
+                LLVM native{" "}
+                <em
+                  style={{
+                    color: "var(--chili)",
+                    fontStyle: "normal",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "9px",
+                    letterSpacing: "0.2em",
+                    marginLeft: "6px",
+                  }}
+                >
+                  SOON
+                </em>
+              </li>
+            </ul>
+          </aside>
 
-        {/* Headline, Thai display, massive */}
-        <div className="col-span-12 lg:col-span-9 reveal reveal-d1">
-          <h1 className="thai-display leading-[1.05] text-balance">
-            <span className="block text-[length:var(--text-hero-th)] font-semibold tracking-tight">
-              เขียนเป็นไทย
-            </span>
-            <span className="block text-[length:var(--text-hero-th)] font-light italic tracking-tight text-[var(--color-accent)]">
-              รันเหมือน Rust
-            </span>
-          </h1>
-
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--color-fg-muted)]">
-            Thailang is a{" "}
-            <em className="not-italic text-[var(--color-fg)]">compiled</em>{" "}
-            programming language with{" "}
-            <span className="text-[var(--color-fg)]">Thai keywords</span>,
-            TypeScript-flavored syntax, and a Rust compiler that emits
-            JavaScript, WebAssembly, and (soon) native binaries. Built for Thai
-            developers who want their code to read in their own language without
-            giving up the tooling they already know.
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center gap-4 reveal reveal-d2">
-            <a
-              href={site.repo}
-              className="group inline-flex items-center gap-2 rounded-full bg-[var(--color-fg)] px-6 py-3 text-sm font-medium text-[var(--color-bg)] transition hover:bg-[var(--color-accent)] hover:translate-y-[-1px]"
-            >
-              <span>View on GitHub</span>
-              <span className="transition group-hover:translate-x-1">→</span>
-            </a>
-            <span
-              aria-disabled
-              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-[var(--color-border)] px-6 py-3 text-sm text-[var(--color-fg-subtle)]"
-              title="Coming in a later session"
-            >
-              <span>Try the playground</span>
-              <span className="text-xs uppercase tracking-wider text-[var(--color-accent)]">
-                soon
+          <div className="hero-head">
+            <h1 className="hero-title" style={{ margin: "24px 0 0" }}>
+              <span className="line-1">เขียนเป็นไทย</span>
+              <span className="line-2">
+                <span className="amp">·</span> รันได้ทุกที่
               </span>
-            </span>
-          </div>
-        </div>
+            </h1>
+            <p className="hero-en">
+              WRITE&nbsp;IN&nbsp;THAI &nbsp;<em>/</em>
+              &nbsp; COMPILE&nbsp;TO&nbsp;<em>JS</em>,&nbsp;<em>WASM</em>
+              ,&nbsp;NATIVE
+            </p>
 
-        {/* Oversized code sample, breaks grid, floats into negative margin */}
-        <div className="col-span-12 lg:col-span-9 lg:col-start-3 reveal reveal-d3">
-          <div className="relative mt-8 lg:mt-10">
-            <div
-              aria-hidden
-              className="absolute -inset-8 -z-10 rounded-[2rem] bg-[var(--color-accent-soft)] opacity-60 blur-2xl"
-            />
-            <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[0_1px_0_0_var(--color-border),0_30px_60px_-20px_oklch(0%_0_0_/_0.08)]">
-              <HeroPlayground initialSource={heroSample} filename="สวัสดี.th" />
+            <p className="hero-lede">
+              <strong>Thailang</strong> เป็นภาษาโปรแกรมมิง{" "}
+              <span className="th-inline">คำสงวนเป็นไทย</span> — มีระบบชนิดข้อมูลแบบ
+              TypeScript คอมไพเลอร์เขียนด้วย Rust แปลงเป็น JavaScript และ
+              WebAssembly ได้ในวันนี้ เครื่องมือที่คุณคุ้นเคยอยู่แล้ว
+              กับภาษาที่คุณอ่านออกตั้งแต่บรรทัดแรก
+            </p>
+
+            <div className="hero-ctas">
+              <a className="btn btn-gold" href="#playground">
+                <span>ลองเล่น</span>
+                <span style={{ opacity: 0.6 }}>/</span>
+                <span>Try it</span>
+                <span aria-hidden="true">→</span>
+              </a>
+              <a
+                className="btn btn-ghost"
+                href={site.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>อ่านซอร์สโค้ด</span>
+                <span aria-hidden="true">→ github</span>
+              </a>
+              <span
+                className="btn btn-ghost"
+                style={{ cursor: "not-allowed", opacity: 0.7 }}
+                aria-disabled="true"
+              >
+                <span>เอกสาร</span>
+                <span className="soon">SOON</span>
+              </span>
+            </div>
+
+            <div className="hero-stats">
+              <div>
+                <div className="val">24</div>
+                <div className="lbl">Thai keywords</div>
+              </div>
+              <div>
+                <div className="val">Rust</div>
+                <div className="lbl">compiler core</div>
+              </div>
+              <div>
+                <div className="val">2</div>
+                <div className="lbl">backends live</div>
+              </div>
+              <div>
+                <div className="val">MIT</div>
+                <div className="lbl">licensed</div>
+              </div>
             </div>
           </div>
         </div>

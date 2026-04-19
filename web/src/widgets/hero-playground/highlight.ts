@@ -156,14 +156,22 @@ export function tokenize(source: string): Token[] {
   return out;
 }
 
+/**
+ * Lacquer palette — matches Shiki theme and .code-pane tokens in globals.css.
+ * - keyword (control, e.g. ถ้า ไม่ก็): gold
+ * - builtin / declaration (สูตร ให้ ระบบ): mulberry
+ * - type (ตัวเลข ข้อความ): teal
+ * - string: jade green
+ * - number / literal: warm amber
+ */
 export const TOKEN_COLOR: Record<TokenKind, string> = {
-  keyword: "#c15833",
-  type: "#3f5a8a",
-  literal: "#8d6f2f",
-  builtin: "#c15833",
-  string: "#3c7a46",
-  number: "#8d6f2f",
-  comment: "#8f857e",
-  op: "#6a5f58",
+  keyword: "#eec98c",
+  type: "#8fc4cc",
+  literal: "#c99adf",
+  builtin: "#c99adf",
+  string: "#9dd6a3",
+  number: "#f0b974",
+  comment: "#857796",
+  op: "#c5b7a7",
   text: "inherit",
 };

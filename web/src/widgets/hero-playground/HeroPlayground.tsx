@@ -1,11 +1,18 @@
 "use client";
 
-import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  type KeyboardEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { TOKEN_COLOR, tokenize } from "./highlight";
 
 interface HeroPlaygroundProps {
   initialSource: string;
   filename: string;
+  fileMeta?: string;
 }
 
 type RunResult = { lines: string[] } | { error: string };
@@ -22,12 +29,22 @@ function spawnWorker(): Worker {
 export function HeroPlayground({
   initialSource,
   filename,
+  fileMeta,
 }: HeroPlaygroundProps) {
   const [source, setSource] = useState(initialSource);
   const [output, setOutput] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
+  const [runTimeMs, setRunTimeMs] = useState<number | null>(null);
   const workerRef = useRef<Worker | null>(null);
+
+  // Reset when the driving sample changes (initialSource / filename).
+  useEffect(() => {
+    setSource(initialSource);
+    setOutput(null);
+    setError(null);
+    setRunTimeMs(null);
+  }, [initialSource]);
 
   useEffect(() => {
     workerRef.current = spawnWorker();
@@ -39,7 +56,6 @@ export function HeroPlayground({
 
   async function run() {
     if (running) return;
-    // Respawn if a previous run's timeout terminated the worker.
     if (!workerRef.current) {
       workerRef.current = spawnWorker();
     }
@@ -47,6 +63,7 @@ export function HeroPlayground({
     setRunning(true);
     setError(null);
 
+    const started = performance.now();
     const result = await new Promise<RunResult>((resolve) => {
       const timeout = setTimeout(() => {
         worker.terminate();
@@ -64,6 +81,8 @@ export function HeroPlayground({
       worker.addEventListener("message", onMessage);
       worker.postMessage(source);
     });
+    const elapsed = Math.max(1, Math.round(performance.now() - started));
+    setRunTimeMs(elapsed);
 
     if ("error" in result) {
       setError(result.error);
@@ -79,6 +98,7 @@ export function HeroPlayground({
     setSource(initialSource);
     setOutput(null);
     setError(null);
+    setRunTimeMs(null);
   }
 
   function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
@@ -102,89 +122,131 @@ export function HeroPlayground({
   }
 
   const tokens = tokenize(source);
-  // Trailing newline keeps the overlay height in sync with a final blank line
-  // the user just typed, <pre> needs something after the trailing \n to include it.
   const overlayTrailer = source.endsWith("\n") ? "\u200B" : "";
+  const lineCount = useMemo(
+    () => Math.max(1, source.split("\n").length),
+    [source],
+  );
+
+  const statusLabel = running
+    ? "compiling…"
+    : error !== null
+      ? "error"
+      : output !== null
+        ? "compiled to js · done"
+        : "compiled to js · ready";
 
   return (
-    <figure className="group relative">
-      <figcaption className="flex items-center justify-between gap-2 px-4 pt-3 pb-2 text-xs tracking-wide text-[var(--color-fg-muted)]">
-        <div className="flex items-center gap-2">
-          <span className="inline-block size-2 rounded-full bg-[var(--color-accent)]/40" />
-          <code className="font-mono">{filename}</code>
+    <section className="editor" aria-label="Thailang playground editor">
+      <div className="editor-chrome">
+        <div className="editor-file">
+          <span className="dot" aria-hidden="true" />
+          <span>{filename}</span>
+          {fileMeta && (
+            <>
+              <span className="sep" aria-hidden="true">
+                ·
+              </span>
+              <span className="meta">{fileMeta}</span>
+            </>
+          )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="editor-actions">
           <button
             type="button"
+            className="chip"
             onClick={reset}
-            className="rounded-full border border-[var(--color-border)] px-3 py-1 text-[0.7rem] uppercase tracking-wider text-[var(--color-fg-subtle)] transition hover:text-[var(--color-fg)]"
+            aria-label="Reset source"
           >
-            Reset
+            ↺ Reset
           </button>
           <button
             type="button"
+            className="chip chip-primary"
             onClick={run}
             disabled={running}
-            className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-4 py-1 text-[0.7rem] font-medium uppercase tracking-wider text-[var(--color-bg)] transition hover:bg-[var(--color-accent-deep)] hover:-translate-y-[1px] disabled:cursor-not-allowed disabled:opacity-50 disabled:translate-y-0"
           >
-            <span aria-hidden>▶</span>
+            <span className="arrow" aria-hidden="true">
+              ▶
+            </span>
             <span>{running ? "Running…" : "Run"}</span>
+            {!running && (
+              <span className="kbd" aria-hidden="true">
+                ⌘↵
+              </span>
+            )}
           </button>
         </div>
-      </figcaption>
+      </div>
 
-      <div className="relative font-mono text-[0.875rem] leading-[1.45]">
-        <pre
-          aria-hidden
-          className="pointer-events-none m-0 whitespace-pre px-4 pt-1 pb-4 text-[var(--color-fg)]"
-        >
-          <code>
-            {tokens.map((t, i) => (
-              <span
-                // biome-ignore lint/suspicious/noArrayIndexKey: tokens are re-derived every render, index is stable for this frame.
-                key={i}
-                style={{
-                  color: TOKEN_COLOR[t.kind],
-                  fontStyle: t.kind === "comment" ? "italic" : undefined,
-                }}
-              >
-                {t.text}
-              </span>
-            ))}
-            {overlayTrailer}
-          </code>
+      <div className="code-pane">
+        <pre className="code-pane-overlay" aria-hidden="true">
+          {tokens.map((t, i) => (
+            <span
+              // biome-ignore lint/suspicious/noArrayIndexKey: tokens re-derived every render.
+              key={i}
+              style={{
+                color: TOKEN_COLOR[t.kind],
+                fontStyle: t.kind === "comment" ? "italic" : undefined,
+              }}
+            >
+              {t.text}
+            </span>
+          ))}
+          {overlayTrailer}
         </pre>
         <textarea
+          className="code-pane-textarea"
           value={source}
           onChange={(e) => setSource(e.target.value)}
           onKeyDown={handleKeyDown}
           spellCheck={false}
           wrap="off"
           aria-label="Thailang source"
-          className="absolute inset-0 block w-full resize-none overflow-hidden whitespace-pre bg-transparent px-4 pt-1 pb-4 font-mono text-[0.875rem] leading-[1.45] text-transparent caret-[var(--color-accent)] focus:outline-none"
         />
       </div>
 
-      {(output !== null || error !== null) && (
-        <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)]/50 px-4 py-3">
-          <p className="mb-2 font-mono text-[0.625rem] uppercase tracking-[0.22em] text-[var(--color-fg-subtle)]">
-            output
-          </p>
+      <div className="output-pane">
+        <div className="out-head">
+          <span>output · ผลลัพธ์</span>
+          <span className={`status ${error !== null ? "error" : ""}`}>
+            {statusLabel}
+          </span>
+        </div>
+        <div>
           {error !== null ? (
-            <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.45] text-[var(--color-accent)]">
-              {error}
-            </pre>
-          ) : output && output.length > 0 ? (
-            <pre className="whitespace-pre-wrap font-mono text-[0.875rem] leading-[1.45] text-[var(--color-fg)]">
-              {output.join("\n")}
-            </pre>
+            <div className="line-error">{error}</div>
+          ) : output === null ? (
+            <div className="line-empty">กด Run หรือ ⌘↵ เพื่อเรียกใช้โปรแกรม</div>
+          ) : output.length === 0 ? (
+            <div className="line-empty">(no output)</div>
           ) : (
-            <p className="font-mono text-[0.875rem] text-[var(--color-fg-subtle)]">
-              (no output)
-            </p>
+            output.map((line, i) => (
+              <div
+                className="line-out"
+                // biome-ignore lint/suspicious/noArrayIndexKey: derived output; no stable id.
+                key={i}
+              >
+                <span className="prompt" aria-hidden="true">
+                  ▸
+                </span>
+                {line}
+              </div>
+            ))
           )}
         </div>
-      )}
-    </figure>
+        <div className="meta">
+          <div>
+            <span className="k">cmd &nbsp;</span> $ thailang run {filename}
+          </div>
+          <div>
+            <span className="k">time</span>{" "}
+            {runTimeMs !== null ? `${runTimeMs}ms` : "—"} &nbsp;·&nbsp;{" "}
+            <span className="k">lines</span> {lineCount} &nbsp;·&nbsp;{" "}
+            <span className="k">target</span> js
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }

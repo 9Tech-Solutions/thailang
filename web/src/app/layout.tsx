@@ -1,31 +1,40 @@
 import type { Metadata, Viewport } from "next";
 import {
-  IBM_Plex_Mono,
-  IBM_Plex_Sans,
-  IBM_Plex_Sans_Thai_Looped,
+  Bai_Jamjuree,
+  Chonburi,
+  JetBrains_Mono,
+  Sarabun,
 } from "next/font/google";
 import Script from "next/script";
 import { site } from "@/shared/config/site";
 import "./globals.css";
 
-const plexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-plex-sans",
+const chonburi = Chonburi({
+  subsets: ["thai", "latin"],
+  weight: ["400"],
+  variable: "--font-chonburi",
   display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex-mono",
-  display: "swap",
-});
-
-const plexThai = IBM_Plex_Sans_Thai_Looped({
+const baiJamjuree = Bai_Jamjuree({
   subsets: ["thai", "latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-plex-thai",
+  variable: "--font-bai-jamjuree",
+  display: "swap",
+});
+
+const sarabun = Sarabun({
+  subsets: ["thai", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-sarabun",
+  display: "swap",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -63,7 +72,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbf9f4",
+  themeColor: "#1a1030",
   width: "device-width",
   initialScale: 1,
 };
@@ -76,7 +85,7 @@ export default function RootLayout({
   return (
     <html
       lang="th"
-      className={`${plexSans.variable} ${plexMono.variable} ${plexThai.variable}`}
+      className={`${chonburi.variable} ${baiJamjuree.variable} ${sarabun.variable} ${jetBrainsMono.variable}`}
     >
       <head>
         {process.env.NODE_ENV === "development" && (
@@ -87,7 +96,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className="min-h-screen paper-grain">{children}</body>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

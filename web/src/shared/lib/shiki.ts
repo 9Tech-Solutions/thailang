@@ -9,13 +9,13 @@ import {
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 
 import thailangGrammarJson from "./thailang.tmLanguage.json";
-import thailangPaperJson from "./thailang-paper.theme.json";
+import thailangLacquerJson from "./thailang-paper.theme.json";
 
 const thailangGrammar = thailangGrammarJson as unknown as LanguageRegistration;
-const thailangPaper = thailangPaperJson as unknown as ThemeRegistration;
+const thailangLacquer = thailangLacquerJson as unknown as ThemeRegistration;
 
 export const THAILANG_LANG = "thailang";
-export const THAILANG_THEME = "thailang-paper";
+export const THAILANG_THEME = "thailang-lacquer";
 
 type Highlighter = HighlighterGeneric<
   typeof THAILANG_LANG,
@@ -28,7 +28,7 @@ export function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
     highlighterPromise = createHighlighterCore({
       langs: [thailangGrammar],
-      themes: [thailangPaper],
+      themes: [thailangLacquer],
       engine: createJavaScriptRegexEngine(),
     }) as Promise<Highlighter>;
   }
