@@ -42,3 +42,6 @@ pnpm-debug.log*
 coverage/
 lcov.info
 *.profraw
+
+# Pre-publication launch drafts, kept local only
+posts/
