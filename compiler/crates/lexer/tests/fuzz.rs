@@ -6,7 +6,7 @@
 //! `PROPTEST_CASES=n` env var).
 
 use proptest::prelude::*;
-use thailang_lexer::{TokenKind, tokenize};
+use thailang_lexer::{tokenize, TokenKind};
 
 proptest! {
     /// Any underscore-prefixed Thai/ASCII string is always one Ident token

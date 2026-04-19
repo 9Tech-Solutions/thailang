@@ -149,10 +149,7 @@ fn ignores_surrounding_whitespace() {
 
 #[test]
 fn lexes_sequence_of_keywords() {
-    let kinds: Vec<TokenKind> = tokenize("ให้ คงที่ สูตร")
-        .into_iter()
-        .map(|t| t.kind)
-        .collect();
+    let kinds: Vec<TokenKind> = tokenize("ให้ คงที่ สูตร").into_iter().map(|t| t.kind).collect();
     assert_eq!(
         kinds,
         vec![TokenKind::Let, TokenKind::Const, TokenKind::Function]
