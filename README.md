@@ -8,6 +8,8 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/thailang"><img src="https://img.shields.io/npm/v/thailang.svg?color=2ecc71" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/thailang"><img src="https://img.shields.io/npm/dm/thailang.svg" alt="npm downloads"></a>
+  <a href="https://open-vsx.org/extension/9Tech/thailang"><img src="https://img.shields.io/open-vsx/v/9Tech/thailang?label=open-vsx&color=c160ef" alt="Open VSX version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=9Tech.thailang"><img src="https://img.shields.io/visual-studio-marketplace/v/9Tech.thailang?label=vs-marketplace&color=0098ff" alt="VS Marketplace version"></a>
   <a href="https://github.com/9Tech-Solutions/thailang/actions/workflows/rust.yml"><img src="https://github.com/9Tech-Solutions/thailang/actions/workflows/rust.yml/badge.svg" alt="CI"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
 </p>
@@ -87,6 +89,21 @@ Type-check without running:
 thailang check narrow.th
 ```
 
+## Editor support
+
+**VS Code / VSCodium / Cursor / Windsurf / Antigravity:**
+
+```sh
+# VS Code (Microsoft Marketplace)
+code --install-extension 9Tech.thailang
+
+# VSCodium / Cursor / Windsurf / Antigravity (Open VSX)
+codium --install-extension 9Tech.thailang
+cursor --install-extension 9Tech.thailang
+```
+
+Or search **"Thailang"** in the Extensions panel. The extension ships syntax highlighting, bracket matching, Thai-aware word selection, and smart indentation for `.th` files. Source at [`vscode-ext/`](./vscode-ext).
+
 ## What's in the box
 
 - **Thai keywords**: `ให้`, `สูตร`, `ถ้า`, `วน`, `ส่งกลับ`, and friends; I/O via `ระบบ.แสดง(...)`. Full map in [`docs/SPEC.md`](./docs/SPEC.md#2-keyword-map).
@@ -100,10 +117,15 @@ thailang check narrow.th
 
 v0.1: Phase 3 complete. Lexer, parser, type checker (with narrowing), JS emitter, and stdlib dispatch are working and on npm.
 
+Shipped alongside:
+- **npm CLI**: `thailang` (and `@9tech.solutions/thailang` scoped alias)
+- **VS Code extension**: on [VS Marketplace](https://marketplace.visualstudio.com/items?itemName=9Tech.thailang) and [Open VSX](https://open-vsx.org/extension/9Tech/thailang)
+- **Web playground**: [thailang-web.vercel.app](https://thailang-web.vercel.app)
+
 Upcoming:
-- Phase 4: VS Code extension, LSP diagnostics
-- Phase 5: web playground at [thailang-web.vercel.app](https://thailang-web.vercel.app)
-- Tree-sitter grammar for better editor support
+- Phase 4: LSP diagnostics, LLVM native target
+- Tree-sitter grammar (unlocks GitHub highlighting + Monaco playground)
+- Share-via-URL playground + full `/docs` MDX routes
 
 See [`docs/SPEC.md`](./docs/SPEC.md) for the full language reference.
 
@@ -123,7 +145,7 @@ thailang/
 ├── examples/            # Sample .th programs
 ├── docs/                # SPEC.md + keyword reference
 ├── web/                 # Next.js landing + playground
-└── vscode-ext/          # VS Code extension (WIP)
+└── vscode-ext/          # VS Code extension (on Marketplace + Open VSX)
 ```
 
 ## Contributing

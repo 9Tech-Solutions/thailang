@@ -39,6 +39,16 @@ export function SiteFooter() {
               <li>
                 <a href="#keywords">{t.keywords}</a>
               </li>
+              <li>
+                <a
+                  href={site.vscodeMarketplace}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t.vscodeExt}
+                  <span className="soon">{t.vscodeExtBadge}</span>
+                </a>
+              </li>
             </ul>
           </div>
 

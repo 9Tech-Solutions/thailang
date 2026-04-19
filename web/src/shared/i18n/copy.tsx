@@ -85,6 +85,8 @@ export interface SectionCopy {
     playground: string;
     playgroundBadge: string;
     keywords: string;
+    vscodeExt: string;
+    vscodeExtBadge: string;
     github: string;
     discord: string;
     roadmap: string;
@@ -209,6 +211,8 @@ const th: SectionCopy = {
     playground: "Playground",
     playgroundBadge: "BETA",
     keywords: "คำสงวน · Keywords",
+    vscodeExt: "VS Code Extension",
+    vscodeExtBadge: "LIVE",
     github: "GitHub ↗",
     discord: "Discord",
     roadmap: "Roadmap",
@@ -334,6 +338,8 @@ const en: SectionCopy = {
     playground: "Playground",
     playgroundBadge: "BETA",
     keywords: "Keywords · คำสงวน",
+    vscodeExt: "VS Code Extension",
+    vscodeExtBadge: "LIVE",
     github: "GitHub ↗",
     discord: "Discord",
     roadmap: "Roadmap",

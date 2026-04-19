@@ -7,6 +7,9 @@ export const site = {
   domain: "thailang.dev",
   repo: "https://github.com/9Tech-Solutions/thailang",
   version: "0.1.0",
+  vscodeMarketplace:
+    "https://marketplace.visualstudio.com/items?itemName=9Tech.thailang",
+  openVsx: "https://open-vsx.org/extension/9Tech/thailang",
 } as const;
 
 export const navLinks = [
