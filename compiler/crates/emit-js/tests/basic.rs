@@ -18,7 +18,7 @@ fn const_thai_name() {
 
 #[test]
 fn hello_world_uses_console_log() {
-    assert_eq!(compile("พิมพ์(\"สวัสดี\");"), "console.log(\"สวัสดี\");");
+    assert_eq!(compile("ระบบ.แสดง(\"สวัสดี\");"), "console.log(\"สวัสดี\");");
 }
 
 #[test]
@@ -38,7 +38,7 @@ fn comparison_uses_strict_equality() {
 
 #[test]
 fn logical_and_keyword_emits_double_amp() {
-    assert_eq!(compile("ให้ x = จริง และ เท็จ;"), "let x = (true && false);");
+    assert_eq!(compile("ให้ x = ถูก และ ผิด;"), "let x = (true && false);");
 }
 
 #[test]

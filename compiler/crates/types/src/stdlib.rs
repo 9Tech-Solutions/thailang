@@ -42,6 +42,10 @@ pub fn module_call_return_type(module: &str, member: &str) -> Option<TypeAnn> {
             "ปัดขึ้น" | "ปัดลง" => TypeAnn::Int,
             _ => return None,
         }),
+        "ระบบ" => Some(match member {
+            "แสดง" => TypeAnn::Null,
+            _ => return None,
+        }),
         _ => None,
     }
 }
@@ -50,5 +54,5 @@ pub fn module_call_return_type(module: &str, member: &str) -> Option<TypeAnn> {
 /// references like `คณิต` as legitimate (not "unknown name") and so module
 /// member access inference can fire.
 pub fn is_module_name(name: &str) -> bool {
-    matches!(name, "คณิต")
+    matches!(name, "คณิต" | "ระบบ")
 }

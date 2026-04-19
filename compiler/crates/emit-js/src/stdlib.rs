@@ -46,6 +46,7 @@ pub fn method_chain(thai: &str) -> Option<&'static str> {
 pub fn module_ident(thai: &str) -> Option<&'static str> {
     Some(match thai {
         "คณิต" => "Math",
+        "ระบบ" => "console",
         _ => return None,
     })
 }
@@ -61,6 +62,10 @@ pub fn module_member(module: &str, member: &str) -> Option<&'static str> {
             "สุ่ม" => "random",
             "ปัดขึ้น" => "ceil",
             "ปัดลง" => "floor",
+            _ => return None,
+        }),
+        "ระบบ" => Some(match member {
+            "แสดง" => "log",
             _ => return None,
         }),
         _ => None,

@@ -22,7 +22,7 @@ fn outside_the_guard_type_stays_union() {
     // After the `if`, x reverts to the broader union. Assigning into
     // ข้อความ should error.
     let src = "ให้ x: ตัวเลข | ข้อความ = \"hi\";\n\
-               ถ้า (x เป็น ข้อความ) { พิมพ์(x); }\n\
+               ถ้า (x เป็น ข้อความ) { ระบบ.แสดง(x); }\n\
                ให้ s: ข้อความ = x;";
     let errs = errors_for(src);
     assert_eq!(errs.len(), 1, "{errs:?}");

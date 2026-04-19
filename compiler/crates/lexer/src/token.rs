@@ -23,12 +23,10 @@ pub enum TokenKind {
     Let,
     #[token("คงที่")]
     Const,
-    #[token("ฟังก์ชัน")]
+    #[token("สูตร")]
     Function,
-    #[token("คืน")]
+    #[token("ส่งกลับ")]
     Return,
-    #[token("พิมพ์")]
-    Print,
 
     // ── Control flow ───────────────────────────────────────────────────
     #[token("ถ้า")]
@@ -37,7 +35,7 @@ pub enum TokenKind {
     ElseIf,
     #[token("ไม่งั้น")]
     Else,
-    #[token("ตราบ")]
+    #[token("ระหว่างที่")]
     While,
     #[token("วน")]
     For,
@@ -61,17 +59,17 @@ pub enum TokenKind {
     IntType,
     #[token("ข้อความ")]
     StringType,
-    #[token("จริงเท็จ")]
+    #[token("ถูกผิด")]
     BoolType,
-    #[token("อะไรก็ได้")]
+    #[token("ทั่วไป")]
     AnyType,
-    #[token("ไม่คืน")]
+    #[token("ไม่ส่งกลับ")]
     VoidType,
 
     // ── Boolean / null literals (keywords) ─────────────────────────────
-    #[token("จริง")]
+    #[token("ถูก")]
     True,
-    #[token("เท็จ")]
+    #[token("ผิด")]
     False,
     #[token("ว่าง")]
     Null,
@@ -83,22 +81,22 @@ pub enum TokenKind {
     #[token("หรือ")]
     #[token("||")]
     OrOr,
-    #[token("ไม่")]
+    #[token("ไม่ใช่")]
     #[token("!")]
     Bang,
 
     // ── Data structure keywords ────────────────────────────────────────
-    #[token("รายการ")]
+    #[token("ชุด")]
     ArrayKw,
-    #[token("แผนที่")]
+    #[token("คู่")]
     MapKw,
-    #[token("โครงสร้าง")]
+    #[token("โครง")]
     StructKw,
 
     // ── Async ──────────────────────────────────────────────────────────
     #[token("รอ")]
     Await,
-    #[token("ไม่พร้อม")]
+    #[token("ขนาน")]
     Async,
 
     // ── Error handling ─────────────────────────────────────────────────
@@ -108,7 +106,7 @@ pub enum TokenKind {
     Catch,
     #[token("สุดท้าย")]
     Finally,
-    #[token("โยน")]
+    #[token("ฟ้อง")]
     Throw,
 
     // ── Modules ────────────────────────────────────────────────────────

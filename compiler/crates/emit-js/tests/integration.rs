@@ -4,13 +4,13 @@ use thailang_parser::parse;
 const FIZZBUZZ_SRC: &str = r#"
 วน (ให้ i = 1; i <= 100; i += 1) {
     ถ้า (i % 15 == 0) {
-        พิมพ์("FizzBuzz");
+        ระบบ.แสดง("FizzBuzz");
     } ไม่ก็ (i % 3 == 0) {
-        พิมพ์("Fizz");
+        ระบบ.แสดง("Fizz");
     } ไม่ก็ (i % 5 == 0) {
-        พิมพ์("Buzz");
+        ระบบ.แสดง("Buzz");
     } ไม่งั้น {
-        พิมพ์(i);
+        ระบบ.แสดง(i);
     }
 }
 "#;
@@ -32,11 +32,11 @@ fn fizzbuzz_compiles_to_runnable_js() {
 #[test]
 fn full_program_with_fn_and_call() {
     let src = r#"
-ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
-    คืน ก + ข;
+สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
+    ส่งกลับ ก + ข;
 }
 
-พิมพ์(บวก(10, 20));
+ระบบ.แสดง(บวก(10, 20));
 "#;
     let p = parse(src).expect("parse");
     let js = emit(&p);

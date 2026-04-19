@@ -36,7 +36,7 @@ fn string_to_int_annotation_errors() {
 
 #[test]
 fn bool_to_string_annotation_errors() {
-    let errors = errors_for("ให้ x: ข้อความ = จริง;");
+    let errors = errors_for("ให้ x: ข้อความ = ถูก;");
     assert_eq!(errors.len(), 1);
 }
 
@@ -47,13 +47,13 @@ fn no_annotation_no_error() {
 
 #[test]
 fn any_annotation_accepts_everything() {
-    assert!(errors_for("ให้ x: อะไรก็ได้ = 42;").is_empty());
-    assert!(errors_for("ให้ y: อะไรก็ได้ = \"hi\";").is_empty());
+    assert!(errors_for("ให้ x: ทั่วไป = 42;").is_empty());
+    assert!(errors_for("ให้ y: ทั่วไป = \"hi\";").is_empty());
 }
 
 #[test]
 fn nested_let_in_function_body_is_checked() {
-    let errors = errors_for("ฟังก์ชัน f() { ให้ x: จำนวนเต็ม = \"oops\"; }");
+    let errors = errors_for("สูตร f() { ให้ x: จำนวนเต็ม = \"oops\"; }");
     assert_eq!(errors.len(), 1);
 }
 
@@ -66,7 +66,7 @@ fn union_type_accepts_any_variant() {
 
 #[test]
 fn array_literal_validates_against_array_annotation() {
-    // `รายการ<จำนวนเต็ม>` requires `<>` parser support; for now check the
+    // `ชุด<จำนวนเต็ม>` requires `<>` parser support; for now check the
     // simpler case where the annotation is inferred-friendly.
     assert!(errors_for("ให้ xs = [1, 2, 3];").is_empty());
 }

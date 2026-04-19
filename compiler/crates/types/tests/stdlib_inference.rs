@@ -36,7 +36,7 @@ fn string_upper_returns_string() {
 
 #[test]
 fn string_split_returns_array_of_string() {
-    assert!(errors_for("ให้ xs: รายการ<ข้อความ> = \"a,b\".แยก(\",\");").is_empty());
+    assert!(errors_for("ให้ xs: ชุด<ข้อความ> = \"a,b\".แยก(\",\");").is_empty());
 }
 
 // ── Array method return types ──────────────────────────────────────────
@@ -48,7 +48,7 @@ fn array_length_returns_int() {
 
 #[test]
 fn array_includes_returns_bool() {
-    assert!(errors_for("ให้ b: จริงเท็จ = [1, 2, 3].มี(2);").is_empty());
+    assert!(errors_for("ให้ b: ถูกผิด = [1, 2, 3].มี(2);").is_empty());
     let errs = errors_for("ให้ n: จำนวนเต็ม = [1, 2, 3].มี(2);");
     assert_eq!(errs.len(), 1, "{errs:?}");
 }

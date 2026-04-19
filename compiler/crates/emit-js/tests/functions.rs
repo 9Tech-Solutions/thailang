@@ -8,25 +8,25 @@ fn compile(src: &str) -> String {
 
 #[test]
 fn empty_function() {
-    let js = compile("ฟังก์ชัน hello() {}");
+    let js = compile("สูตร hello() {}");
     assert_eq!(js, "function hello() {}");
 }
 
 #[test]
 fn function_preserves_thai_name_and_params() {
-    let js = compile("ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }");
+    let js = compile("สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { ส่งกลับ ก + ข; }");
     assert!(js.starts_with("function บวก(ก, ข) {"));
     assert!(js.contains("return (ก + ข);"));
 }
 
 #[test]
 fn fn_body_indent_uses_two_spaces() {
-    let js = compile("ฟังก์ชัน f() { พิมพ์(1); }");
+    let js = compile("สูตร f() { ระบบ.แสดง(1); }");
     assert!(js.contains("  console.log(1);"));
 }
 
 #[test]
 fn return_no_value() {
-    let js = compile("ฟังก์ชัน f() { คืน; }");
+    let js = compile("สูตร f() { ส่งกลับ; }");
     assert!(js.contains("return;"));
 }

@@ -665,7 +665,6 @@ impl Parser {
             TokenKind::False => ExprKind::Bool(false),
             TokenKind::Null => ExprKind::Null,
             TokenKind::Ident(name) => ExprKind::Ident(name),
-            TokenKind::Print => ExprKind::Ident("พิมพ์".to_string()),
             TokenKind::LParen => {
                 // Distinguish paren-expr from arrow-fn: scan the matching `)` and
                 // peek `=>`. `pos` has already advanced past the `(`, so rewind

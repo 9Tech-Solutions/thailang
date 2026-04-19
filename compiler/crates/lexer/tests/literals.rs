@@ -43,13 +43,13 @@ fn string_with_quote_escape() {
 }
 
 #[test]
-fn boolean_true_keyword_jing() {
-    assert_eq!(tokenize("จริง")[0].kind, TokenKind::True);
+fn boolean_true_keyword_thuk() {
+    assert_eq!(tokenize("ถูก")[0].kind, TokenKind::True);
 }
 
 #[test]
-fn boolean_false_keyword_thet() {
-    assert_eq!(tokenize("เท็จ")[0].kind, TokenKind::False);
+fn boolean_false_keyword_phit() {
+    assert_eq!(tokenize("ผิด")[0].kind, TokenKind::False);
 }
 
 #[test]

@@ -33,7 +33,7 @@ names are silently shadowed. Each file covers one stdlib surface area.
 | [`math.md`](./math.md)                     | `คณิต`                    | `Math`                                              | ✓ shipped in Phase 3B                       |
 | [`string-methods.md`](./string-methods.md) | _receiver methods_        | `String.prototype.*`                                | partial (5), needs expansion                |
 | [`array-methods.md`](./array-methods.md)   | _receiver methods_        | `Array.prototype.*`                                 | partial (6), needs expansion                |
-| [`console.md`](./console.md)               | `ระบบ` (per your §1 note) | `console.*`                                         | **proposed**: replaces bare `พิมพ์` keyword |
+| [`console.md`](./console.md)               | `ระบบ`                    | `console.*`                                         | ✓ shipped: replaces bare `พิมพ์` keyword    |
 | [`number.md`](./number.md)                 | `จำนวน`                   | `Number.*` + global `parseInt`/`parseFloat`/`isNaN` | **proposed**                                |
 | [`object-methods.md`](./object-methods.md) | `วัตถุ`                   | `Object.*`                                          | **proposed**                                |
 | [`date.md`](./date.md)                     | `วันที่`                  | `Date`                                              | **proposed**                                |
@@ -42,7 +42,7 @@ names are silently shadowed. Each file covers one stdlib surface area.
 
 ### Deferred
 
-These need a real `ไม่พร้อม`/async story first and touch concurrency, revisit
+These need a real `ขนาน`/async story first and touch concurrency, revisit
 after Phase 3C:
 
 - `Promise.*` (and `.then`/`.catch`/`.finally` which collide with try/catch keywords)
@@ -68,10 +68,10 @@ after Phase 3C:
 6. `คณิต` module name, common noun for "math".
 7. `.ลด`: "decrease/reduce" is a common verb.
 
-**Already addressed in your edits:** `ฟังก์ชัน→สูตร`, `คืน→ส่งกลับ`,
+**Shipped renames:** `ฟังก์ชัน→สูตร`, `คืน→ส่งกลับ`,
 `ตราบ→ระหว่างที่`, `จริงเท็จ→ถูกผิด`, `อะไรก็ได้→ทั่วไป`, `ไม่คืน→ไม่ส่งกลับ`,
 `จริง→ถูก`, `เท็จ→ผิด`, `ไม่→ไม่ใช่`, `รายการ→ชุด`, `แผนที่→คู่`, `โครงสร้าง→โครง`,
-`ไม่พร้อม→ขนาน`, `พิมพ์→ระบบ.พิมพ์` (deferred to `console.md`).
+`ไม่พร้อม→ขนาน`, `โยน→ฟ้อง`, `พิมพ์→ระบบ.แสดง` (now stdlib, see `console.md`).
 
 ---
 
@@ -79,15 +79,15 @@ after Phase 3C:
 
 Call things out here or in a specific file's header:
 
-- **`พิมพ์` refactor** (your §1 note): moving from bare keyword to
-  `ระบบ.พิมพ์(...)` is a small language change, lexer drops `Print` token,
-  parser/emitter stop special-casing, `ระบบ` module is registered in
+- **`พิมพ์` refactor** (now shipped): moved from bare keyword to
+  `ระบบ.แสดง(...)`. Lexer dropped `Print` token,
+  parser/emitter stop special-casing, `ระบบ` module registered in
   stdlib tables. See `console.md`.
 - **Keyword collisions inside module method names** (e.g., promise `.catch`
   vs try-`จับ`), the emitter's member-rename table doesn't check if the
   member name is a language keyword today, because members are never lexed.
   Something to keep in mind when designing any method named `จับ`, `สุดท้าย`,
-  `ไม่`, etc.
+  `ไม่ใช่`, etc.
 - **Number of syllables**: for child-friendliness, short > long. Shortlist
   candidate renames with 1–2 syllables when possible.
 

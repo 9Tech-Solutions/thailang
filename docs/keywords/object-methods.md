@@ -35,7 +35,7 @@ Suggested candidates:
 
 - `Object.keys` → `.กุญแจ` / `.ชื่อ` / `.กุญแจทั้งหมด`
 - `Object.values` → `.ค่า` / `.ค่าทั้งหมด`
-- `Object.entries` → `.คู่` (conflicts with user's proposed `แผนที่→คู่`) / `.รายการคู่`
+- `Object.entries` → `.คู่` (conflicts with shipped `แผนที่→คู่` Map keyword) / `.รายการคู่`
 - `Object.fromEntries` → `.จากคู่`
 - `Object.assign` → `.รวม` / `.ผสม`
 - `Object.freeze` → `.แช่แข็ง` / `.ตรึง` / `.ล็อก`

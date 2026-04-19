@@ -3,7 +3,7 @@ use thailang_parser::parse;
 
 #[test]
 fn function_with_no_params_and_no_return_type() {
-    let p = parse("ฟังก์ชัน hello() { พิมพ์(\"hi\"); }").unwrap();
+    let p = parse("สูตร hello() { ระบบ.แสดง(\"hi\"); }").unwrap();
     match &p.items[0].kind {
         ItemKind::Fn(f) => {
             assert_eq!(f.name, "hello");
@@ -17,7 +17,7 @@ fn function_with_no_params_and_no_return_type() {
 
 #[test]
 fn function_with_typed_params_and_return_type() {
-    let p = parse("ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { คืน ก + ข; }").unwrap();
+    let p = parse("สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข { ส่งกลับ ก + ข; }").unwrap();
     match &p.items[0].kind {
         ItemKind::Fn(f) => {
             assert_eq!(f.name, "บวก");
@@ -34,7 +34,7 @@ fn function_with_typed_params_and_return_type() {
 
 #[test]
 fn return_with_no_value() {
-    let p = parse("ฟังก์ชัน f() { คืน; }").unwrap();
+    let p = parse("สูตร f() { ส่งกลับ; }").unwrap();
     match &p.items[0].kind {
         ItemKind::Fn(f) => match &f.body[0].kind {
             StmtKind::Return(None) => (),

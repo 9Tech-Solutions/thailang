@@ -1,4 +1,4 @@
-# Array methods: receiver methods on `รายการ` / `ชุด`
+# Array methods: receiver methods on `ชุด`
 
 > **Soft reservations.** Same pattern as `string-methods.md`, emitter rewrites
 > these member names regardless of receiver type.

@@ -14,7 +14,7 @@
     { "include": "#keyword-control" },
     { "include": "#keyword-other" },
     { "include": "#keyword-logical" },
-    { "include": "#builtin-function" },
+    { "include": "#stdlib-module" },
     { "include": "#operator" },
     { "include": "#function-call" }
   ],
@@ -57,13 +57,13 @@
     },
     "type": {
       "name": "storage.type.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ตัวเลข|จำนวนเต็ม|ข้อความ|จริงเท็จ|อะไรก็ได้|ไม่คืน)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ตัวเลข|จำนวนเต็ม|ข้อความ|ถูกผิด|ทั่วไป|ไม่ส่งกลับ)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
     "constant": {
       "patterns": [
         {
           "name": "constant.language.boolean.thailang",
-          "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(จริง|เท็จ)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+          "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ถูก|ผิด)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
         },
         {
           "name": "constant.language.null.thailang",
@@ -73,23 +73,23 @@
     },
     "keyword-declaration": {
       "name": "keyword.declaration.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ให้|คงที่|ฟังก์ชัน|โครงสร้าง|รายการ|แผนที่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ให้|คงที่|สูตร|โครง|ชุด|คู่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
     "keyword-control": {
       "name": "keyword.control.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ถ้า|ไม่ก็|ไม่งั้น|ตราบ|วน|แต่ละ|คืน|หยุด|ข้าม|เลือก|กรณี|เริ่มต้น|ลอง|จับ|สุดท้าย|โยน)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ถ้า|ไม่ก็|ไม่งั้น|ระหว่างที่|วน|แต่ละ|ส่งกลับ|หยุด|ข้าม|เลือก|กรณี|เริ่มต้น|ลอง|จับ|สุดท้าย|ฟ้อง)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
     "keyword-other": {
       "name": "keyword.other.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ใน|เป็น|จาก|รอ|ไม่พร้อม|นำเข้า|ส่งออก)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ใน|เป็น|จาก|รอ|ขนาน|นำเข้า|ส่งออก)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
     "keyword-logical": {
       "name": "keyword.operator.logical.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(และ|หรือ|ไม่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(และ|หรือ|ไม่ใช่)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
-    "builtin-function": {
-      "name": "support.function.builtin.thailang",
-      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])พิมพ์(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
+    "stdlib-module": {
+      "name": "support.class.stdlib.thailang",
+      "match": "(?<![\\u0E00-\\u0E7Fa-zA-Z0-9_])(ระบบ|คณิต)(?![\\u0E00-\\u0E7Fa-zA-Z0-9_])"
     },
     "operator": {
       "name": "keyword.operator.thailang",

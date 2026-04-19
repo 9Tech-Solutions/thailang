@@ -42,13 +42,13 @@ fn let_name_new_is_mangled() {
 
 #[test]
 fn function_name_return_is_mangled() {
-    let out = compile("ฟังก์ชัน return() { คืน 1; }");
+    let out = compile("สูตร return() { ส่งกลับ 1; }");
     assert!(out.contains("function return$("), "got: {out}");
 }
 
 #[test]
 fn param_name_this_is_mangled() {
-    let out = compile("ฟังก์ชัน f(this) { คืน this; }");
+    let out = compile("สูตร f(this) { ส่งกลับ this; }");
     assert!(out.contains("function f(this$)"), "got: {out}");
     assert!(out.contains("return this$"), "got: {out}");
 }
@@ -57,14 +57,14 @@ fn param_name_this_is_mangled() {
 fn reference_of_mangled_name_matches_declaration() {
     // Declaration and use must rename consistently, otherwise the JS
     // references an undefined `class$` or shadows the global `class`.
-    let out = compile("ให้ class = 5; พิมพ์(class);");
+    let out = compile("ให้ class = 5; ระบบ.แสดง(class);");
     assert!(out.contains("let class$ = 5"), "got: {out}");
     assert!(out.contains("console.log(class$)"), "got: {out}");
 }
 
 #[test]
 fn thai_names_never_mangled() {
-    let out = compile("ให้ ชื่อ = \"สม\"; พิมพ์(ชื่อ);");
+    let out = compile("ให้ ชื่อ = \"สม\"; ระบบ.แสดง(ชื่อ);");
     assert!(out.contains("let ชื่อ = "), "got: {out}");
     assert!(!out.contains("$"), "got: {out}");
 }
@@ -93,7 +93,7 @@ fn strict_mode_reserved_also_mangled() {
 fn runs_under_node() {
     // End-to-end: emit + execute. If mangling is missing or inconsistent,
     // node will SyntaxError and this assertion fires.
-    let stdout = run("ให้ class = 5; พิมพ์(class);");
+    let stdout = run("ให้ class = 5; ระบบ.แสดง(class);");
     assert_eq!(stdout, "5");
 }
 
@@ -109,7 +109,7 @@ fn member_access_names_not_mangled() {
 #[test]
 fn foreach_var_is_mangled() {
     // `แต่ละ` syntax requires parens: `แต่ละ (var ใน expr) { ... }`.
-    let out = compile("แต่ละ (new ใน [1, 2]) { พิมพ์(new); }");
+    let out = compile("แต่ละ (new ใน [1, 2]) { ระบบ.แสดง(new); }");
     assert!(out.contains("for (const new$ of"), "got: {out}");
     assert!(out.contains("console.log(new$)"), "got: {out}");
 }

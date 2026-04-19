@@ -30,12 +30,12 @@ fn thai_string_literal() {
 
 #[test]
 fn bool_true_keyword() {
-    assert_eq!(parse_expr("จริง").kind, ExprKind::Bool(true));
+    assert_eq!(parse_expr("ถูก").kind, ExprKind::Bool(true));
 }
 
 #[test]
 fn bool_false_keyword() {
-    assert_eq!(parse_expr("เท็จ").kind, ExprKind::Bool(false));
+    assert_eq!(parse_expr("ผิด").kind, ExprKind::Bool(false));
 }
 
 #[test]
@@ -136,7 +136,7 @@ fn unary_negation() {
 
 #[test]
 fn unary_not_with_thai_keyword() {
-    let e = parse_expr("ไม่ จริง");
+    let e = parse_expr("ไม่ใช่ ถูก");
     match e.kind {
         ExprKind::Unary {
             op: UnaryOp::Not,
@@ -173,14 +173,22 @@ fn function_call_with_two_args() {
 }
 
 #[test]
-fn print_keyword_lexes_as_callable_identifier() {
-    let e = parse_expr("พิมพ์(\"สวัสดี\")");
+fn system_show_dotted_call() {
+    // `ระบบ.แสดง("hello")` is a member access on the `ระบบ` stdlib module
+    // followed by a call. Print is no longer a dedicated keyword.
+    let e = parse_expr("ระบบ.แสดง(\"สวัสดี\")");
     match e.kind {
         ExprKind::Call { callee, args } => {
-            assert_eq!(callee.kind, ExprKind::Ident("พิมพ์".to_string()));
+            match callee.kind {
+                ExprKind::Member { object, member } => {
+                    assert_eq!(object.kind, ExprKind::Ident("ระบบ".to_string()));
+                    assert_eq!(member, "แสดง");
+                }
+                other => panic!("expected member access, got {other:?}"),
+            }
             assert_eq!(args.len(), 1);
         }
-        _ => panic!("expected call"),
+        other => panic!("expected call, got {other:?}"),
     }
 }
 
@@ -210,7 +218,7 @@ fn modulo_operator() {
 
 #[test]
 fn logical_and_thai_keyword() {
-    let e = parse_expr("จริง และ เท็จ");
+    let e = parse_expr("ถูก และ ผิด");
     assert!(matches!(
         e.kind,
         ExprKind::Binary {

@@ -63,14 +63,14 @@ fn int_plus_float_becomes_number() {
 
 #[test]
 fn return_wrong_type_errors() {
-    let errs = errors_for("ฟังก์ชัน f() -> จำนวนเต็ม { คืน \"oops\"; }");
+    let errs = errors_for("สูตร f() -> จำนวนเต็ม { ส่งกลับ \"oops\"; }");
     assert_eq!(errs.len(), 1, "{errs:?}");
     assert!(errs[0].contains("จำนวนเต็ม"));
 }
 
 #[test]
 fn return_matching_type_ok() {
-    assert!(errors_for("ฟังก์ชัน f() -> จำนวนเต็ม { คืน 42; }").is_empty());
+    assert!(errors_for("สูตร f() -> จำนวนเต็ม { ส่งกลับ 42; }").is_empty());
 }
 
 // ── Parameter types bind into function body ────────────────────────────
@@ -78,7 +78,7 @@ fn return_matching_type_ok() {
 #[test]
 fn function_param_is_visible_in_body() {
     // Assigning a string param into an int-annotated local should error.
-    let errs = errors_for("ฟังก์ชัน f(s: ข้อความ) { ให้ n: จำนวนเต็ม = s; }");
+    let errs = errors_for("สูตร f(s: ข้อความ) { ให้ n: จำนวนเต็ม = s; }");
     assert_eq!(errs.len(), 1, "{errs:?}");
 }
 

@@ -13,11 +13,11 @@ Syntax highlighting and language support for [Thailang](https://github.com/9Tech
 ## Example
 
 ```thailang
-ฟังก์ชัน บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
-    คืน ก + ข;
+สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
+    ส่งกลับ ก + ข;
 }
 
-พิมพ์(บวก(10, 20));   // → 30
+ระบบ.แสดง(บวก(10, 20));   // → 30
 ```
 
 ## Install

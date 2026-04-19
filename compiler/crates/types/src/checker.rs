@@ -535,12 +535,12 @@ fn describe(ty: &TypeAnn) -> String {
         TypeAnn::Number => "ตัวเลข".to_string(),
         TypeAnn::Int => "จำนวนเต็ม".to_string(),
         TypeAnn::String => "ข้อความ".to_string(),
-        TypeAnn::Bool => "จริงเท็จ".to_string(),
+        TypeAnn::Bool => "ถูกผิด".to_string(),
         TypeAnn::Null => "ว่าง".to_string(),
-        TypeAnn::Any => "อะไรก็ได้".to_string(),
-        TypeAnn::Void => "ไม่คืน".to_string(),
-        TypeAnn::Array(inner) => format!("รายการ<{}>", describe(inner)),
-        TypeAnn::Map => "แผนที่".to_string(),
+        TypeAnn::Any => "ทั่วไป".to_string(),
+        TypeAnn::Void => "ไม่ส่งกลับ".to_string(),
+        TypeAnn::Array(inner) => format!("ชุด<{}>", describe(inner)),
+        TypeAnn::Map => "คู่".to_string(),
         TypeAnn::Union(variants) => variants
             .iter()
             .map(describe)

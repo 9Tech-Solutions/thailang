@@ -7,23 +7,16 @@
  * compiler/crates/lexer/src/token.rs) without pulling Shiki to the client.
  */
 
-const KEYWORD_DECLARATION = new Set([
-  "ให้",
-  "คงที่",
-  "ฟังก์ชัน",
-  "โครงสร้าง",
-  "รายการ",
-  "แผนที่",
-]);
+const KEYWORD_DECLARATION = new Set(["ให้", "คงที่", "สูตร", "โครง", "ชุด", "คู่"]);
 
 const KEYWORD_CONTROL = new Set([
   "ถ้า",
   "ไม่ก็",
   "ไม่งั้น",
-  "ตราบ",
+  "ระหว่างที่",
   "วน",
   "แต่ละ",
-  "คืน",
+  "ส่งกลับ",
   "หยุด",
   "ข้าม",
   "เลือก",
@@ -32,7 +25,7 @@ const KEYWORD_CONTROL = new Set([
   "ลอง",
   "จับ",
   "สุดท้าย",
-  "โยน",
+  "ฟ้อง",
 ]);
 
 const KEYWORD_OTHER = new Set([
@@ -40,22 +33,22 @@ const KEYWORD_OTHER = new Set([
   "เป็น",
   "จาก",
   "รอ",
-  "ไม่พร้อม",
+  "ขนาน",
   "นำเข้า",
   "ส่งออก",
 ]);
 
-const KEYWORD_LOGICAL = new Set(["และ", "หรือ", "ไม่"]);
-const BUILTIN = new Set(["พิมพ์"]);
+const KEYWORD_LOGICAL = new Set(["และ", "หรือ", "ไม่ใช่"]);
+const BUILTIN = new Set(["ระบบ", "คณิต"]);
 const TYPE_KEYWORDS = new Set([
   "ตัวเลข",
   "จำนวนเต็ม",
   "ข้อความ",
-  "จริงเท็จ",
-  "อะไรก็ได้",
-  "ไม่คืน",
+  "ถูกผิด",
+  "ทั่วไป",
+  "ไม่ส่งกลับ",
 ]);
-const BOOLEAN_LITERALS = new Set(["จริง", "เท็จ"]);
+const BOOLEAN_LITERALS = new Set(["ถูก", "ผิด"]);
 const NULL_LITERALS = new Set(["ว่าง"]);
 
 export type TokenKind =

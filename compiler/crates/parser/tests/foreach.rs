@@ -3,7 +3,7 @@ use thailang_parser::parse;
 
 #[test]
 fn foreach_over_array_literal() {
-    let p = parse("แต่ละ (ผล ใน [\"มะม่วง\", \"ทุเรียน\"]) { พิมพ์(ผล); }").unwrap();
+    let p = parse("แต่ละ (ผล ใน [\"มะม่วง\", \"ทุเรียน\"]) { ระบบ.แสดง(ผล); }").unwrap();
     match &p.items[0].kind {
         ItemKind::Stmt(s) => match &s.kind {
             StmtKind::ForEach { var, body, .. } => {
@@ -18,7 +18,7 @@ fn foreach_over_array_literal() {
 
 #[test]
 fn foreach_over_named_iterable() {
-    let p = parse("แต่ละ (x ใน xs) { พิมพ์(x); }").unwrap();
+    let p = parse("แต่ละ (x ใน xs) { ระบบ.แสดง(x); }").unwrap();
     match &p.items[0].kind {
         ItemKind::Stmt(s) => match &s.kind {
             StmtKind::ForEach { var, .. } => assert_eq!(var, "x"),

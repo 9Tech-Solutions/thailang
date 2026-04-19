@@ -350,7 +350,6 @@ impl Emitter {
         }
 
         match &callee.kind {
-            ExprKind::Ident(name) if name == "พิมพ์" => self.write("console.log"),
             ExprKind::Ident(name) => self.write_ident(name),
             _ => self.emit_expr(callee),
         }

@@ -1,7 +1,7 @@
 # `ข้อผิดพลาด`: Error types
 
 > **Not yet implemented.** Covers JS built-in error classes. Relevant once
-> `โยน` (throw) + `ลอง`/`จับ` (try/catch) are exercised with real error
+> `ฟ้อง` (throw) + `ลอง`/`จับ` (try/catch) are exercised with real error
 > construction.
 
 ---
@@ -20,13 +20,13 @@ either:
 
 ```thailang
 // A) module prefix
-โยน ข้อผิดพลาด.ประเภท.ใหม่("x");
+ฟ้อง ข้อผิดพลาด.ประเภท.ใหม่("x");
 
 // B) bare constructors (like JS)
-โยน ข้อผิดพลาดประเภท.ใหม่("x");
+ฟ้อง ข้อผิดพลาดประเภท.ใหม่("x");
 ```
 
-\*\*use the word `แจ้ง` instead of `โยน`
+\*\*note: `ฟ้อง` is the shipped throw keyword (was `โยน`)
 
 (B) matches JS more closely and shortens call sites.
 

@@ -46,7 +46,7 @@ fn let_with_thai_name_and_string_type() {
 
 #[test]
 fn expression_statement() {
-    let p = parse("พิมพ์(\"สวัสดี\");").unwrap();
+    let p = parse("ระบบ.แสดง(\"สวัสดี\");").unwrap();
     assert_eq!(p.items.len(), 1);
     match &p.items[0].kind {
         ItemKind::Stmt(s) => assert!(matches!(s.kind, StmtKind::Expr(_))),

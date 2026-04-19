@@ -8,7 +8,7 @@ fn compile(src: &str) -> String {
 
 #[test]
 fn is_check_string_emits_typeof() {
-    let out = compile("ถ้า (x เป็น ข้อความ) { พิมพ์(x); }");
+    let out = compile("ถ้า (x เป็น ข้อความ) { ระบบ.แสดง(x); }");
     assert!(
         out.contains("typeof x === \"string\""),
         "expected typeof string check, got: {out}"
@@ -17,7 +17,7 @@ fn is_check_string_emits_typeof() {
 
 #[test]
 fn is_check_int_emits_number_and_integer_guard() {
-    let out = compile("ถ้า (n เป็น จำนวนเต็ม) { พิมพ์(n); }");
+    let out = compile("ถ้า (n เป็น จำนวนเต็ม) { ระบบ.แสดง(n); }");
     assert!(
         out.contains("Number.isInteger(n)"),
         "expected Number.isInteger guard, got: {out}"
@@ -26,7 +26,7 @@ fn is_check_int_emits_number_and_integer_guard() {
 
 #[test]
 fn is_check_number_emits_typeof_number() {
-    let out = compile("ถ้า (n เป็น ตัวเลข) { พิมพ์(n); }");
+    let out = compile("ถ้า (n เป็น ตัวเลข) { ระบบ.แสดง(n); }");
     assert!(
         out.contains("typeof n === \"number\""),
         "expected typeof number, got: {out}"
@@ -35,7 +35,7 @@ fn is_check_number_emits_typeof_number() {
 
 #[test]
 fn is_check_bool_emits_typeof_boolean() {
-    let out = compile("ถ้า (b เป็น จริงเท็จ) { พิมพ์(b); }");
+    let out = compile("ถ้า (b เป็น ถูกผิด) { ระบบ.แสดง(b); }");
     assert!(
         out.contains("typeof b === \"boolean\""),
         "expected typeof boolean, got: {out}"
@@ -44,7 +44,7 @@ fn is_check_bool_emits_typeof_boolean() {
 
 #[test]
 fn is_check_null_emits_strict_null_equality() {
-    let out = compile("ถ้า (x เป็น ว่าง) { พิมพ์(\"none\"); }");
+    let out = compile("ถ้า (x เป็น ว่าง) { ระบบ.แสดง(\"none\"); }");
     assert!(
         out.contains("x === null"),
         "expected `x === null`, got: {out}"

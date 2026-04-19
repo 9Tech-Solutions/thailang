@@ -8,13 +8,13 @@ fn empty_program() {
 
 #[test]
 fn three_statements() {
-    let p = parse("ให้ x = 1; ให้ y = 2; พิมพ์(x);").unwrap();
+    let p = parse("ให้ x = 1; ให้ y = 2; ระบบ.แสดง(x);").unwrap();
     assert_eq!(p.items.len(), 3);
 }
 
 #[test]
 fn hello_world_program() {
-    let p = parse(r#"พิมพ์("สวัสดีชาวโลก!");"#).unwrap();
+    let p = parse(r#"ระบบ.แสดง("สวัสดีชาวโลก!");"#).unwrap();
     assert_eq!(p.items.len(), 1);
 }
 

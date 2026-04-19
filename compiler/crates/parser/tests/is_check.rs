@@ -12,7 +12,7 @@ fn single_stmt(src: &str) -> StmtKind {
 
 #[test]
 fn is_check_parses_with_type_rhs_string() {
-    let src = "ถ้า (ค่า เป็น ข้อความ) { พิมพ์(ค่า); }";
+    let src = "ถ้า (ค่า เป็น ข้อความ) { ระบบ.แสดง(ค่า); }";
     let stmt = single_stmt(src);
     let cond = match stmt {
         StmtKind::If { cond, .. } => cond,
@@ -29,7 +29,7 @@ fn is_check_parses_with_type_rhs_string() {
 
 #[test]
 fn is_check_parses_with_type_rhs_int() {
-    let src = "ถ้า (n เป็น จำนวนเต็ม) { พิมพ์(n); }";
+    let src = "ถ้า (n เป็น จำนวนเต็ม) { ระบบ.แสดง(n); }";
     let stmt = single_stmt(src);
     let cond = match stmt {
         StmtKind::If { cond, .. } => cond,
@@ -45,7 +45,7 @@ fn is_check_parses_with_type_rhs_int() {
 #[test]
 fn is_check_parses_with_null_type() {
     // `ว่าง` in expression position is null literal, but after `เป็น` it is a type.
-    let src = "ถ้า (x เป็น ว่าง) { พิมพ์(\"none\"); }";
+    let src = "ถ้า (x เป็น ว่าง) { ระบบ.แสดง(\"none\"); }";
     let stmt = single_stmt(src);
     let cond = match stmt {
         StmtKind::If { cond, .. } => cond,

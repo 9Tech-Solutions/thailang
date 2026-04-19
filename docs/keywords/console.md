@@ -1,50 +1,40 @@
 # `ระบบ`: Console / I/O module
 
-> **Not yet implemented.** This file captures the design of a new stdlib
-> module based on your §1 note ("should change to std related, use the word
-> `ระบบ` for console instead").
+> **Shipped.** `พิมพ์` is no longer a lexer keyword; console output now
+> goes through the `ระบบ` stdlib module.
 
 ---
 
 ## The migration
 
-Today Thailang has a bare `พิมพ์` language keyword that special-cases to
-`console.log`. Your proposal: demote `พิมพ์` from keyword status, introduce a
-new `ระบบ` stdlib module, and expose console members on it:
+Thailang used to have a bare `พิมพ์` language keyword that special-cased to
+`console.log`. That's been demoted: `ระบบ` is a stdlib module and `.แสดง` is
+its log member.
 
 ```thailang
-// Before (current):
+// Before:
 พิมพ์("สวัสดี");
 
-// After (proposed):
-ระบบ.พิมพ์("สวัสดี");
+// Now:
+ระบบ.แสดง("สวัสดี");
 ```
 
-### What this costs the language
+### What this cost the language
 
-- **Removes** `Print` token from the lexer. Small diff.
-- `พิมพ์` becomes a plain identifier. User could shadow it, but since it's
-  accessed via `ระบบ.พิมพ์` the risk is local.
-- Parser/emitter stop special-casing `พิมพ์`. The `ระบบ` → `globalThis`
-  rewrite and `ระบบ.พิมพ์` → `console.log` rewrite go through the existing
-  stdlib rewrite tables.
-- Every `.th` file + example needs `พิมพ์(...)` → `ระบบ.พิมพ์(...)`.
-
-**Trade-off:** More verbose for the most common call. If a child writes
-their first program, `ระบบ.พิมพ์("สวัสดี")` is more to type than `พิมพ์(...)`.
-Worth weighing against the "std-related" benefit.
-
-**Alternative:** Keep `พิมพ์` as a shortcut AND expose `ระบบ.พิมพ์` as the
-canonical form, both compile to `console.log`. Best of both worlds.
+- **Removed** `Print` token from the lexer. Small diff.
+- `พิมพ์` is now a plain identifier available for user code.
+- Parser/emitter no longer special-case `พิมพ์`. The `ระบบ` → `console`
+  module rewrite and `ระบบ.แสดง` → `console.log` member rewrite go
+  through the existing stdlib rewrite tables.
+- Every `.th` file + example updated to `ระบบ.แสดง(...)`.
 
 ---
 
 ## Module name
 
-| Proposed | Means  | Clash                 | Notes         |
-| -------- | ------ | --------------------- | ------------- |
-| `ระบบ`   | system | medium, "the system"  | your proposal |
-| _alt_    |        |                       |               |
+| Shipped | Means  | Clash                 | Notes         |
+| ------- | ------ | --------------------- | ------------- |
+| `ระบบ`  | system | medium, "the system"  |               |
 
 ---
 
@@ -52,22 +42,22 @@ canonical form, both compile to `console.log`. Best of both worlds.
 
 Map `ระบบ.X` → JS `console.X`. Child-friendly, Thai-native names:
 
-| Current (proposed) | Means        | JS target          | Clash                     | Proposed        |
-| ------------------ | ------------ | ------------------ | ------------------------- | --------------- |
-| `.พิมพ์`           | print / log  | `console.log`      | low, already established  | `.แสดง`         |
-| _?_                | warn         | `console.warn`     |                           | `.เตือน`        |
-| _?_                | error        | `console.error`    |                           | `.ผิดพลาด`      |
-| _?_                | info         | `console.info`     |                           | `.แจ้ง`         |
-| _?_                | debug        | `console.debug`    |                           | `.ตรวจ`         |
-| _?_                | clear screen | `console.clear`    |                           | `.ล้าง`         |
-| _?_                | table output | `console.table`    |                           | `.ตาราง`        |
-| _?_                | start timer  | `console.time`     |                           | `.จับเวลา`      |
-| _?_                | stop timer   | `console.timeEnd`  |                           | `.หยุดจับเวลา`  |
-| _?_                | count        | `console.count`    |                           | `.นับ`          |
-| _?_                | group        | `console.group`    |                           | `.จับกลุ่ม`     |
-| _?_                | group end    | `console.groupEnd` |                           | `.เลิกจับกลุ่ม` |
+| Shipped | Proposed        | Means        | JS target          | Clash                     |
+| ------- | --------------- | ------------ | ------------------ | ------------------------- |
+| `.แสดง` |                 | print / log  | `console.log`      | low                       |
+|         | `.เตือน`        | warn         | `console.warn`     |                           |
+|         | `.ผิดพลาด`      | error        | `console.error`    |                           |
+|         | `.แจ้ง`         | info         | `console.info`     |                           |
+|         | `.ตรวจ`         | debug        | `console.debug`    |                           |
+|         | `.ล้าง`         | clear screen | `console.clear`    |                           |
+|         | `.ตาราง`        | table output | `console.table`    |                           |
+|         | `.จับเวลา`      | start timer  | `console.time`     |                           |
+|         | `.หยุดจับเวลา`  | stop timer   | `console.timeEnd`  |                           |
+|         | `.นับ`          | count        | `console.count`    |                           |
+|         | `.จับกลุ่ม`     | group        | `console.group`    |                           |
+|         | `.เลิกจับกลุ่ม` | group end    | `console.groupEnd` |                           |
 
-Suggested candidates:
+Suggested candidates for the remaining slots:
 
 - `console.warn` → `.เตือน`
 - `console.error` → `.ผิด` / `.ข้อผิดพลาด` / `.ล้ม`

@@ -2,11 +2,11 @@ import { site } from "@/shared/config/site";
 import { HeroPlayground } from "@/widgets/hero-playground/HeroPlayground";
 
 const heroSample = `// สวัสดี.th
-ฟังก์ชัน ทักทาย(ชื่อ: ข้อความ) {
-    คืน "สวัสดี " + ชื่อ + "!";
+สูตร ทักทาย(ชื่อ: ข้อความ) {
+    ส่งกลับ "สวัสดี " + ชื่อ + "!";
 }
 
-พิมพ์(ทักทาย("ชาวโลก"));`;
+ระบบ.แสดง(ทักทาย("ชาวโลก"));`;
 
 export function Hero() {
   return (

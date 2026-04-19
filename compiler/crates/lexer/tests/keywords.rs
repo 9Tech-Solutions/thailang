@@ -19,18 +19,13 @@ fn tokenizes_const_keyword_kongthi() {
 }
 
 #[test]
-fn tokenizes_function_keyword_fangchan() {
-    assert_eq!(first_kind("ฟังก์ชัน"), TokenKind::Function);
+fn tokenizes_function_keyword_sut() {
+    assert_eq!(first_kind("สูตร"), TokenKind::Function);
 }
 
 #[test]
-fn tokenizes_return_keyword_khuen() {
-    assert_eq!(first_kind("คืน"), TokenKind::Return);
-}
-
-#[test]
-fn tokenizes_print_keyword_phim() {
-    assert_eq!(first_kind("พิมพ์"), TokenKind::Print);
+fn tokenizes_return_keyword_songklap() {
+    assert_eq!(first_kind("ส่งกลับ"), TokenKind::Return);
 }
 
 #[test]
@@ -39,8 +34,8 @@ fn tokenizes_if_keyword_tha() {
 }
 
 #[test]
-fn tokenizes_while_keyword_trap() {
-    assert_eq!(first_kind("ตราบ"), TokenKind::While);
+fn tokenizes_while_keyword_rawangthi() {
+    assert_eq!(first_kind("ระหว่างที่"), TokenKind::While);
 }
 
 #[test]
@@ -76,15 +71,15 @@ fn tokenizes_type_keywords() {
     assert_eq!(first_kind("ตัวเลข"), TokenKind::NumberType);
     assert_eq!(first_kind("จำนวนเต็ม"), TokenKind::IntType);
     assert_eq!(first_kind("ข้อความ"), TokenKind::StringType);
-    assert_eq!(first_kind("จริงเท็จ"), TokenKind::BoolType);
-    assert_eq!(first_kind("อะไรก็ได้"), TokenKind::AnyType);
+    assert_eq!(first_kind("ถูกผิด"), TokenKind::BoolType);
+    assert_eq!(first_kind("ทั่วไป"), TokenKind::AnyType);
 }
 
 #[test]
 fn tokenizes_data_structure_keywords() {
-    assert_eq!(first_kind("รายการ"), TokenKind::ArrayKw);
-    assert_eq!(first_kind("แผนที่"), TokenKind::MapKw);
-    assert_eq!(first_kind("โครงสร้าง"), TokenKind::StructKw);
+    assert_eq!(first_kind("ชุด"), TokenKind::ArrayKw);
+    assert_eq!(first_kind("คู่"), TokenKind::MapKw);
+    assert_eq!(first_kind("โครง"), TokenKind::StructKw);
 }
 
 #[test]
@@ -97,7 +92,7 @@ fn tokenizes_error_handling() {
     assert_eq!(first_kind("ลอง"), TokenKind::Try);
     assert_eq!(first_kind("จับ"), TokenKind::Catch);
     assert_eq!(first_kind("สุดท้าย"), TokenKind::Finally);
-    assert_eq!(first_kind("โยน"), TokenKind::Throw);
+    assert_eq!(first_kind("ฟ้อง"), TokenKind::Throw);
 }
 
 #[test]
@@ -126,17 +121,17 @@ fn longest_match_else_beats_not() {
 
 #[test]
 fn longest_match_async_beats_not() {
-    assert_eq!(first_kind("ไม่พร้อม"), TokenKind::Async);
+    assert_eq!(first_kind("ขนาน"), TokenKind::Async);
 }
 
 #[test]
 fn longest_match_void_beats_not() {
-    assert_eq!(first_kind("ไม่คืน"), TokenKind::VoidType);
+    assert_eq!(first_kind("ไม่ส่งกลับ"), TokenKind::VoidType);
 }
 
 #[test]
 fn lone_not_keyword_still_lexes() {
-    assert_eq!(first_kind("ไม่"), TokenKind::Bang);
+    assert_eq!(first_kind("ไม่ใช่"), TokenKind::Bang);
 }
 
 #[test]
@@ -154,7 +149,7 @@ fn ignores_surrounding_whitespace() {
 
 #[test]
 fn lexes_sequence_of_keywords() {
-    let kinds: Vec<TokenKind> = tokenize("ให้ คงที่ ฟังก์ชัน")
+    let kinds: Vec<TokenKind> = tokenize("ให้ คงที่ สูตร")
         .into_iter()
         .map(|t| t.kind)
         .collect();

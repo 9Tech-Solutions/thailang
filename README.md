@@ -29,13 +29,13 @@
 Thailang is a programming language with **Thai keywords** and a **TypeScript-like type system**. It's built with a Rust compiler, compiles to readable JavaScript, and runs anywhere Node.js runs, with no Rust toolchain needed at install time.
 
 ```thailang
-ฟังก์ชัน บรรยาย(ค่า: ตัวเลข | ข้อความ | ว่าง) {
+สูตร บรรยาย(ค่า: ตัวเลข | ข้อความ | ว่าง) {
     ถ้า (ค่า เป็น ข้อความ) {
-        พิมพ์("ข้อความ: " + ค่า);
+        ระบบ.แสดง("ข้อความ: " + ค่า);
     } ไม่ก็ (ค่า เป็น ตัวเลข) {
-        พิมพ์("ตัวเลข: " + ค่า);
+        ระบบ.แสดง("ตัวเลข: " + ค่า);
     } ไม่งั้น {
-        พิมพ์("ว่าง");
+        ระบบ.แสดง("ว่าง");
     }
 }
 
@@ -64,7 +64,7 @@ Requires Node.js 18+. The package ships with a prebuilt WebAssembly compiler, so
 Create a file `สวัสดี.th`:
 
 ```thailang
-พิมพ์("สวัสดีชาวโลก!");
+ระบบ.แสดง("สวัสดีชาวโลก!");
 ```
 
 Run it:
@@ -89,7 +89,7 @@ thailang check narrow.th
 
 ## What's in the box
 
-- **Thai keywords**: `ให้`, `ฟังก์ชัน`, `ถ้า`, `วน`, `คืน`, `พิมพ์`, and friends. Full map in [`docs/SPEC.md`](./docs/SPEC.md#2-keyword-map).
+- **Thai keywords**: `ให้`, `สูตร`, `ถ้า`, `วน`, `ส่งกลับ`, and friends; I/O via `ระบบ.แสดง(...)`. Full map in [`docs/SPEC.md`](./docs/SPEC.md#2-keyword-map).
 - **HM-lite type inference**: declare types when you want, let the compiler figure out the rest.
 - **Flow-sensitive narrowing**: `ถ้า (ค่า เป็น ข้อความ) { ... }` narrows unions inside the branch.
 - **Stdlib with Thai method names**: `คณิต.สูงสุด(...)`, `"hello".เป็นตัวใหญ่()`, `[1,2,3].แปลง(x => x * 2)`. See [`docs/keywords/`](./docs/keywords).
