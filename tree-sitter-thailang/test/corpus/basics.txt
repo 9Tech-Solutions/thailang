@@ -1,0 +1,214 @@
+==================
+hello world
+==================
+
+ระบบ.แสดง("สวัสดีชาวโลก!");
+
+---
+
+(source_file
+  (expression_statement
+    (call_expression
+      function: (member_expression
+        object: (identifier)
+        property: (identifier))
+      arguments: (argument_list
+        (string)))))
+
+==================
+let declaration with type
+==================
+
+ให้ ชื่อ: ข้อความ = "สม";
+
+---
+
+(source_file
+  (let_declaration
+    name: (identifier)
+    type: (primitive_type)
+    value: (string)))
+
+==================
+const declaration
+==================
+
+คงที่ ไพ = 3.14;
+
+---
+
+(source_file
+  (const_declaration
+    name: (identifier)
+    value: (float)))
+
+==================
+function with params and return type
+==================
+
+สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
+    ส่งกลับ ก + ข;
+}
+
+---
+
+(source_file
+  (function_declaration
+    name: (identifier)
+    parameters: (parameter_list
+      (parameter name: (identifier) type: (primitive_type))
+      (parameter name: (identifier) type: (primitive_type)))
+    return_type: (primitive_type)
+    body: (block
+      (return_statement
+        (binary_expression
+          left: (identifier)
+          right: (identifier))))))
+
+==================
+if / else-if / else
+==================
+
+ถ้า (x == 1) {
+    ระบบ.แสดง("one");
+} ไม่ก็ (x == 2) {
+    ระบบ.แสดง("two");
+} ไม่งั้น {
+    ระบบ.แสดง("other");
+}
+
+---
+
+(source_file
+  (if_statement
+    condition: (binary_expression left: (identifier) right: (integer))
+    consequence: (block
+      (expression_statement
+        (call_expression
+          function: (member_expression object: (identifier) property: (identifier))
+          arguments: (argument_list (string)))))
+    elif_condition: (binary_expression left: (identifier) right: (integer))
+    elif_body: (block
+      (expression_statement
+        (call_expression
+          function: (member_expression object: (identifier) property: (identifier))
+          arguments: (argument_list (string)))))
+    alternative: (block
+      (expression_statement
+        (call_expression
+          function: (member_expression object: (identifier) property: (identifier))
+          arguments: (argument_list (string)))))))
+
+==================
+for-each over array
+==================
+
+ให้ ผลไม้ = ["มะม่วง", "ทุเรียน"];
+แต่ละ (ผล ใน ผลไม้) {
+    ระบบ.แสดง(ผล);
+}
+
+---
+
+(source_file
+  (let_declaration
+    name: (identifier)
+    value: (array_literal (string) (string)))
+  (foreach_statement
+    variable: (identifier)
+    iterable: (identifier)
+    body: (block
+      (expression_statement
+        (call_expression
+          function: (member_expression object: (identifier) property: (identifier))
+          arguments: (argument_list (identifier)))))))
+
+==================
+c-style for loop
+==================
+
+วน (ให้ i = 1; i <= 3; i += 1) {
+    ระบบ.แสดง(i);
+}
+
+---
+
+(source_file
+  (for_statement
+    init: (for_let_init
+      name: (identifier)
+      value: (integer))
+    condition: (binary_expression left: (identifier) right: (integer))
+    update: (assignment_expression
+      left: (identifier)
+      right: (integer))
+    body: (block
+      (expression_statement
+        (call_expression
+          function: (member_expression object: (identifier) property: (identifier))
+          arguments: (argument_list (identifier)))))))
+
+==================
+type narrowing with เป็น
+==================
+
+สูตร บรรยาย(ค่า: ตัวเลข | ข้อความ) {
+    ถ้า (ค่า เป็น ข้อความ) {
+        ระบบ.แสดง(ค่า);
+    }
+}
+
+---
+
+(source_file
+  (function_declaration
+    name: (identifier)
+    parameters: (parameter_list
+      (parameter
+        name: (identifier)
+        type: (union_type
+          (primitive_type)
+          (primitive_type))))
+    body: (block
+      (if_statement
+        condition: (is_check_expression
+          value: (identifier)
+          type: (primitive_type))
+        consequence: (block
+          (expression_statement
+            (call_expression
+              function: (member_expression object: (identifier) property: (identifier))
+              arguments: (argument_list (identifier)))))))))
+
+==================
+comments ignored
+==================
+
+// line comment
+/* block
+   comment */
+ให้ x = 1;
+
+---
+
+(source_file
+  (line_comment)
+  (block_comment)
+  (let_declaration
+    name: (identifier)
+    value: (integer)))
+
+==================
+boolean and null literals
+==================
+
+ให้ a = ถูก;
+ให้ b = ผิด;
+ให้ c = ว่าง;
+
+---
+
+(source_file
+  (let_declaration name: (identifier) value: (bool))
+  (let_declaration name: (identifier) value: (bool))
+  (let_declaration name: (identifier) value: (null)))

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+  "grammars": [
+    {
+      "name": "thailang",
+      "camelcase": "Thailang",
+      "scope": "source.thailang",
+      "path": ".",
+      "file-types": ["th"],
+      "highlights": ["queries/highlights.scm"],
+      "injection-regex": "^(thailang|thai)$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Thailang tree-sitter grammar for syntax highlighting and parsing in editors, GitHub Linguist, and WASM playgrounds.",
+    "authors": [
+      { "name": "9Tech Solutions" }
+    ],
+    "links": {
+      "repository": "https://github.com/9Tech-Solutions/thailang",
+      "homepage": "https://github.com/9Tech-Solutions/thailang"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": false,
+    "node": true,
+    "python": false,
+    "rust": true,
+    "swift": false,
+    "zig": false
+  }
+}
