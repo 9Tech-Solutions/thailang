@@ -19,7 +19,8 @@
     "binding.gyp",
     "bindings/node/*",
     "queries/*",
-    "src/**"
+    "src/**",
+    "tree-sitter.json"
   ],
   "keywords": [
     "parsing",
