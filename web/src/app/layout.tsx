@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import {
   Bai_Jamjuree,
@@ -91,6 +92,7 @@ export default function RootLayout({
       <body className="min-h-screen">
         <ReactGrabDev />
         <LangProvider>{children}</LangProvider>
+        <Analytics />
       </body>
     </html>
   );
