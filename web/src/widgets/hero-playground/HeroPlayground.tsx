@@ -241,7 +241,7 @@ export function HeroPlayground({
           </div>
           <div>
             <span className="k">time</span>{" "}
-            {runTimeMs !== null ? `${runTimeMs}ms` : "—"} &nbsp;·&nbsp;{" "}
+            {runTimeMs !== null ? `${runTimeMs}ms` : "--"} &nbsp;·&nbsp;{" "}
             <span className="k">lines</span> {lineCount} &nbsp;·&nbsp;{" "}
             <span className="k">target</span> js
           </div>

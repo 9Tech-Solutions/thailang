@@ -6,6 +6,8 @@ import {
   type KeywordCategory,
   keywords,
 } from "@/entities/keyword/model";
+import { copy } from "@/shared/i18n/copy";
+import { useLang } from "@/shared/i18n/LangProvider";
 
 const CATEGORY_LABEL: Record<KeywordCategory, string> = {
   core: "CORE",
@@ -26,6 +28,8 @@ function countFor(filter: Filter): number {
 
 export function KeywordIndex() {
   const [filter, setFilter] = useState<Filter>("all");
+  const { lang } = useLang();
+  const t = copy[lang].keywords;
 
   const rows = useMemo(
     () =>
@@ -39,16 +43,13 @@ export function KeywordIndex() {
     <section className="keywords" id="keywords">
       <div className="wrap">
         <div className="keywords-head">
-          <p className="kicker">ดรรชนีคำสงวน · keyword index</p>
+          <p className="kicker">{t.kicker}</p>
           <h2>
-            {keywords.length} คำ ที่เปลี่ยน
+            {keywords.length} {t.h2Lead}
             <br />
-            วิธีคุณเขียนโปรแกรม
+            {t.h2Trail}
           </h2>
-          <p>
-            ทุกคำที่สงวนไว้สำหรับไวยากรณ์ Thailang — กดที่หมวดด้านล่างเพื่อกรอง
-            หรือเลื่อนดูแบบละเอียด
-          </p>
+          <p>{t.intro}</p>
         </div>
 
         <div className="kw-filters" role="tablist" aria-label="Categories">
@@ -59,7 +60,7 @@ export function KeywordIndex() {
             className={`kw-filter ${filter === "all" ? "active" : ""}`}
             onClick={() => setFilter("all")}
           >
-            ทั้งหมด · all · {countFor("all")}
+            {t.filterAll} · {countFor("all")}
           </button>
           {KEYWORD_CATEGORIES.map((cat) => (
             <button

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { copy } from "@/shared/i18n/copy";
+import { useLang } from "@/shared/i18n/LangProvider";
 import { HeroPlayground } from "@/widgets/hero-playground/HeroPlayground";
 
 interface Sample {
@@ -9,19 +11,19 @@ interface Sample {
   source: string;
 }
 
-// Source of truth for the sample suite — mirrors examples/*.th after the
+// Source of truth for the sample suite ,mirrors examples/*.th after the
 // post-rename keyword updates (สูตร, ส่งกลับ, ระบบ.แสดง, ระหว่างที่, ...).
 const SAMPLES: readonly Sample[] = [
   {
     file: "สวัสดี.th",
     meta: "hello world",
-    source: `// สวัสดี.th — the classic
+    source: `// สวัสดี.th ,the classic
 ระบบ.แสดง("สวัสดีชาวโลก!");`,
   },
   {
     file: "บวก.th",
     meta: "typed function",
-    source: `// บวก.th — typed arithmetic
+    source: `// บวก.th ,typed arithmetic
 สูตร บวก(ก: ตัวเลข, ข: ตัวเลข) -> ตัวเลข {
     ส่งกลับ ก + ข;
 }
@@ -32,7 +34,7 @@ const SAMPLES: readonly Sample[] = [
   {
     file: "ผลไม้.th",
     meta: "arrays & for-each",
-    source: `// ผลไม้.th — fruit market
+    source: `// ผลไม้.th ,fruit market
 ให้ ผลไม้ = ["มะม่วง", "ทุเรียน", "มังคุด"];
 
 แต่ละ (ผล ใน ผลไม้) {
@@ -42,7 +44,7 @@ const SAMPLES: readonly Sample[] = [
   {
     file: "fizzbuzz.th",
     meta: "control flow",
-    source: `// fizzbuzz.th — classic control flow
+    source: `// fizzbuzz.th ,classic control flow
 วน (ให้ i = 1; i <= 15; i += 1) {
     ถ้า (i % 15 == 0) {
         ระบบ.แสดง("FizzBuzz");
@@ -60,6 +62,8 @@ const SAMPLES: readonly Sample[] = [
 export function PlaygroundSection() {
   const [active, setActive] = useState(0);
   const sample = SAMPLES[active];
+  const { lang } = useLang();
+  const t = copy[lang].playground;
 
   return (
     <section className="playground-section" id="playground">
@@ -67,16 +71,13 @@ export function PlaygroundSection() {
       <div className="wrap play-wrap">
         <div className="play-head">
           <div>
-            <p className="kicker">ลองเขียนดู · try a sample</p>
+            <p className="kicker">{t.kicker}</p>
             <h2 className="title">
-              โค้ดที่อ่าน<em>ออกทันที</em>
+              {t.titlePart1}
+              <em>{t.titleEm}</em>
             </h2>
           </div>
-          <p>
-            ทุกคำสงวนเป็นภาษาไทย โครงสร้างไวยากรณ์คล้าย TypeScript เลือกแท็บด้านบนเพื่อดูว่า
-            Thailang คอมไพล์ออกมาเป็นอะไร — กด Run เพื่อรันจริงใน browser ผ่าน
-            WebAssembly
-          </p>
+          <p>{t.body}</p>
         </div>
 
         <div className="sample-tabs-top" role="tablist" aria-label="Samples">

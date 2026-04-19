@@ -1,57 +1,65 @@
+"use client";
+
 import { site } from "@/shared/config/site";
+import { copy } from "@/shared/i18n/copy";
+import { useLang } from "@/shared/i18n/LangProvider";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  const { lang } = useLang();
+  const t = copy[lang].footer;
+
   return (
     <footer className="footer">
       <div className="wrap">
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="name">ไทยแลง</div>
-            <p>
-              ภาษาโปรแกรมมิงไทยตัวแรกที่ compile จริง · The first Thai programming
-              language that actually compiles.
-            </p>
+            <p>{t.tagline}</p>
           </div>
 
           <div className="footer-col">
-            <h5>แหล่งข้อมูล · resources</h5>
+            <h5>{t.resourcesHeading}</h5>
             <ul>
               <li>
                 <span className="footer-link-disabled" aria-disabled="true">
-                  เอกสาร · Docs<span className="soon">SOON</span>
+                  {t.docs}
+                  <span className="soon">SOON</span>
                 </span>
               </li>
               <li>
-                <a href="#playground">ตัวอย่าง · Samples</a>
+                <a href="#playground">{t.samples}</a>
               </li>
               <li>
                 <a href="#playground">
-                  Playground<span className="soon">BETA</span>
+                  {t.playground}
+                  <span className="soon">{t.playgroundBadge}</span>
                 </a>
               </li>
               <li>
-                <a href="#keywords">คำสงวน · Keywords</a>
+                <a href="#keywords">{t.keywords}</a>
               </li>
             </ul>
           </div>
 
           <div className="footer-col">
-            <h5>โครงการ · project</h5>
+            <h5>{t.projectHeading}</h5>
             <ul>
               <li>
                 <a href={site.repo} target="_blank" rel="noopener noreferrer">
-                  GitHub ↗
+                  {t.github}
                 </a>
               </li>
               <li>
                 <span className="footer-link-disabled" aria-disabled="true">
-                  Discord<span className="soon">SOON</span>
+                  {t.discord}
+                  <span className="soon">SOON</span>
                 </span>
               </li>
               <li>
                 <span className="footer-link-disabled" aria-disabled="true">
-                  Roadmap<span className="soon">SOON</span>
+                  {t.roadmap}
+                  <span className="soon">SOON</span>
                 </span>
               </li>
               <li>
@@ -60,7 +68,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  License · MIT
+                  {t.license}
                 </a>
               </li>
             </ul>
@@ -69,11 +77,10 @@ export function SiteFooter() {
 
         <div className="footer-bot">
           <span>
-            MIT · Compiler in Rust · Landing in Next.js &nbsp;{" "}
-            <span className="thai-stamp">ทำในประเทศไทย</span>
+            {t.buildLine} &nbsp; <span className="thai-stamp">{t.madeIn}</span>
           </span>
           <span>
-            © {year} {site.name} · 9Tech Solutions
+            © {year} {site.name} · {t.rights}
           </span>
         </div>
       </div>

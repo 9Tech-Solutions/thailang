@@ -1,8 +1,19 @@
 import type { NextConfig } from "next";
 
+// Dev adds 'unsafe-eval' for React's dev-only callstack reconstruction and
+// Turbopack's source maps. Prod stays strict: wasm-unsafe-eval + unsafe-inline
+// only (the latter needed for Next's runtime bootstrap until we wire nonces).
+const isDev = process.env.NODE_ENV !== "production";
+const scriptSrc = [
+  "'self'",
+  "'wasm-unsafe-eval'",
+  "'unsafe-inline'",
+  ...(isDev ? ["'unsafe-eval'"] : []),
+].join(" ");
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'wasm-unsafe-eval' 'unsafe-inline'",
+  `script-src ${scriptSrc}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self' data:",

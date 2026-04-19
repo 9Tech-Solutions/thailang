@@ -1,20 +1,37 @@
+"use client";
+
+import type { ReactNode } from "react";
 import { site } from "@/shared/config/site";
+import { copy } from "@/shared/i18n/copy";
+import { useLang } from "@/shared/i18n/LangProvider";
+
+function LedeInline({ children }: { children: ReactNode }) {
+  return <span className="th-inline">{children}</span>;
+}
+
+function LedeStrong({ children }: { children: ReactNode }) {
+  return <strong>{children}</strong>;
+}
 
 export function Hero() {
+  const { lang } = useLang();
+  const t = copy[lang].hero;
+
   return (
     <section className="hero">
       <div className="hero-grid-bg" aria-hidden="true" />
       <div className="wrap">
         <div className="hero-grid">
           <aside className="hero-meta">
-            <h6>เล่มที่ 01 · Volume 01</h6>
+            <h6>{t.volume}</h6>
             <dl>
-              <dt>เผยแพร่เมื่อ · released</dt>
+              <dt>{t.released}</dt>
               <dd>
-                <span className="th">เมษายน 2569</span>
-                {"  ·  "}preview build
+                <span className="th">{t.releasedValue}</span>
+                {"  ·  "}
+                {t.releasedSuffix}
               </dd>
-              <dt>เวอร์ชัน · version</dt>
+              <dt>{t.version}</dt>
               <dd
                 style={{
                   fontFamily: "var(--font-mono)",
@@ -24,7 +41,7 @@ export function Hero() {
               >
                 v{site.version}
               </dd>
-              <dt>ปลายทาง · targets</dt>
+              <dt>{t.targets}</dt>
             </dl>
             <ul className="targets">
               <li>JavaScript (Node · browser)</li>
@@ -41,7 +58,7 @@ export function Hero() {
                     marginLeft: "6px",
                   }}
                 >
-                  SOON
+                  {t.targetSoon}
                 </em>
               </li>
             </ul>
@@ -49,30 +66,20 @@ export function Hero() {
 
           <div className="hero-head">
             <h1 className="hero-title" style={{ margin: "24px 0 0" }}>
-              <span className="line-1">เขียนเป็นไทย</span>
+              <span className="line-1">{t.line1}</span>
               <span className="line-2">
-                <span className="amp">·</span> รันได้ทุกที่
+                <span className="amp">·</span> {t.line2}
               </span>
             </h1>
-            <p className="hero-en">
-              WRITE&nbsp;IN&nbsp;THAI &nbsp;<em>/</em>
-              &nbsp; COMPILE&nbsp;TO&nbsp;<em>JS</em>,&nbsp;<em>WASM</em>
-              ,&nbsp;NATIVE
-            </p>
+            <p className="hero-en">{t.enKicker}</p>
 
-            <p className="hero-lede">
-              <strong>Thailang</strong> เป็นภาษาโปรแกรมมิง{" "}
-              <span className="th-inline">คำสงวนเป็นไทย</span> — มีระบบชนิดข้อมูลแบบ
-              TypeScript คอมไพเลอร์เขียนด้วย Rust แปลงเป็น JavaScript และ
-              WebAssembly ได้ในวันนี้ เครื่องมือที่คุณคุ้นเคยอยู่แล้ว
-              กับภาษาที่คุณอ่านออกตั้งแต่บรรทัดแรก
-            </p>
+            <p className="hero-lede">{t.lede(LedeInline, LedeStrong)}</p>
 
             <div className="hero-ctas">
               <a className="btn btn-gold" href="#playground">
-                <span>ลองเล่น</span>
+                <span>{t.ctaPrimary1}</span>
                 <span style={{ opacity: 0.6 }}>/</span>
-                <span>Try it</span>
+                <span>{t.ctaPrimary2}</span>
                 <span aria-hidden="true">→</span>
               </a>
               <a
@@ -81,35 +88,35 @@ export function Hero() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span>อ่านซอร์สโค้ด</span>
-                <span aria-hidden="true">→ github</span>
+                <span>{t.ctaSecondary}</span>
+                <span aria-hidden="true">{t.ctaSecondarySub}</span>
               </a>
               <span
                 className="btn btn-ghost"
                 style={{ cursor: "not-allowed", opacity: 0.7 }}
                 aria-disabled="true"
               >
-                <span>เอกสาร</span>
-                <span className="soon">SOON</span>
+                <span>{t.ctaDocs}</span>
+                <span className="soon">{t.ctaDocsSoon}</span>
               </span>
             </div>
 
             <div className="hero-stats">
               <div>
                 <div className="val">24</div>
-                <div className="lbl">Thai keywords</div>
+                <div className="lbl">{t.statKeywords}</div>
               </div>
               <div>
                 <div className="val">Rust</div>
-                <div className="lbl">compiler core</div>
+                <div className="lbl">{t.statCompiler}</div>
               </div>
               <div>
                 <div className="val">2</div>
-                <div className="lbl">backends live</div>
+                <div className="lbl">{t.statBackends}</div>
               </div>
               <div>
                 <div className="val">MIT</div>
-                <div className="lbl">licensed</div>
+                <div className="lbl">{t.statLicense}</div>
               </div>
             </div>
           </div>

@@ -5,8 +5,9 @@ import {
   JetBrains_Mono,
   Sarabun,
 } from "next/font/google";
-import Script from "next/script";
 import { site } from "@/shared/config/site";
+import { ReactGrabDev } from "@/shared/dev/ReactGrabDev";
+import { LangProvider } from "@/shared/i18n/LangProvider";
 import "./globals.css";
 
 const chonburi = Chonburi({
@@ -87,16 +88,10 @@ export default function RootLayout({
       lang="th"
       className={`${chonburi.variable} ${baiJamjuree.variable} ${sarabun.variable} ${jetBrainsMono.variable}`}
     >
-      <head>
-        {process.env.NODE_ENV === "development" && (
-          <Script
-            src="//unpkg.com/react-grab/dist/index.global.js"
-            crossOrigin="anonymous"
-            strategy="beforeInteractive"
-          />
-        )}
-      </head>
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen">
+        <ReactGrabDev />
+        <LangProvider>{children}</LangProvider>
+      </body>
     </html>
   );
 }

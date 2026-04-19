@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /* =============================================
-   THAILANG — Lacquer & Gold
+   THAILANG: Lacquer & Gold
    Deep indigo-aubergine + champagne gold + chili crimson accent.
-   All tokens plain CSS, not @apply — match original prototype.
+   All tokens plain CSS, not @apply, to match the original prototype.
    ============================================= */
 
 @theme {
@@ -82,7 +82,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Subtle page texture — a field of tiny dots like manuscript gold leafing */
+/* Subtle page texture, a field of tiny dots like manuscript gold leafing */
 body::before {
   content: "";
   position: fixed;
@@ -207,6 +207,20 @@ body::before {
   padding: 4px 10px;
   border: 1px solid var(--hairline);
   border-radius: 999px;
+}
+.lang-switch button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.18s ease;
+}
+.lang-switch button:not(.on):hover {
+  color: var(--fg-muted);
 }
 .lang-switch .on {
   color: var(--gold);
@@ -1291,7 +1305,7 @@ body::before {
   letter-spacing: 0;
 }
 
-/* Shiki output — lacquer tuned. */
+/* Shiki output, lacquer tuned. */
 .thailang-code pre {
   background: transparent;
   padding: 0;

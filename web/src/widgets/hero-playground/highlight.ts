@@ -157,7 +157,7 @@ export function tokenize(source: string): Token[] {
 }
 
 /**
- * Lacquer palette — matches Shiki theme and .code-pane tokens in globals.css.
+ * Lacquer palette: matches Shiki theme and .code-pane tokens in globals.css.
  * - keyword (control, e.g. ถ้า ไม่ก็): gold
  * - builtin / declaration (สูตร ให้ ระบบ): mulberry
  * - type (ตัวเลข ข้อความ): teal
