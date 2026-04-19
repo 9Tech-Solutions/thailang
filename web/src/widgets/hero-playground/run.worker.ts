@@ -28,7 +28,6 @@ self.onmessage = async (event: MessageEvent<string>) => {
 
     // Compiled JS from our own compiler over user-editable source in a
     // Worker sandbox, no DOM access, no main-thread privileges leak here.
-    // biome-ignore lint/security/noGlobalEval: Intentional, Worker is the sandbox boundary for the playground.
     new Function("console", js)(shimmedConsole);
 
     result = { lines: captured };

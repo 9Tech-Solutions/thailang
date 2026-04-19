@@ -1,9 +1,9 @@
 // Smoke test: verify playground-wasm compiles fizzbuzz.th and the result
 // produces the expected output when eval'd in Node.
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const { execSync } = require('node:child_process');
 
 const ROOT = path.resolve(__dirname, '..');
 const wasm = require(path.join(ROOT, 'playground-wasm/pkg/thailang_wasm.js'));

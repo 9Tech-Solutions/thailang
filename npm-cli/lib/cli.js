@@ -1,39 +1,37 @@
-"use strict";
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
 
-const fs = require("node:fs");
-const path = require("node:path");
-const vm = require("node:vm");
-
-const { formatDiagnostic } = require("./diagnostic.js");
+const { formatDiagnostic } = require('./diagnostic.js');
 
 function loadWasm() {
   // wasm-pack's nodejs target exposes everything synchronously via a
   // top-level require of the generated glue module.
   // eslint-disable-next-line global-require
-  return require("../wasm/thailang_wasm.js");
+  return require('../wasm/thailang_wasm.js');
 }
 
 function usage() {
   return [
-    "thailang, ภาษาโปรแกรมมิงไทย",
-    "",
-    "Usage:",
-    "  thailang run <file.th>       Type-check, compile, and execute",
-    "  thailang emit-js <file.th>   Print emitted JavaScript to stdout",
-    "  thailang check <file.th>     Type-check only (exit 1 on errors)",
-    "  thailang --version           Print version",
-    "  thailang --help              Print this message",
-  ].join("\n");
+    'thailang, ภาษาโปรแกรมมิงไทย',
+    '',
+    'Usage:',
+    '  thailang run <file.th>       Type-check, compile, and execute',
+    '  thailang emit-js <file.th>   Print emitted JavaScript to stdout',
+    '  thailang check <file.th>     Type-check only (exit 1 on errors)',
+    '  thailang --version           Print version',
+    '  thailang --help              Print this message',
+  ].join('\n');
 }
 
 function readVersion() {
-  const pkg = require("../package.json");
+  const pkg = require('../package.json');
   return pkg.version;
 }
 
 function readSourceOrDie(file) {
   try {
-    return fs.readFileSync(path.resolve(file), "utf8");
+    return fs.readFileSync(path.resolve(file), 'utf8');
   } catch (err) {
     process.stderr.write(`thailang: could not read ${file}: ${err.message}\n`);
     process.exit(1);
@@ -43,7 +41,7 @@ function readSourceOrDie(file) {
 function reportDiagnostics(file, source, diagnosticsJson) {
   const diagnostics = JSON.parse(diagnosticsJson);
   for (const diag of diagnostics) {
-    process.stderr.write(formatDiagnostic(file, source, diag) + "\n");
+    process.stderr.write(`${formatDiagnostic(file, source, diag)}\n`);
   }
   return diagnostics.length;
 }
@@ -84,7 +82,7 @@ function runFile(file) {
   } catch (err) {
     process.stderr.write(`thailang: runtime error: ${err.message}\n`);
     if (err.stack) {
-      process.stderr.write(err.stack + "\n");
+      process.stderr.write(`${err.stack}\n`);
     }
     process.exit(1);
   }
@@ -113,25 +111,25 @@ function checkFile(file) {
 
   const errorCount = reportDiagnostics(file, source, wasm.typeCheck(source));
   if (errorCount > 0) {
-    process.stderr.write(`\n${errorCount} error${errorCount === 1 ? "" : "s"} in ${file}\n`);
+    process.stderr.write(`\n${errorCount} error${errorCount === 1 ? '' : 's'} in ${file}\n`);
     process.exit(1);
   }
   process.stdout.write(`ok: ${file}\n`);
 }
 
 function main(argv) {
-  if (argv.length === 0 || argv[0] === "--help" || argv[0] === "-h") {
-    process.stdout.write(usage() + "\n");
+  if (argv.length === 0 || argv[0] === '--help' || argv[0] === '-h') {
+    process.stdout.write(`${usage()}\n`);
     return;
   }
-  if (argv[0] === "--version" || argv[0] === "-V") {
+  if (argv[0] === '--version' || argv[0] === '-V') {
     process.stdout.write(`thailang ${readVersion()}\n`);
     return;
   }
 
   const [cmd, file, ...rest] = argv;
   if (rest.length > 0) {
-    process.stderr.write(`thailang: unexpected extra arguments: ${rest.join(" ")}\n`);
+    process.stderr.write(`thailang: unexpected extra arguments: ${rest.join(' ')}\n`);
     process.exit(1);
   }
   if (!file) {
@@ -140,13 +138,13 @@ function main(argv) {
   }
 
   switch (cmd) {
-    case "run":
+    case 'run':
       runFile(file);
       break;
-    case "emit-js":
+    case 'emit-js':
       emitJsFile(file);
       break;
-    case "check":
+    case 'check':
       checkFile(file);
       break;
     default:

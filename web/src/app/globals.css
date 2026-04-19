@@ -108,7 +108,7 @@ body {
 
 /* Shiki output integration, let our outer chrome own the surface */
 .thailang-code pre {
-  background: transparent !important;
+  background: transparent;
   padding: 0;
   margin: 0;
   white-space: normal;

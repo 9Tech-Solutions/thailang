@@ -64,9 +64,9 @@ export function Hero() {
             programming language with{" "}
             <span className="text-[var(--color-fg)]">Thai keywords</span>,
             TypeScript-flavored syntax, and a Rust compiler that emits
-            JavaScript, WebAssembly, and (soon) native binaries. Built for
-            Thai developers who want their code to read in their own language
-            without giving up the tooling they already know.
+            JavaScript, WebAssembly, and (soon) native binaries. Built for Thai
+            developers who want their code to read in their own language without
+            giving up the tooling they already know.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4 reveal reveal-d2">

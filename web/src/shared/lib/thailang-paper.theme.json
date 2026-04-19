@@ -2,7 +2,7 @@
   "name": "thailang-paper",
   "type": "light",
   "colors": {
-    "editor.background": "#fbf8f2",
+    "editor.background": "transparent",
     "editor.foreground": "#2a211c"
   },
   "tokenColors": [
