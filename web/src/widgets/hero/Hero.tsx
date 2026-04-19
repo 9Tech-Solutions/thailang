@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { keywords } from "@/entities/keyword/model";
 import { site } from "@/shared/config/site";
 import { copy } from "@/shared/i18n/copy";
 import { useLang } from "@/shared/i18n/LangProvider";
@@ -103,7 +104,7 @@ export function Hero() {
 
             <div className="hero-stats">
               <div>
-                <div className="val">24</div>
+                <div className="val">{keywords.length}</div>
                 <div className="lbl">{t.statKeywords}</div>
               </div>
               <div>
