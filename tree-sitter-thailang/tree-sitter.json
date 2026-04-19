@@ -15,9 +15,7 @@
     "version": "0.1.0",
     "license": "MIT",
     "description": "Thailang tree-sitter grammar for syntax highlighting and parsing in editors, GitHub Linguist, and WASM playgrounds.",
-    "authors": [
-      { "name": "9Tech Solutions" }
-    ],
+    "authors": [{ "name": "9Tech Solutions" }],
     "links": {
       "repository": "https://github.com/9Tech-Solutions/thailang",
       "homepage": "https://github.com/9Tech-Solutions/thailang"

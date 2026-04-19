@@ -4,5 +4,4 @@ prebuilds/
 *.log
 *.node
 *.wasm
-bindings/
-binding.gyp
+bun.lock

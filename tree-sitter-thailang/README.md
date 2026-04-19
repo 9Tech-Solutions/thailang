@@ -26,7 +26,12 @@ bunx tree-sitter-cli@^0.24 parse ../examples/fizzbuzz.th
 
 # Interactive playground (WASM-backed)
 bunx tree-sitter-cli@^0.24 playground
+
+# Rebuild WASM and stage it for the web playground
+bun run build:wasm
 ```
+
+The WASM artifact lands at `../web/public/thailang.wasm`, where the future `/playground` Monaco route loads it via `web-tree-sitter`.
 
 ## Files
 

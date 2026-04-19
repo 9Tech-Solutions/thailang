@@ -54,10 +54,8 @@
 
 (struct_type "โครง" @keyword)
 
-[
-  "ชุด"
-  "คู่"
-] @type.builtin
+"ชุด" @type.builtin
+(map_type) @type.builtin
 
 ; User-defined type references inside type annotations get @type, not @variable.
 (parameter type: (identifier) @type)
