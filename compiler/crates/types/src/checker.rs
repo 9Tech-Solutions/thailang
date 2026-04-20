@@ -361,24 +361,29 @@ impl Ctx {
                     // Module call: `คณิต.สุ่ม()`, look up the (module, member)
                     // pair in the stdlib registry before falling back to Any.
                     ExprKind::Member { object, member } => {
-                        if let ExprKind::Ident(obj_name) = &object.kind {
-                            stdlib::module_call_return_type(obj_name, member).or_else(|| {
-                                self.infer_expr(object);
-                                stdlib::method_return_type(member)
-                            })
+                        let module_ret = if let ExprKind::Ident(obj_name) = &object.kind {
+                            stdlib::module_call_return_type(obj_name, member)
                         } else {
-                            self.infer_expr(callee);
-                            stdlib::method_return_type(member)
+                            None
+                        };
+                        if let Some(ty) = module_ret {
+                            for a in args {
+                                self.infer_expr(a);
+                            }
+                            Some(ty)
+                        } else {
+                            let receiver = self.infer_expr(object);
+                            self.resolve_method_return(receiver.as_ref(), member, args)
                         }
                     }
                     _ => {
                         self.infer_expr(callee);
+                        for a in args {
+                            self.infer_expr(a);
+                        }
                         None
                     }
                 };
-                for a in args {
-                    self.infer_expr(a);
-                }
                 Some(return_ty.unwrap_or(TypeAnn::Any))
             }
             ExprKind::Member { object, member } => {
@@ -442,6 +447,84 @@ impl Ctx {
                 Some(TypeAnn::Any)
             }
         }
+    }
+
+    /// Dispatch a method call `receiver.member(args)` to the appropriate
+    /// stdlib entry. Handles receiver-aware array methods (`.เรียง`, `.กรอง`,
+    /// `.แปลง`, `.ลด`) by routing through the element type and any arrow-fn
+    /// callback, then falls back to the receiver-agnostic registry for
+    /// methods like `.เป็นตัวใหญ่`, `.แยก`, `.มี`. Responsible for inferring
+    /// `args` once (either via `infer_expr` or the scoped helper below).
+    fn resolve_method_return(
+        &mut self,
+        receiver: Option<&TypeAnn>,
+        member: &str,
+        args: &[Expr],
+    ) -> Option<TypeAnn> {
+        if let Some(TypeAnn::Array(elem_box)) = receiver {
+            let elem = elem_box.as_ref().clone();
+            match member {
+                "เรียง" => {
+                    for a in args {
+                        self.infer_expr(a);
+                    }
+                    return stdlib::array_method_return_type(&elem, member, None, None);
+                }
+                "กรอง" => {
+                    if let Some(cb) = args.first() {
+                        self.infer_arrow_with_param(cb, &elem);
+                    }
+                    for a in args.iter().skip(1) {
+                        self.infer_expr(a);
+                    }
+                    return stdlib::array_method_return_type(&elem, member, None, None);
+                }
+                "แปลง" => {
+                    let cb_ret = args
+                        .first()
+                        .and_then(|cb| self.infer_arrow_with_param(cb, &elem));
+                    for a in args.iter().skip(1) {
+                        self.infer_expr(a);
+                    }
+                    return stdlib::array_method_return_type(&elem, member, cb_ret.as_ref(), None);
+                }
+                "ลด" => {
+                    if let Some(cb) = args.first() {
+                        self.infer_expr(cb);
+                    }
+                    let init_ty = args.get(1).and_then(|init| self.infer_expr(init));
+                    for a in args.iter().skip(2) {
+                        self.infer_expr(a);
+                    }
+                    return stdlib::array_method_return_type(&elem, member, None, init_ty.as_ref());
+                }
+                _ => {}
+            }
+        }
+        for a in args {
+            self.infer_expr(a);
+        }
+        stdlib::method_return_type(member)
+    }
+
+    /// If `expr` is an arrow fn `(p) => body_expr`, infer `body_expr` under a
+    /// scope where `p` is bound to `param_ty` (or its declared annotation if
+    /// present). Returns the inferred body type, or None when the expr isn't
+    /// an expression-body arrow (block bodies fall back to the default
+    /// `ArrowFn` arm, which returns `Any`).
+    fn infer_arrow_with_param(&mut self, expr: &Expr, param_ty: &TypeAnn) -> Option<TypeAnn> {
+        if let ExprKind::ArrowFn { params, body, .. } = &expr.kind {
+            if let (Some(first), ArrowBody::Expr(body_expr)) = (params.first(), body.as_ref()) {
+                self.push_scope();
+                let binding_ty = first.type_ann.clone().unwrap_or_else(|| param_ty.clone());
+                self.declare(&first.name, binding_ty);
+                let ret = self.infer_expr(body_expr);
+                self.pop_scope();
+                return ret;
+            }
+        }
+        self.infer_expr(expr);
+        None
     }
 }
 

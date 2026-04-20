@@ -13,8 +13,8 @@ pub fn property_type(member: &str) -> Option<TypeAnn> {
     })
 }
 
-/// Return type of an instance method call.
-/// e.g., `"hi".เป็นตัวใหญ่()` → ข้อความ; `[1,2,3].มี(2)` → จริงเท็จ.
+/// Return type of an instance method call whose result doesn't depend on the
+/// receiver's element type. `"hi".เป็นตัวใหญ่()` → ข้อความ, `.มี(2)` → ถูกผิด.
 pub fn method_return_type(member: &str) -> Option<TypeAnn> {
     Some(match member {
         // string methods
@@ -23,12 +23,35 @@ pub fn method_return_type(member: &str) -> Option<TypeAnn> {
             TypeAnn::String
         }
         "แยก" => TypeAnn::Array(Box::new(TypeAnn::String)),
-        // array methods
+        // array methods, receiver-agnostic result
         "มี" => TypeAnn::Bool,
-        // `.เรียง/.กรอง/.แปลง/.ลด` return types are receiver-dependent (e.g.,
-        // `.แปลง` returns an Array of whatever the callback produces). Phase 3B
-        // leaves these as Any, accurate inference requires tracking the
-        // receiver's element type through the call, which is Phase 3C work.
+        _ => return None,
+    })
+}
+
+/// Return type of an array-receiver method that depends on the element type
+/// and, for `.แปลง` / `.ลด`, on the callback or init argument's type.
+///
+/// - `.เรียง()` on `T[]` → `T[]`
+/// - `.กรอง(cb)` on `T[]` → `T[]`
+/// - `.แปลง(cb)` on `T[]` where `cb: T => U` → `U[]`
+/// - `.ลด(cb, init)` on `T[]` → type of `init`
+pub fn array_method_return_type(
+    elem: &TypeAnn,
+    member: &str,
+    callback_return: Option<&TypeAnn>,
+    init_ty: Option<&TypeAnn>,
+) -> Option<TypeAnn> {
+    Some(match member {
+        "เรียง" | "กรอง" => TypeAnn::Array(Box::new(elem.clone())),
+        "แปลง" => {
+            let u = callback_return.cloned().unwrap_or_else(|| elem.clone());
+            TypeAnn::Array(Box::new(u))
+        }
+        "ลด" => match init_ty {
+            Some(ty) => ty.clone(),
+            None => return None,
+        },
         _ => return None,
     })
 }
