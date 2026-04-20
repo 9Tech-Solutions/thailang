@@ -30,3 +30,16 @@
 ## Active Plan
 
 See `~/.claude/plans/linear-cooking-shannon.md` for current phase + verification commands.
+
+## Code-review-graph (MCP)
+
+A knowledge graph of the codebase is available via MCP. For non-trivial tasks that need to locate callers, dependents, or affected tests, call the graph tools before grepping:
+
+- `mcp__code-review-graph__get_minimal_context_tool` — call first (~100 tokens), scopes the task
+- `mcp__code-review-graph__get_impact_radius_tool` — blast radius of changed files
+- `mcp__code-review-graph__query_graph_tool` — callers / callees / tests / imports / inheritance
+- `mcp__code-review-graph__semantic_search_nodes_tool` — find entities by name or meaning
+- `mcp__code-review-graph__detect_changes_tool` — risk-scored diff analysis
+- `mcp__code-review-graph__build_or_update_graph_tool` — refresh if the graph feels stale
+
+Graph stored in `.code-review-graph/` (gitignored). `.th` files aren't indexed (extension not in upstream's parser map). Manual refresh: `uvx code-review-graph update`.

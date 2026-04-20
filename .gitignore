@@ -45,3 +45,5 @@ lcov.info
 
 # Pre-publication launch drafts, kept local only
 posts/
+# Added by code-review-graph
+.code-review-graph/

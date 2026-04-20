@@ -1,0 +1,13 @@
+# Generated tree-sitter parser (22k lines of C, regenerated via `tree-sitter generate`)
+tree-sitter-thailang/src/parser.c
+tree-sitter-thailang/src/grammar.json
+tree-sitter-thailang/src/node-types.json
+tree-sitter-thailang/src/tree_sitter/**
+
+# Test fixtures and snapshots are data, not code
+**/*.snap
+**/*.snap.new
+**/*.expected.txt
+
+# Build / lockfile noise that happens to be tracked
+**/*.lock
