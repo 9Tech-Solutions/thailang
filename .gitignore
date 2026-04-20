@@ -43,7 +43,8 @@ coverage/
 lcov.info
 *.profraw
 
-# Pre-publication launch drafts, kept local only
-posts/
 # Added by code-review-graph
 .code-review-graph/
+
+# Pagefind static index (regenerated via `bun run build` prebuild hook)
+web/public/pagefind/

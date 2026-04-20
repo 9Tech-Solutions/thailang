@@ -1334,3 +1334,11 @@ body::before {
   white-space: pre;
   min-height: 1lh;
 }
+
+/* Shiki emits `<span class="line">` inside every `<pre><code>`. Styled globally
+   because CSS modules hash the class and Shiki owns the emitted markup. */
+pre .line {
+  display: block;
+  white-space: pre;
+  min-height: 1lh;
+}

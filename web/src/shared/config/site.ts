@@ -13,12 +13,12 @@ export const site = {
 } as const;
 
 export const navLinks = [
-  { href: "/docs", label: "Docs", labelTh: "เอกสาร", status: "soon" as const },
+  { href: "/docs", label: "Docs", labelTh: "เอกสาร", status: "live" as const },
   {
     href: "/playground",
     label: "Playground",
     labelTh: "ลองเล่น",
-    status: "soon" as const,
+    status: "live" as const,
   },
   {
     href: site.repo,

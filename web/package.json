@@ -4,19 +4,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/build-pagefind.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
     "format": "biome format --write",
+    "build:docs-index": "node scripts/build-pagefind.mjs",
     "postinstall": "node scripts/copy-ts-wasm.mjs"
   },
   "dependencies": {
+    "@shikijs/rehype": "^4.0.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "next": "16.2.4",
+    "next-mdx-remote": "^6.0.0",
     "playground-wasm": "workspace:*",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0",
     "shiki": "^4.0.2",
     "web-tree-sitter": "^0.26.8"
   },
@@ -26,6 +32,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "pagefind": "^1.5.2",
     "react-grab": "^0.1.32",
     "tailwindcss": "^4",
     "typescript": "^5"

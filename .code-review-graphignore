@@ -11,3 +11,6 @@ tree-sitter-thailang/src/tree_sitter/**
 
 # Build / lockfile noise that happens to be tracked
 **/*.lock
+
+# Generated Pagefind index
+web/public/pagefind/**
