@@ -7,13 +7,23 @@ import {
   useRef,
   useState,
 } from "react";
-import { TOKEN_COLOR, tokenize } from "./highlight";
+import { TOKEN_COLOR, tokenize } from "@/widgets/hero-playground/highlight";
 
-interface HeroPlaygroundProps {
-  initialSource: string;
+interface PlaygroundEditorProps {
+  source: string;
+  onChange: (next: string) => void;
   filename: string;
   fileMeta?: string;
+  shareState: ShareState;
+  onShare: () => void;
 }
+
+export type ShareState =
+  | { status: "idle" }
+  | { status: "sharing" }
+  | { status: "shared"; note: string }
+  | { status: "too-long" }
+  | { status: "error"; message: string };
 
 type RunResult = { lines: string[] } | { error: string };
 
@@ -27,25 +37,19 @@ function spawnWorker(): Worker {
   );
 }
 
-export function HeroPlayground({
-  initialSource,
+export function PlaygroundEditor({
+  source,
+  onChange,
   filename,
   fileMeta,
-}: HeroPlaygroundProps) {
-  const [source, setSource] = useState(initialSource);
+  shareState,
+  onShare,
+}: PlaygroundEditorProps) {
   const [output, setOutput] = useState<string[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const [runTimeMs, setRunTimeMs] = useState<number | null>(null);
   const workerRef = useRef<Worker | null>(null);
-
-  // Reset when the driving sample changes (initialSource / filename).
-  useEffect(() => {
-    setSource(initialSource);
-    setOutput(null);
-    setError(null);
-    setRunTimeMs(null);
-  }, [initialSource]);
 
   useEffect(() => {
     workerRef.current = spawnWorker();
@@ -95,13 +99,6 @@ export function HeroPlayground({
     setRunning(false);
   }
 
-  function reset() {
-    setSource(initialSource);
-    setOutput(null);
-    setError(null);
-    setRunTimeMs(null);
-  }
-
   function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
     if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
       e.preventDefault();
@@ -114,7 +111,7 @@ export function HeroPlayground({
       const start = el.selectionStart;
       const end = el.selectionEnd;
       const next = source.slice(0, start) + INDENT + source.slice(end);
-      setSource(next);
+      onChange(next);
       requestAnimationFrame(() => {
         el.selectionStart = start + INDENT.length;
         el.selectionEnd = start + INDENT.length;
@@ -122,7 +119,7 @@ export function HeroPlayground({
     }
   }
 
-  const tokens = tokenize(source);
+  const tokens = useMemo(() => tokenize(source), [source]);
   const overlayTrailer = source.endsWith("\n") ? "\u200B" : "";
   const lineCount = useMemo(
     () => Math.max(1, source.split("\n").length),
@@ -136,6 +133,15 @@ export function HeroPlayground({
       : output !== null
         ? "compiled to js · done"
         : "compiled to js · ready";
+
+  const shareLabel =
+    shareState.status === "sharing"
+      ? "Sharing…"
+      : shareState.status === "shared"
+        ? "Link copied"
+        : shareState.status === "too-long"
+          ? "Source copied"
+          : "Share";
 
   return (
     <section className="editor" aria-label="Thailang playground editor">
@@ -156,10 +162,11 @@ export function HeroPlayground({
           <button
             type="button"
             className="chip"
-            onClick={reset}
-            aria-label="Reset source"
+            onClick={onShare}
+            disabled={shareState.status === "sharing"}
+            aria-label="Share snippet"
           >
-            ↺ Reset
+            ↗ {shareLabel}
           </button>
           <button
             type="button"
@@ -199,7 +206,7 @@ export function HeroPlayground({
         <textarea
           className="code-pane-textarea"
           value={source}
-          onChange={(e) => setSource(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
           spellCheck={false}
           wrap="off"
@@ -245,6 +252,26 @@ export function HeroPlayground({
             {runTimeMs !== null ? `${runTimeMs}ms` : "--"} &nbsp;·&nbsp;{" "}
             <span className="k">lines</span> {lineCount} &nbsp;·&nbsp;{" "}
             <span className="k">target</span> js
+            {shareState.status === "shared" && (
+              <>
+                {" "}
+                &nbsp;·&nbsp; <span className="k">share</span> {shareState.note}
+              </>
+            )}
+            {shareState.status === "too-long" && (
+              <>
+                {" "}
+                &nbsp;·&nbsp; <span className="k">share</span> source too long,
+                raw copied
+              </>
+            )}
+            {shareState.status === "error" && (
+              <>
+                {" "}
+                &nbsp;·&nbsp; <span className="k">share</span>{" "}
+                {shareState.message}
+              </>
+            )}
           </div>
         </div>
       </div>

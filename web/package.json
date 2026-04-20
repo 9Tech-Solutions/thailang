@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "postinstall": "node scripts/copy-ts-wasm.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -16,7 +17,8 @@
     "playground-wasm": "workspace:*",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "shiki": "^4.0.2"
+    "shiki": "^4.0.2",
+    "web-tree-sitter": "^0.26.8"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",

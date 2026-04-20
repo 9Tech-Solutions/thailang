@@ -34,7 +34,23 @@ const securityHeaders = [
   },
 ];
 
+// web-tree-sitter's ESM bundle contains runtime-guarded `await import("fs/promises")`
+// / `await import("module")` calls for the Node code path. Turbopack still resolves
+// those string literals at bundle time, so we stub the Node built-ins for browser
+// builds. The stub throws if ever reached at runtime (it won't be: the Node
+// branch is gated on `globalThis.process?.versions.node`).
+const nodeBuiltinStub = "./src/shared/lib/node-builtin-stub.ts";
+
 const nextConfig: NextConfig = {
+  turbopack: {
+    resolveAlias: {
+      "fs/promises": { browser: nodeBuiltinStub },
+      fs: { browser: nodeBuiltinStub },
+      module: { browser: nodeBuiltinStub },
+      path: { browser: nodeBuiltinStub },
+      url: { browser: nodeBuiltinStub },
+    },
+  },
   async headers() {
     return [
       {
